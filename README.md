@@ -43,3 +43,5 @@ PROCESS
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
 - cloned 'production' repo using `git clone git://github.com/cccs-web/production.git`
   - Success.
+- [attempted to install Mezzanine](https://www.digitalocean.com/community/articles/how-to-install-and-get-started-with-django-based-mezzanine-cms-on-ubuntu)
+  - errors report, but install appears to be "functional"; terminal output shared via email (2014-04-26)
