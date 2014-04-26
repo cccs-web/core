@@ -4,7 +4,7 @@ production
 CCCS website production repository
 
 SERVER IP (testing only)
-- 54.243.193.28, via fr.crossculturalconsult.com
+- 54.243.193.28, via [fr.crossculturalconsult.com](http://fr.crossculturalconsult.com)
 
 TOOLS:
 - [git](https://github.com/cccs-web/production/edit/master/README.md)
@@ -14,8 +14,9 @@ TOOLS:
   - [installation guide](http://virtualenvwrapper.readthedocs.org/en/latest/install.html)
 
 ENVIRONMENT:
+- ngnix
 - Django
-- 
+- [Mezzanine](http://mezzanine.jupo.org/)
 - PostGIS
 
 
