@@ -30,7 +30,7 @@ PROCESS
   - created 'webadmin' user, enabled ssh access in /etc/ssh/sshd_config [*no key yet made for user*]
 - Changed Apache settings to re-route incoming traffic to beta WordPress site to verify routing from A record changes to new test instance  
 - [installed virtualenwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/install.html)
-- [installed PostGIS](http://postgis.net/install/) via the [UbuntuGIS repository](https://wiki.ubuntu.com/UbuntuGIS) ([used unstable repo](https://launchpad.net/~ubuntugis/+archive/ubuntugis-unstable))
+- [installed PostGIS](http://postgis.net/install/) via the [UbuntuGIS repository](https://wiki.ubuntu.com/UbuntuGIS) ([used unstable repo](https://launchpad.net/~ubuntugis/+archive/ubuntugis-unstable)) by `sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable && sudo apt-get update` then `sudo apt-get install postgresql`
 - [installed git](http://git-scm.com/book/en/Getting-Started-Installing-Git) by installing dependencies: `apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev` then running `apt-get install git`
 - installed PostgreSQL
 - [installed Django](https://www.digitalocean.com/community/articles/installing-django-on-ubuntu-12-04--4) first by `sudo apt-get install python-imaging python-pythonmagick python-markdown python-textile python-docutils` then `sudo apt-get install python-django`
