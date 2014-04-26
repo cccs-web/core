@@ -27,7 +27,7 @@ PROCESS
 
 - Cloned current production API and re-deployed as a micro-instance on 'fr' subdomain (linked above)
 - Added 'paul' user, enabled ssh access in /etc/ssh/sshd_config
- - created 'webadmin' user, enabled ssh access in /etc/ssh/sshd_config [*no key yet made for user*]
+  - created 'webadmin' user, enabled ssh access in /etc/ssh/sshd_config [*no key yet made for user*]
  
 - Changed Apache settings to re-route incoming traffic to beta WordPress site to verify routing from A record changes to new test instance  
 
