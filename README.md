@@ -33,6 +33,7 @@ PROCESS
 - [installed PostGIS](http://postgis.net/install/) via the [UbuntuGIS repository](https://wiki.ubuntu.com/UbuntuGIS) ([used unstable repo](https://launchpad.net/~ubuntugis/+archive/ubuntugis-unstable))
 - [installed git](http://git-scm.com/book/en/Getting-Started-Installing-Git) by installing dependencies: `apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev` then running `apt-get install git`
 - installed PostgreSQL
+- [installed Django](https://www.digitalocean.com/community/articles/installing-django-on-ubuntu-12-04--4) first by `sudo apt-get install python-imaging python-pythonmagick python-markdown python-textile python-docutils` then `sudo aptitude install python-django`
 - initialized empty Git repository in /var/www/ by running `git init`
 - [attempted to link repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
   - error: src refspec master does not match any.
