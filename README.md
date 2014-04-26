@@ -37,5 +37,5 @@ PROCESS
 - [attempted to import and link](https://help.github.com/articles/importing-an-external-git-repository) 'production' repo using `git clone --bare https://githost.org/extuser/repo.git` followed by 'git push --mirror https://github.com/ghuser/repo.git'
   - remote: error: refusing to delete the current branch: refs/heads/master To https://github.com/cccs-web/production.git ! [remote rejected] master (deletion of the current branch prohibited)
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
-- cloned 'production' repos using `git clone git://github.com/cccs-web/production.git`
-  - OK.  created 'production' sub-directory under my initalized 'fr' repositority on the server.  This suggests to me that I should simply initialize /var/www/ as server's git repo to elimiate need for additional parent directory.
+- cloned 'production' repo using `git clone git://github.com/cccs-web/production.git`
+  - OK.  created 'production' sub-directory under my initialized 'fr' repository on the server.  This suggests to me that I should simply initialize /var/www/ as server's git repo to elimiate need for additional parent directory. Would this work?
