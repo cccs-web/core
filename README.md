@@ -23,18 +23,22 @@ ENVIRONMENT:
 
 PROCESS
 
-*Setup*
+*Configuration*
 
 - Cloned current production API and re-deployed as a micro-instance on 'fr' subdomain (linked above)
 - Added 'paul' user, enabled ssh access in /etc/ssh/sshd_config
  - created 'webadmin' user, enabled ssh access in /etc/ssh/sshd_config [*no key yet made for user*]
+ 
 - Changed Apache settings to re-route incoming traffic to beta WordPress site to verify routing from A record changes to new test instance  
+
 - [installed virtualenwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/install.html)
 - [installed PostGIS](http://postgis.net/install/) via the [UbuntuGIS repository](https://wiki.ubuntu.com/UbuntuGIS) ([used unstable repo](https://launchpad.net/~ubuntugis/+archive/ubuntugis-unstable))
 - [installed git](http://git-scm.com/book/en/Getting-Started-Installing-Git) by installing dependencies: `apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev` then running `apt-get install git`
 - installed PostgreSQL
 - [installed Django](https://www.digitalocean.com/community/articles/installing-django-on-ubuntu-12-04--4) first by `sudo apt-get install python-imaging python-pythonmagick python-markdown python-textile python-docutils` then `sudo apt-get install python-django`
+
 - initialized empty Git repository in /var/www/ by running `git init`
+
 - [attempted to link repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
   - error: src refspec master does not match any.
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
@@ -43,5 +47,6 @@ PROCESS
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
 - cloned 'production' repo using `git clone git://github.com/cccs-web/production.git`
   - Success.
+
 - [attempted to install Mezzanine](https://www.digitalocean.com/community/articles/how-to-install-and-get-started-with-django-based-mezzanine-cms-on-ubuntu)
   - errors report, but install appears to be "functional"; terminal output shared via email (2014-04-26)
