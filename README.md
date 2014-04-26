@@ -31,6 +31,11 @@ PROCESS
 - [installed PostGIS](http://postgis.net/install/) via the [UbuntuGIS repository](https://wiki.ubuntu.com/UbuntuGIS) ([used unstable repo](https://launchpad.net/~ubuntugis/+archive/ubuntugis-unstable))
 - [installed git](http://git-scm.com/book/en/Getting-Started-Installing-Git) by installing dependencies: `apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev` then running `apt-get install git`
 - initialized empty Git repository in /var/www/fr/.git/ by running `git init`
-- attempted to link repositories: `git remote add origin https://github.com/cccs-web/production.git`
+- [attempted to link repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
   - error: src refspec master does not match any.
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
+- [attempted to import and link](https://help.github.com/articles/importing-an-external-git-repository) 'production' repo using `git clone --bare https://githost.org/extuser/repo.git` followed by 'git push --mirror https://github.com/ghuser/repo.git'
+  - remote: error: refusing to delete the current branch: refs/heads/master To https://github.com/cccs-web/production.git ! [remote rejected] master (deletion of the current branch prohibited)
+  - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
+- cloned 'production' repos using `git clone git://github.com/cccs-web/production.git`
+  - OK.  created 'production' sub-directory under my initalized 'fr' repositority on the server.  This suggests to me that I should simply initialize /var/www/ as server's git repo to elimiate need for additional parent directory.
