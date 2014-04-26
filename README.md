@@ -20,3 +20,12 @@ ENVIRONMENT:
 - PostGIS
 
 
+PROCESS
+
+*Setup*
+
+- Cloned current production API and re-deployed as a micro-instance on 'fr' subdomain (linked above)
+- Added 'paul' user, enabled ssh access in /etc/ssh/sshd_config
+- Changed Apache settings to re-route incoming traffic to beta WordPress site to verify routing from A record changes to new test instance  
+- [installed virtualenwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/install.html)
+- [installed PostGIS](http://postgis.net/install/) via the [UbuntuGIS repository](https://wiki.ubuntu.com/UbuntuGIS) ([used unstable repo](https://launchpad.net/~ubuntugis/+archive/ubuntugis-unstable))
