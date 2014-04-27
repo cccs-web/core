@@ -35,6 +35,13 @@ PROCESS
 - [installed git](http://git-scm.com/book/en/Getting-Started-Installing-Git) by installing dependencies: `apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev` then running `apt-get install git`
 - installed PostgreSQL: `sudo apt-get install postgresql`
 - [installed Django](https://www.digitalocean.com/community/articles/installing-django-on-ubuntu-12-04--4) first by `sudo apt-get install python-imaging python-pythonmagick python-markdown python-textile python-docutils` then `sudo apt-get install python-django`
+- removed Apache and installed nginx
+  - was unsuccessful in setting up a working configuration to display the [WordPress development site](http://en.crossculturalconsult.com); our new ['production' site](http://production.crossculturalconsult.com) is now showing the default ngnix welcome message
+  - Success: followed Step 5 [in this article](https://www.digitalocean.com/community/articles/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-12-04) by `sudo vi /etc/php5/fpm/php.ini`  then setting `cgi.fix_pathinfo=0` followed by `sudo vi /etc/php5/fpm/pool.d/www.conf` and replacing `listen = /var/run/php5-fpm.sock` with `listen = /var/run/php5-fpm.sock`; this changed my error message to 'cannot connect to database'; restarted mysql - everything running smoothly.
+
+  
+*build*
+
 - initialized empty Git repository in /var/www/ by running `git init`
 - [attempted to link repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
   - error: src refspec master does not match any.
@@ -46,6 +53,3 @@ PROCESS
   - Success.
 - [installed Mezzanine](https://www.digitalocean.com/community/articles/how-to-install-and-get-started-with-django-based-mezzanine-cms-on-ubuntu) to /var/www/production/mezzanine_env/
   - QUESTION: Can I change and move this directory name just as any other?
-- removed Apache and installed nginx
-  - was unsuccessful in setting up a working configuration to display the [WordPress development site](http://en.crossculturalconsult.com); our new ['production' site](http://production.crossculturalconsult.com) is now showing the default ngnix welcome message
-  - Success: followed Step 5 [in this article](https://www.digitalocean.com/community/articles/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-12-04) by `sudo vi /etc/php5/fpm/php.ini`  then setting `cgi.fix_pathinfo=0` followed by `sudo vi /etc/php5/fpm/pool.d/www.conf` and replacing `listen = /var/run/php5-fpm.sock` with `listen = /var/run/php5-fpm.sock`; this changed my error message to 'cannot connect to database'; restarted mysql - everything running smoothly.
