@@ -43,4 +43,5 @@ PROCESS
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
 - cloned 'production' repo using `git clone git://github.com/cccs-web/production.git`
   - Success.
-- [installed Mezzanine](https://www.digitalocean.com/community/articles/how-to-install-and-get-started-with-django-based-mezzanine-cms-on-ubuntu) to /var/www/production/mezzanine_env/ ~QUESTION: Can I change and move this directory name just as any other?
+- [installed Mezzanine](https://www.digitalocean.com/community/articles/how-to-install-and-get-started-with-django-based-mezzanine-cms-on-ubuntu) to /var/www/production/mezzanine_env/
+  - QUESTION: Can I change and move this directory name just as any other?
