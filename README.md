@@ -43,7 +43,7 @@ PROCESS
 *Build:*
 
 - initialized empty Git repository in /var/www/ by running `git init`
-- [attempted to link repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
+- [attempted to link server and GitHub repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
   - error: src refspec master does not match any.
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
 - [attempted to import and link](https://help.github.com/articles/importing-an-external-git-repository) 'production' repo using `git clone --bare https://githost.org/extuser/repo.git` followed by `git push --mirror https://github.com/ghuser/repo.git`
