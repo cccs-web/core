@@ -3,7 +3,7 @@ production
 
 CCCS website production repository
 
-SERVER IP (testing only)
+SERVER (testing only)
 - 54.243.193.28, via [production.crossculturalconsult.com](http://production.crossculturalconsult.com)
 - Ubuntu 12.04.4
 
