@@ -7,14 +7,14 @@ SERVER (testing only)
 - 54.243.193.28, via [production.crossculturalconsult.com](http://production.crossculturalconsult.com)
 - Ubuntu 12.04.4
 
-TOOLS:
+TOOLS
 - [git](https://github.com/cccs-web/production/edit/master/README.md)
 - pycharm [locally]
   - [quick installation guide for newer Ubuntu](http://cheparev.com/pycharm-installation-on-ubuntu-13-10/)
 - virtualenvwrapper [server]
   - [installation guide](http://virtualenvwrapper.readthedocs.org/en/latest/install.html)
 
-ENVIRONMENT:
+ENVIRONMENT
 - ngnix
 - Django
 - [Mezzanine](http://mezzanine.jupo.org/)
