@@ -24,7 +24,7 @@ ENVIRONMENT
 
 PROCESS
 
-*Configuration*
+*Configuration:*
 
 - Cloned current production API and re-deployed as a micro-instance on 'fr' subdomain (linked above)
 - Added 'paul' user, enabled ssh access in /etc/ssh/sshd_config
@@ -40,7 +40,7 @@ PROCESS
   - Success: followed Step 5 [in this article](https://www.digitalocean.com/community/articles/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-12-04) by `sudo vi /etc/php5/fpm/php.ini`  then setting `cgi.fix_pathinfo=0` followed by `sudo vi /etc/php5/fpm/pool.d/www.conf` and replacing `listen = /var/run/php5-fpm.sock` with `listen = /var/run/php5-fpm.sock`; this changed my error message to 'cannot connect to database'; restarted mysql - everything running smoothly.
 
   
-*build*
+*Build:*
 
 - initialized empty Git repository in /var/www/ by running `git init`
 - [attempted to link repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
