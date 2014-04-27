@@ -45,3 +45,5 @@ PROCESS
   - Success.
 - [installed Mezzanine](https://www.digitalocean.com/community/articles/how-to-install-and-get-started-with-django-based-mezzanine-cms-on-ubuntu) to /var/www/production/mezzanine_env/
   - QUESTION: Can I change and move this directory name just as any other?
+- removed Apache and installed nginx
+  - was unsuccessful in setting up a working configuration to display our [current WordPress development site](http://en.crossculturalconsult.com)
