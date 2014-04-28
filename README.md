@@ -1,4 +1,4 @@
-production
+core
 ==========
 
 CCCS website production repository
