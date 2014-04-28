@@ -1,10 +1,10 @@
-production
+core
 ==========
 
 CCCS website production repository
 
 SERVER (testing only)
-- 54.243.193.28, via [production.crossculturalconsult.com](http://production.crossculturalconsult.com)
+- 54.243.193.28, via [core.crossculturalconsult.com](http://production.crossculturalconsult.com)
 - Ubuntu 12.04.4
 
 TOOLS
@@ -43,13 +43,13 @@ PROCESS
 *Build:*
 
 - initialized empty Git repository in /var/www/ by running `git init`
-- [attempted to link server and GitHub repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/production.git`
+- [attempted to link server and GitHub repositories](https://help.github.com/articles/create-a-repo) using `git remote add origin https://github.com/cccs-web/core.git`
   - error: src refspec master does not match any.
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
-- [attempted to import and link](https://help.github.com/articles/importing-an-external-git-repository) 'production' repo using `git clone --bare https://githost.org/extuser/repo.git` followed by `git push --mirror https://github.com/ghuser/repo.git`
+- [attempted to import and link](https://help.github.com/articles/importing-an-external-git-repository) 'core' repo using `git clone --bare https://githost.org/extuser/repo.git` followed by `git push --mirror https://github.com/ghuser/repo.git`
   - remote: error: refusing to delete the current branch: refs/heads/master To https://github.com/cccs-web/production.git ! [remote rejected] master (deletion of the current branch prohibited)
   - error: failed to push some refs to 'https://github.com/cccs-web/production.git'
-- cloned 'production' repo using `git clone git://github.com/cccs-web/production.git`
+- cloned 'production' repo using `git clone git://github.com/cccs-web/core.git`
   - Success.
 - [installed Mezzanine](https://www.digitalocean.com/community/articles/how-to-install-and-get-started-with-django-based-mezzanine-cms-on-ubuntu) to /var/www/production/mezzanine_env/
 
