@@ -80,3 +80,10 @@ Adapted from [here](http://trac.osgeo.org/postgis/wiki/UsersWikiPostGIS20Ubuntu1
 	~ $ sudo apt-get update
 	...
 	~ $ sudo apt-get install postgresql-9.1-postgis-2.0
+
+## Set up the database and user
+
+Add the database and database user:
+
+    psql -c "CREATE USER cccs WITH PASSWORD 'password';"
+    psql -c "CREATE DATABASE cccs WITH OWNER cccs;"
