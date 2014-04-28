@@ -1,3 +1,10 @@
+.project
+invoicing
+.idea/
+__pycache__/*
+*.py[cod]
+gunicorn_logs/
+=======
 *.pyc
 *.pyo
 *.db
