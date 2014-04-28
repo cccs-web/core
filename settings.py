@@ -103,7 +103,7 @@ ALLOWED_HOSTS = ['.crossculturalconsult.com']
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = None
+TIME_ZONE = 'America/Chicago'
 
 # If you set this to True, Django will use timezone-aware datetimes.
 USE_TZ = True
