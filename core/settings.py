@@ -314,7 +314,7 @@ PROCESS_NAME = 'cccs_production'
 # ignored in your version control system allowing for settings to be
 # defined per machine.
 try:
-    from local_settings import *
+    from core.local_settings import *
 except ImportError:
     pass
 
