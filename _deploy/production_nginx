@@ -3,22 +3,22 @@ server {
     server_name  production.crossculturalconsult.com www.production.crossculturalconsult.com;
     access_log   /var/log/nginx/production.crossculturalconsult.com.access.log;
     error_log    /var/log/nginx/production.crossculturalconsult.com.error.log;
-    root /home/webcore/core/;
+    root /home/webcore/production/;
 
     location  /static/ {
-        alias  /home/webcore/core/static_collected/;
+        alias  /home/webcore/production/static_collected/;
     }
 
     location  /media/ {
-        alias  /home/webcore/core/media/;
+        alias  /home/webcore/production/media/;
     }
 
     location  = /favicon.ico {
-        alias  /home/webcore/core/media/favicon.ico;
+        alias  /home/webcore/production/media/favicon.ico;
     }
 
     location  = /robots.txt {
-        alias  /home/webcore/core/media/robots.txt;
+        alias  /home/webcore/production/media/robots.txt;
     }
 
     location  / {

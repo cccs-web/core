@@ -2,9 +2,9 @@
 # Run the gunicorn service
 
 # Make sure we're in the right virtual env and location
-source /home/webcore/.virtualenvs/pwc/bin/activate
-source /home/webcore/.virtualenvs/pwc/bin/postactivate
+source /home/webcore/.virtualenvs/production/bin/activate
+source /home/webcore/.virtualenvs/production/bin/postactivate
 
-cd /home/webcore/core
+cd /home/webcore/production
 
-exec gunicorn -c /home/webcore/core/_deploy/gunicorn.conf.py wsgi:application
+exec gunicorn -c /home/webcore/production/_deploy/gunicorn.conf.py core.wsgi:application
