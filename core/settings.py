@@ -165,8 +165,8 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 import os
 
 # Full filesystem path to the project.
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-BASE_DIR = PROJECT_ROOT  # Django 1.6 compat - PROJECT_ROOT is wrong name
+_dirs = os.path.abspath(__file__).split('/')
+PROJECT_ROOT = BASE_DIR = '/'.join(_dirs[0:-2])  # Django 1.6 compat - PROJECT_ROOT is wrong name
 
 # Name of the directory for the project.
 PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
