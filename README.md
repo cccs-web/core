@@ -24,6 +24,8 @@ ENVIRONMENT
 
 PROCESS
 
+note:  we can remove extra details later.
+
 *Configuration:*
 
 - Cloned current production API and re-deployed as a micro-instance on 'fr' subdomain (linked above)
