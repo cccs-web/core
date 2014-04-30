@@ -87,3 +87,6 @@ Add the database and database user:
 
     psql -c "CREATE USER cccs WITH PASSWORD 'password';"
     psql -c "CREATE DATABASE cccs WITH OWNER cccs;"
+
+
+    This is a temporary change by Paul
