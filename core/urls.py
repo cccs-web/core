@@ -4,16 +4,20 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 
+from mezzanine.conf import settings
+
 
 admin.autodiscover()
 
-# Add the urlpatterns for any custom Django applications here.
-# You can also change the ``home`` view to add your own functionality
-# to the project's homepage.
+# Serve static media during development so things look right
+if settings.DEBUG:
+    urlpatterns = patterns(
+        '',
+        (r'^{0}/(?P<path>.*)$'.format(settings.MEDIA_URL.strip('/')),
+         'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}))
 
-urlpatterns = i18n_patterns("",
-    # Change the admin prefix here to use an alternate URL for the
-    # admin interface, which would be marginally more secure.
+urlpatterns += i18n_patterns(
+    "",
     ("^admin/", include(admin.site.urls)),
 )
 
