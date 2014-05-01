@@ -33,40 +33,19 @@ class WordPressImporter(object):
     def import_pages(self, pages):
         self.vprint("BEGIN Importing pages", 1)
         for page in pages:
-            if self.page_wanted(page):
-                self.import_page(page, pages)
+            self.import_page(page, pages)
         self.vprint("END   Importing pages", 1)
-
-    @staticmethod
-    def page_wanted(page):
-        return page['post_type'] == 'page' and page['post_status'] == 'publish'
 
     def import_page(self, page, pages):
         title = to_unicode(page['post_title'])
         self.vprint("BEGIN Importing page '{0}'".format(to_bytes(title)), 1)
         mezz_page = self.get_or_create(RichTextPage, title=title)
-        if page['post_parent'] > 0:  # there is a parent
-            mezz_page.parent = self.get_mezz_page(page['post_parent'], pages)
         mezz_page.created = page['post_modified']
         mezz_page.updated = page['post_modified']
         mezz_page.content = to_unicode(page['post_content'])
         mezz_page.save()
 
         self.vprint("END   Importing page'{0}'".format(to_bytes(title)), 1)
-
-    def get_mezz_page(self, page_id, pages):
-        """
-        Return mezz page object, creating one using pages if it is not there yet.
-        This is needed because the parent may not yet have been imported
-        """
-
-        # Should always get a page
-        page = None
-        for page in pages:
-            if page['ID'] == page_id:
-                break
-
-        return self.get_or_create(RichTextPage, title=page['post_title'])
 
 
 def dictfetchall(cursor):
@@ -119,11 +98,19 @@ def get_pages(db_name, db_username, db_userpassword):
 SELECT
     posts.*
 FROM
-    wp_posts AS posts"""
+    wp_posts AS posts
+WHERE
+    post_type = "page" AND
+    post_status = "publish";
+"""
     cursor = get_cursor(db_name, db_username, db_userpassword)
     cursor.execute(qry)
     pages = dictfetchall(cursor)
 
+    # Remove any pages with no content
+    pages = [page for page in pages if len(page['post_content'].strip()) > 0]
+
+    # Add metadata in case I need it
     for page in pages:
         page['metadata'] = get_metadata(page['ID'], db_name, db_username, db_userpassword)
     return pages
