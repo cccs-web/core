@@ -287,6 +287,8 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 GUNICORN_BIND = "127.0.0.1:8000"
 PROCESS_USER = 'webcore'
 PROCESS_NAME = 'cccs_production'
+SITE_TITLE = 'Cross-Cultural Consulting Services'
+SITE_TAGLINE = None
 
 ##################
 # LOCAL SETTINGS #
