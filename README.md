@@ -1,7 +1,5 @@
-core
+CCCS website - development repository
 ==========
-
-CCCS website production repository
 
 
 
