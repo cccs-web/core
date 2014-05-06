@@ -1,14 +1,11 @@
 from __future__ import unicode_literals
 
-from django.conf.urls import patterns, include, url
-from django.conf.urls.i18n import i18n_patterns
-from django.contrib import admin
+from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
-from mezzanine.conf import settings
-
-import cccsmap
+from views import VillageView
 
 urlpatterns = patterns(
     '',
-    url("^test/$", TemplateView.as_view(template_name='cccsmap/test.html'), name="maps_test"))
+    url("^test/$", TemplateView.as_view(template_name='cccsmap/test.html'), name="maps_test"),
+    url("^villages/$", VillageView.as_view(), name="villages"))
