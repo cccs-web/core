@@ -37,8 +37,6 @@ Add the database and database user:
     psql -c "CREATE USER cccs WITH PASSWORD 'password';"
     psql -c "CREATE DATABASE cccs WITH OWNER cccs;"
 
-<<<<<<< HEAD
-
 ## Enable the database for GIS use:
 
     psql -c "CREATE EXTENSION postgis;"
@@ -49,5 +47,3 @@ Add the database and database user:
 Change to the folder where the shp file and its related dbf file are located and:
 
     ogr2ogr -f PostgreSQL PG:dbname=cccs file.shp
-=======
->>>>>>> 30442e55b67ea1380035eb7bcbfcdbcc77f8807d
