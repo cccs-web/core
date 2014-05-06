@@ -91,4 +91,13 @@ Add the database and database user:
     psql -c "CREATE DATABASE cccs WITH OWNER cccs;"
 
 
-    This is a temporary change by Paul
+## Enable the database for GIS use:
+
+    psql -c "CREATE EXTENSION postgis;"
+    psql -c "CREATE EXTENSION postgis_topology;"
+
+## Import a shp file
+
+Change to the folder where the shp file and its related dbf file are located and:
+
+    ogr2ogr -f PostgreSQL PG:dbname=cccs file.shp
