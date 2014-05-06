@@ -14,6 +14,10 @@ class Village(models.Model):
     geom = models.PointField(srid=4326)
     objects = models.GeoManager()
 
+    def __str__(self):
+        return self.name
+
+
 # Auto-generated `LayerMapping` dictionary for Village model
 village_mapping = {
     'name' : 'name',
