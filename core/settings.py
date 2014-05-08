@@ -209,6 +209,7 @@ INSTALLED_APPS = (
     "django.contrib.gis",
     "theme",
     "cccsmap",
+    "cvs",
     "mezzanine.boot",
     "mezzanine.conf",
     "mezzanine.core",
