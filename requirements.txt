@@ -5,3 +5,4 @@ gunicorn==18.0
 kitchen==1.1.1
 vectorformats==0.1
 simplejson==3.4.1
+openpyxl==1.8.6
