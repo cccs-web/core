@@ -15,14 +15,14 @@ xlsx_cvs = [os.path.abspath(os.path.join(pwd, 'source_data', fn))
 xlsx_cv = next((cv for cv in xlsx_cvs if 'Aaron' in cv))
 
 
-def create_all():
-    create_countries('.country-calc, CCCS')
-    create_themes('.theme-calc, CCCS', cm.CCCSTheme, cm.CCCSSubTheme)
-    create_themes('.theme-calc, IFC', cm.IFCTheme, cm.IFCSubTheme)
-    create_sectors('.sector-calc, IFC')
+def load_all():
+    load_countries('.country-calc, CCCS')
+    load_themes('.theme-calc, CCCS', cm.CCCSTheme, cm.CCCSSubTheme)
+    load_themes('.theme-calc, IFC', cm.IFCTheme, cm.IFCSubTheme)
+    load_sectors('.sector-calc, IFC')
 
 
-def create_countries(sheet_name):
+def load_countries(sheet_name):
     country_dicts = get_country_dicts(sheet_name)
     for info in country_dicts:
         country, _ = cm.Country.objects.get_or_create(name=info['name'])
@@ -54,7 +54,7 @@ def get_country_dicts(sheet_name):
     return countries
 
 
-def create_themes(sheet_name, theme_model, sub_theme_model):
+def load_themes(sheet_name, theme_model, sub_theme_model):
     theme_dict = get_theme_dict(sheet_name)
     for (theme_name, sub_theme_names) in theme_dict.iteritems():
         theme, created = theme_model.objects.get_or_create(name=theme_name)
@@ -85,7 +85,7 @@ def get_theme_dict(sheet_name):
     return themes
 
 
-def create_sectors(sheet_name):
+def load_sectors(sheet_name):
     sector_names = get_sector_names(sheet_name)
     for sector_name in sector_names:
         sector, created = cm.IFCSector.objects.get_or_create(name=sector_name)
