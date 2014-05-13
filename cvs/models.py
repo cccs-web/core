@@ -23,6 +23,10 @@ class Country(UniqueNamed):
     iso = models.CharField(max_length=7, null=True, blank=True)
     notes = models.TextField(max_length=512, null=True, blank=True)
 
+    class Meta:
+        verbose_name = 'Country'
+        verbose_name_plural = 'Countries'
+
     def __unicode__(self):
         return u"{0} ({1})".format(self.name, self.iso)
 
