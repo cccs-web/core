@@ -37,3 +37,9 @@ class IFCSectorAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(cm.IFCSector, IFCSectorAdmin)
+
+
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date_range', 'cccs_subtheme')
+
+admin.site.register(cm.Project, ProjectAdmin)
