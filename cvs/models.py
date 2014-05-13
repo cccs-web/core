@@ -33,10 +33,14 @@ class CCCSTheme(UniqueNamed):
         verbose_name = 'CCCS Theme'
         verbose_name_plural = 'CCCS Themes'
 
+    @property
+    def project_count(self):
+        return Project.objects.filter(cccs_subtheme__theme=self).count()
+
 
 class CCCSSubTheme(models.Model):
     name = models.CharField(max_length=512)
-    theme = models.ForeignKey(CCCSTheme, related_name='sub_themes')
+    theme = models.ForeignKey(CCCSTheme, related_name='subtheme_set')
 
     class Meta:
         verbose_name = 'CCCS SubTheme'
@@ -46,6 +50,10 @@ class CCCSSubTheme(models.Model):
 
     def __unicode__(self):
         return u"{0}/{1}".format(self.theme.name, self.name)
+
+    @property
+    def project_count(self):
+        return self.project_set.count()
 
 
 class CCCSSector(UniqueNamed):

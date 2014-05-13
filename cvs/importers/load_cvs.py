@@ -129,6 +129,7 @@ def load_projects(sheet_name):
             project.countries.add(country)
         except cm.Country.DoesNotExist:
             print(u"No country for \"{0}\": '{1}' does not exist".format(project_name, project_info['Country']))
+        project.region = project_info['Region']
         # Break Services On/Off-site into flags and have a go at importing them
         services = project_info.get('Services On/Off-site', None)
         if services is not None:

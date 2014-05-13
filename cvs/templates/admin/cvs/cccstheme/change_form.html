@@ -1,0 +1,11 @@
+{% extends "admin/change_form.html" %}
+{% block after_related_objects %}
+    <div class="inline-group inline-tabular">
+        <h2>Projects in "{{ original.name }}"</h2>
+    <div class="items">
+        <div class="inline-related">
+            <h3>hello, I'm going to be a link to each theme project</h3>
+        </div>
+    </div>
+    </div>
+{% endblock %}
