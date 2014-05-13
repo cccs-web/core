@@ -9,10 +9,10 @@ from cvs.importers.globals import *
 
 def load_all():
     load_countries('.country-calc, CCCS')
-    load_themes('.theme-calc, CCCS', cm.CCCSTheme, cm.CCCSSubTheme)
-    load_themes('.theme-calc, IFC', cm.IFCTheme, cm.IFCSubTheme)
+    load_categorizations(get_theme_dict('.theme-calc, CCCS'), cm.CCCSTheme, cm.CCCSSubTheme, 'theme')
+    load_categorizations(get_theme_dict('.theme-calc, IFC'), cm.IFCTheme, cm.IFCSubTheme, 'theme')
     load_ifc_sectors('.sector-calc, IFC')
-    load_cccs_sectors('.sector-calc, CCCS', cm.CCCSSector, cm.CCCSSubSector)
+    load_categorizations(get_cccs_sector_dict('.sector-calc, CCCS'), cm.CCCSSector, cm.CCCSSubSector, 'sector')
     load_projects('PROJECT')
 
 
@@ -48,16 +48,10 @@ def get_country_dicts(sheet_name):
     return countries
 
 
-def load_themes(sheet_name, theme_model, sub_theme_model):
-    theme_dict = get_theme_dict(sheet_name)
-    for (theme_name, sub_theme_names) in theme_dict.iteritems():
-        theme, created = theme_model.objects.get_or_create(name=theme_name)
-        if created:
-            theme.save()
+def load_categorizations(info, theme_model, sub_theme_model, super_field_name):
+    for (theme_name, sub_theme_names) in info.iteritems():
         for sub_theme_name in sub_theme_names:
-            sub_theme, created = sub_theme_model.objects.get_or_create(theme=theme, name=sub_theme_name)
-            if created:
-                sub_theme.save()
+            _load_categorization(theme_model, theme_name, sub_theme_model, sub_theme_name, super_field_name)
 
 
 def get_theme_dict(sheet_name):
@@ -102,18 +96,6 @@ def get_ifc_sector_names(sheet_name):
     return sector_names
 
 
-def load_cccs_sectors(sheet_name, sector_model, sub_sector_model):
-    sector_dict = get_cccs_sector_dict(sheet_name)
-    for (sector_name, sub_sector_names) in sector_dict.iteritems():
-        sector, created = sector_model.objects.get_or_create(name=sector_name)
-        if created:
-            sector.save()
-        for sub_sector_name in sub_sector_names:
-            sub_sector, created = sub_sector_model.objects.get_or_create(sector=sector, name=sub_sector_name)
-            if created:
-                sub_sector.save()
-
-
 def get_cccs_sector_dict(sheet_name):
     """
     Use the gold cv to obtain all the cccs themes and sub themes
@@ -146,9 +128,9 @@ def load_projects(sheet_name):
             country = cm.Country.objects.get(name=project_info['Country'])
             project.countries.add(country)
         except cm.Country.DoesNotExist:
-            print("No country for \"{0}\": '{1}' does not exist".format(project_name, project_info['Country']))
+            print(u"No country for \"{0}\": '{1}' does not exist".format(project_name, project_info['Country']))
         # Break Services On/Off-site into flags and have a go at importing them
-        services = project_info['Services On/Off-site']
+        services = project_info.get('Services On/Off-site', None)
         if services is not None:
             project.service_on_site = 'On' in services
             project.service_off_site = 'Off' in services
@@ -162,54 +144,85 @@ def load_projects(sheet_name):
         project.activities = project_info['Activities Performed']
         project.references = project_info['References']
 
-        cccs_theme_name = project_info['Thematic Issues -GENERAL']
-        cccs_subtheme_name = project_info['Sub-Themes -GENERAL']
-        try:
-            cccs_theme = cm.CCCSTheme.objects.get(name=cccs_theme_name)
-            cccs_subtheme = cm.CCCSSubTheme.objects.get(theme=cccs_theme, name=cccs_subtheme_name)
-            project.cccs_subtheme = cccs_subtheme
-        except (cm.CCCSTheme.DoesNotExist, cm.CCCSSubTheme.DoesNotExist):
-            print(u"No cccs_subtheme for {0} ({1}/{2}".format(project_name, cccs_theme_name, cccs_subtheme_name))
+        project.cccs_subtheme = _load_categorization(cm.CCCSTheme,
+                                                     project_info['Thematic Issues -GENERAL'],
+                                                     cm.CCCSSubTheme,
+                                                     project_info['Sub-Themes -GENERAL'],
+                                                     'theme')
 
-        cccs_sector_name = project_info['Sector -GENERAL']
-        cccs_subsector_name = project_info['Sub-sector -GENERAL']
-        try:
-            cccs_sector = cm.CCCSSector.objects.get(name=cccs_sector_name)
-            cccs_subsector = cm.CCCSSubSector.objects.get(theme=cccs_sector, name=cccs_subsector_name)
-            project.cccs_subsector = cccs_subsector
-        except (cm.CCCSSector.DoesNotExist, cm.CCCSSubSector.DoesNotExist):
-            print(u"No cccs_subsector for {0} ({1}/{2}".format(project_name, cccs_sector_name, cccs_subsector_name))
+        project.cccs_subsector = _load_categorization(cm.CCCSSector,
+                                                      project_info['Sector -GENERAL'],
+                                                      cm.CCCSSubSector,
+                                                      project_info['Sub-sector -GENERAL'],
+                                                      'sector')
 
-        ifc_theme_name = project_info['Thematic Issues -IFC']
-        ifc_subtheme_name = project_info['Sub-Themes -IFC']
-        try:
-            ifc_theme = cm.IFCTheme.objects.get(name=ifc_theme_name)
-            ifc_subtheme = cm.IFCSubTheme.objects.get(theme=ifc_theme, name=ifc_subtheme_name)
-            project.ifc_subtheme = ifc_subtheme
-        except (cm.IFCTheme.DoesNotExist, cm.IFCSubTheme.DoesNotExist):
-            print(u"No ifc_subtheme for {0} ({1}/{2})".format(project_name, ifc_theme_name, ifc_subtheme_name))
+        project.ifc_subtheme = _load_categorization(cm.IFCTheme,
+                                                    project_info['Thematic Issues -IFC'],
+                                                    cm.IFCSubTheme,
+                                                    project_info['Sub-Themes -IFC'],
+                                                    'theme')
 
         ifc_sector_name = project_info['Sector -IFC']
-        try:
-            ifc_sector = cm.IFCSector.objects.get(name=ifc_sector_name)
-            project.ifc_sector = ifc_sector
-        except cm.IFCSector.DoesNotExist:
-            print(u"No ifc_sector for {0} ({1})".format(project_name, ifc_sector_name))
+        if ifc_sector_name is None:
+            ifc_sector_name = 'Unspecified'
+        project.ifc_sector, created = cm.IFCSector.objects.get_or_create(name=ifc_sector_name)
 
         project.save()
+
+
+def _load_categorization(super_class, super_name, sub_class, sub_name, super_field):
+    """
+    Get or create the categorization returning sub instance
+    """
+    if super_name is None:
+        super_name = 'Unspecified'
+    if sub_name is None:
+        sub_name = 'Unspecified'
+    super_obj, created = super_class.objects.get_or_create(name=super_name)
+    if created:
+        super_obj.save()
+
+    sub_kwargs = {super_field: super_obj, 'name': sub_name}
+    sub_obj, created = sub_class.objects.get_or_create(**sub_kwargs)
+    if created:
+        sub_obj.save()
+
+    return sub_obj
 
 
 def get_project_dict(sheet_name):
     projects = dict()
     for cv in xlsx_cvs:
-        wb = load_workbook(filename=cv)
+        try:
+            wb = load_workbook(filename=cv)
+        except TypeError:
+            print("Unable to open {0}".format(cv))
+            continue
         ws = wb.get_sheet_by_name(sheet_name)
         headings = _get_project_dict_headings(ws.rows[0])
+        print("Processing {0}".format(cv))
         for row in ws.rows[1:]:
             project_name = row[1].value
-            if project_name is not None:  # project has a name
-                projects[project_name] = {k: c.value for (k, c) in zip(headings, row)}
-        return projects
+            if project_name is not None:
+                if project_name in projects:
+                    # Add any values we don't already have
+                    existing_info = projects[project_name]
+                    for k, c in zip(headings, row):
+                        new_value = c.value
+                        if new_value is None:
+                            continue
+                        try:
+                            if existing_info[k] is None:
+                                existing_info[k] = new_value
+                            elif new_value != existing_info[k]:
+                                print("Mismatched project info - different cvs have different project data")
+                        except KeyError:
+                            import pdb; pdb.set_trace()
+                else:
+                    # Add initial values
+                    print(u"    Adding {0} ({1})".format(project_name, row[headings.index('Sub-Themes -GENERAL')].value))
+                    projects[project_name] = {k: c.value for (k, c) in zip(headings, row)}
+    return projects
 
 
 def _get_project_dict_headings(heading_row):
@@ -217,5 +230,17 @@ def _get_project_dict_headings(heading_row):
     for heading_cell in heading_row:
         if heading_cell.value is None:
             break
-        headings.append(heading_cell.value.strip())
+        headings.append(canonical(heading_cell.value.strip()))
     return headings
+
+# synonyms map a synonym to a canonical value.
+synonyms = {'Services On and Off-site': "Services On/Off-site"}
+
+
+def canonical(s):
+    """
+    Headings are not consistent across all CVS. Here we define canonical forms so that the synonyms
+    don't screw up the importing process.
+    (Lower all case to reduce likely errors)
+    """
+    return synonyms.get(s, s)

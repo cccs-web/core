@@ -2,7 +2,7 @@ from django.db import models
 
 
 class UniqueNamed(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=512, unique=True)
 
     class Meta:
         abstract = True
@@ -35,7 +35,7 @@ class CCCSTheme(UniqueNamed):
 
 
 class CCCSSubTheme(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=512)
     theme = models.ForeignKey(CCCSTheme, related_name='sub_themes')
 
     class Meta:
@@ -56,7 +56,7 @@ class CCCSSector(UniqueNamed):
 
 
 class CCCSSubSector(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=512)
     sector = models.ForeignKey(CCCSSector, related_name='sub_themes')
 
     class Meta:
@@ -77,7 +77,7 @@ class IFCTheme(UniqueNamed):
 
 
 class IFCSubTheme(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=512)
     theme = models.ForeignKey(IFCTheme, related_name='sub_themes')
 
     class Meta:
