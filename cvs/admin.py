@@ -58,19 +58,48 @@ class CCCSThemeAdmin(admin.ModelAdmin):
 admin.site.register(cm.CCCSTheme, CCCSThemeAdmin)
 
 
+class CCCSSubSectorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'sector', 'project_count')
+    inlines = [ProjectInline]
+
+admin.site.register(cm.CCCSSubSector, CCCSSubSectorAdmin)
+
+
+class CCCSSubSectorInline(admin.TabularInline):
+    model = cm.CCCSSubSector
+    list_display = ['name']
+    extra = 1
+
+
+class CCCSSectorAdmin(admin.ModelAdmin):
+    list_display = ['name', 'project_count']
+    inlines = [
+        CCCSSubSectorInline]
+
+admin.site.register(cm.CCCSSector, CCCSSectorAdmin)
+
+
 class IFCSubThemeInline(admin.TabularInline):
     model = cm.IFCSubTheme
     extra = 1
 
 
 class IFCThemeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'project_count']
     inlines = [
         IFCSubThemeInline]
 
 admin.site.register(cm.IFCTheme, IFCThemeAdmin)
 
 
+class IFCSubThemeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'theme', 'project_count')
+    inlines = [ProjectInline]
+
+admin.site.register(cm.IFCSubTheme, IFCSubThemeAdmin)
+
+
 class IFCSectorAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'project_count']
 
 admin.site.register(cm.IFCSector, IFCSectorAdmin)

@@ -70,6 +70,10 @@ class CCCSSector(UniqueNamed):
         verbose_name = 'CCCS Sector'
         verbose_name_plural = 'CCCS Sectors'
 
+    @property
+    def project_count(self):
+        return Project.objects.filter(cccs_subsector__sector=self).count()
+
 
 class CCCSSubSector(models.Model):
     name = models.CharField(max_length=512)
@@ -84,12 +88,20 @@ class CCCSSubSector(models.Model):
     def __unicode__(self):
         return u"{0}/{1}".format(self.sector.name, self.name)
 
+    @property
+    def project_count(self):
+        return self.project_set.count()
+
 
 class IFCTheme(UniqueNamed):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'IFC Theme'
         verbose_name_plural = 'IFC Themes'
+
+    @property
+    def project_count(self):
+        return Project.objects.filter(ifc_subtheme__theme=self).count()
 
 
 class IFCSubTheme(models.Model):
@@ -105,12 +117,20 @@ class IFCSubTheme(models.Model):
     def __unicode__(self):
         return u"{0}/{1}".format(self.theme.name, self.name)
 
+    @property
+    def project_count(self):
+        return self.project_set.count()
+
 
 class IFCSector(UniqueNamed):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'IFC Sector'
         verbose_name_plural = 'IFC Sectors'
+
+    @property
+    def project_count(self):
+        return Project.objects.filter(ifc_sector=self).count()
 
 
 class Project(UniqueNamed):
