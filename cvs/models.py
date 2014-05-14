@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 
 
 class UniqueNamed(models.Model):
@@ -160,3 +161,10 @@ class Project(UniqueNamed):
     cccs_subsector = models.ForeignKey(CCCSSubSector, null=True, blank=True)
     ifc_subtheme = models.ForeignKey(IFCSubTheme, null=True, blank=True)
     ifc_sector = models.ForeignKey(IFCSector, null=True, blank=True)
+
+    def get_admin_url(self):
+        """
+        Return admin url to change self
+        """
+        url_name = 'admin:{0}_{1}_change'.format(self._meta.app_label,  self._meta.model_name)
+        return reverse(url_name,  args=[self.id])

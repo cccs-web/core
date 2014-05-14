@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse
 
 import cvs.models as cm
 
@@ -27,8 +26,7 @@ class ProjectInline(admin.TabularInline):
 
 
     def project_name(self, instance):
-        url = reverse('admin:{0}_{1}_change'.format(
-            instance._meta.app_label,  instance._meta.module_name),  args=[instance.id])
+        url = instance.get_admin_url()
         return mark_safe(u'<a href="{u}">{name}</a>'.format(u=url, name=instance.name))
 
     readonly_fields = ('project_name',)
