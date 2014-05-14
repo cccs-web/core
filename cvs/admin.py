@@ -4,7 +4,16 @@ from django.utils.safestring import mark_safe
 import cvs.models as cm
 
 
-class CountryAdmin(admin.ModelAdmin):
+class HasProjectsAdmin(admin.ModelAdmin):
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        obj = self.get_object(request, object_id)
+        extra_context['projects'] = list(obj.projects.all())
+        return super(HasProjectsAdmin, self).change_view(request, object_id, form_url, extra_context)
+
+
+class CountryAdmin(HasProjectsAdmin):
     list_display = ('name', 'iso_english_name', 'fips', 'iso_numeric', 'iso_3166', 'iso', 'project_count', 'notes')
 
 admin.site.register(cm.Country, CountryAdmin)
@@ -12,6 +21,7 @@ admin.site.register(cm.Country, CountryAdmin)
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'date_range', 'locality', 'region')
+
 
 admin.site.register(cm.Project, ProjectAdmin)
 
@@ -26,8 +36,7 @@ class ProjectInline(admin.TabularInline):
 
 
     def project_name(self, instance):
-        url = instance.get_admin_url()
-        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=url, name=instance.name))
+        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.admin_url, name=instance.name))
 
     readonly_fields = ('project_name',)
 
@@ -35,7 +44,7 @@ class ProjectInline(admin.TabularInline):
         return False
 
 
-class CCCSSubThemeAdmin(admin.ModelAdmin):
+class CCCSSubThemeAdmin(HasProjectsAdmin):
     list_display = ('name', 'theme', 'project_count')
     inlines = [ProjectInline]
 
@@ -48,7 +57,7 @@ class CCCSSubThemeInline(admin.TabularInline):
     extra = 1
 
 
-class CCCSThemeAdmin(admin.ModelAdmin):
+class CCCSThemeAdmin(HasProjectsAdmin):
     list_display = ['name', 'project_count']
     inlines = [
         CCCSSubThemeInline]
@@ -56,7 +65,7 @@ class CCCSThemeAdmin(admin.ModelAdmin):
 admin.site.register(cm.CCCSTheme, CCCSThemeAdmin)
 
 
-class CCCSSubSectorAdmin(admin.ModelAdmin):
+class CCCSSubSectorAdmin(HasProjectsAdmin):
     list_display = ('name', 'sector', 'project_count')
     inlines = [ProjectInline]
 
@@ -69,7 +78,7 @@ class CCCSSubSectorInline(admin.TabularInline):
     extra = 1
 
 
-class CCCSSectorAdmin(admin.ModelAdmin):
+class CCCSSectorAdmin(HasProjectsAdmin):
     list_display = ['name', 'project_count']
     inlines = [
         CCCSSubSectorInline]
@@ -82,7 +91,7 @@ class IFCSubThemeInline(admin.TabularInline):
     extra = 1
 
 
-class IFCThemeAdmin(admin.ModelAdmin):
+class IFCThemeAdmin(HasProjectsAdmin):
     list_display = ['name', 'project_count']
     inlines = [
         IFCSubThemeInline]
@@ -90,14 +99,14 @@ class IFCThemeAdmin(admin.ModelAdmin):
 admin.site.register(cm.IFCTheme, IFCThemeAdmin)
 
 
-class IFCSubThemeAdmin(admin.ModelAdmin):
+class IFCSubThemeAdmin(HasProjectsAdmin):
     list_display = ('name', 'theme', 'project_count')
     inlines = [ProjectInline]
 
 admin.site.register(cm.IFCSubTheme, IFCSubThemeAdmin)
 
 
-class IFCSectorAdmin(admin.ModelAdmin):
+class IFCSectorAdmin(HasProjectsAdmin):
     list_display = ['name', 'project_count']
 
 admin.site.register(cm.IFCSector, IFCSectorAdmin)

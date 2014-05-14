@@ -2,7 +2,31 @@ from django.db import models
 from django.core.urlresolvers import reverse
 
 
-class UniqueNamed(models.Model):
+class CCCSModel(models.Model):
+    class Meta:
+        abstract = True
+
+    @property
+    def meta(self):
+        return self._meta
+
+
+class HasProjectsMixin(object):
+
+    @property
+    def project_count(self):
+        return self.projects.count()
+
+    @property
+    def projects(self):
+        return Project.objects.filter(**self.project_filter_kwargs)
+
+    @property
+    def project_filter_kwargs(self):
+        raise Exception("project_filter_kwargs must be overridden in {0}".format(self.__class__))
+
+
+class UniqueNamed(CCCSModel):
     name = models.CharField(max_length=512, unique=True)
 
     class Meta:
@@ -13,7 +37,7 @@ class UniqueNamed(models.Model):
         return u"{0}".format(self.name)
 
 
-class Country(UniqueNamed):
+class Country(HasProjectsMixin, UniqueNamed):
     """
     There are lots of unique indexes here; the table is often used and rarely updated.
     """
@@ -32,22 +56,22 @@ class Country(UniqueNamed):
         return u"{0} ({1})".format(self.name, self.iso)
 
     @property
-    def project_count(self):
-        return Project.objects.filter(countries=self).count()
+    def project_filter_kwargs(self):
+        return {'countries': self}
 
 
-class CCCSTheme(UniqueNamed):
+class CCCSTheme(HasProjectsMixin, UniqueNamed):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'CCCS Theme'
         verbose_name_plural = 'CCCS Themes'
 
     @property
-    def project_count(self):
-        return Project.objects.filter(cccs_subtheme__theme=self).count()
+    def project_filter_kwargs(self):
+        return {'cccs_subtheme__theme': self}
 
 
-class CCCSSubTheme(models.Model):
+class CCCSSubTheme(HasProjectsMixin, CCCSModel):
     name = models.CharField(max_length=512)
     theme = models.ForeignKey(CCCSTheme, related_name='subtheme_set')
 
@@ -61,22 +85,22 @@ class CCCSSubTheme(models.Model):
         return u"{0}/{1}".format(self.theme.name, self.name)
 
     @property
-    def project_count(self):
-        return self.project_set.count()
+    def project_filter_kwargs(self):
+        return {'cccs_subtheme': self}
 
 
-class CCCSSector(UniqueNamed):
+class CCCSSector(HasProjectsMixin, UniqueNamed):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'CCCS Sector'
         verbose_name_plural = 'CCCS Sectors'
 
     @property
-    def project_count(self):
-        return Project.objects.filter(cccs_subsector__sector=self).count()
+    def project_filter_kwargs(self):
+        return {'cccs_subsector__sector': self}
 
 
-class CCCSSubSector(models.Model):
+class CCCSSubSector(HasProjectsMixin, CCCSModel):
     name = models.CharField(max_length=512)
     sector = models.ForeignKey(CCCSSector, related_name='sub_themes')
 
@@ -90,22 +114,22 @@ class CCCSSubSector(models.Model):
         return u"{0}/{1}".format(self.sector.name, self.name)
 
     @property
-    def project_count(self):
-        return self.project_set.count()
+    def project_filter_kwargs(self):
+        return {'cccs_subsector': self}
 
 
-class IFCTheme(UniqueNamed):
+class IFCTheme(HasProjectsMixin, UniqueNamed):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'IFC Theme'
         verbose_name_plural = 'IFC Themes'
 
     @property
-    def project_count(self):
-        return Project.objects.filter(ifc_subtheme__theme=self).count()
+    def project_filter_kwargs(self):
+        return {'ifc_subtheme__theme': self}
 
 
-class IFCSubTheme(models.Model):
+class IFCSubTheme(HasProjectsMixin, CCCSModel):
     name = models.CharField(max_length=512)
     theme = models.ForeignKey(IFCTheme, related_name='sub_themes')
 
@@ -119,19 +143,19 @@ class IFCSubTheme(models.Model):
         return u"{0}/{1}".format(self.theme.name, self.name)
 
     @property
-    def project_count(self):
-        return self.project_set.count()
+    def project_filter_kwargs(self):
+        return {'ifc_subtheme': self}
 
 
-class IFCSector(UniqueNamed):
+class IFCSector(HasProjectsMixin, UniqueNamed):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'IFC Sector'
         verbose_name_plural = 'IFC Sectors'
 
     @property
-    def project_count(self):
-        return Project.objects.filter(ifc_sector=self).count()
+    def project_filter_kwargs(self):
+        return {'ifc_sector': self}
 
 
 class Project(UniqueNamed):
@@ -162,7 +186,8 @@ class Project(UniqueNamed):
     ifc_subtheme = models.ForeignKey(IFCSubTheme, null=True, blank=True)
     ifc_sector = models.ForeignKey(IFCSector, null=True, blank=True)
 
-    def get_admin_url(self):
+    @property
+    def admin_url(self):
         """
         Return admin url to change self
         """

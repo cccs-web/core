@@ -1,0 +1,19 @@
+{% extends "admin/change_form.html" %}
+{% block after_related_objects %}
+    {% if projects %}
+        <div class="inline-group inline-tabular">
+            <h2>Projects in {{ original.meta.verbose_name }}: "{{ original.name }}"</h2>
+            <div class="items">
+                <div class="inline-related">
+                    {% for project in projects %}
+                        <h3><a href="{{ project.admin_url }}">{{ project.name }}</a></h3>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="inline-group inline-tabular">
+            <h2>There are no projects in {{ original.meta.verbose_name }}: "{{ original.name }}"</h2>
+        </div>
+    {% endif %}
+{% endblock %}
