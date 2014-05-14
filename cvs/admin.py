@@ -6,7 +6,7 @@ import cvs.models as cm
 
 
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'iso_english_name', 'fips', 'iso_numeric', 'iso_3166', 'iso', 'notes')
+    list_display = ('name', 'iso_english_name', 'fips', 'iso_numeric', 'iso_3166', 'iso', 'project_count', 'notes')
 
 admin.site.register(cm.Country, CountryAdmin)
 

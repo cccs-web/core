@@ -30,6 +30,10 @@ class Country(UniqueNamed):
     def __unicode__(self):
         return u"{0} ({1})".format(self.name, self.iso)
 
+    @property
+    def project_count(self):
+        return Project.objects.filter(countries=self).count()
+
 
 class CCCSTheme(UniqueNamed):
 
