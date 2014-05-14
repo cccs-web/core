@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block main %}
+    <ul>
+    {% for project in object_list %}
+        <li><a href="{% url 'project-detail' slug=project.slug %}">{{ project.name }}</a></li>
+    {% empty %}
+        <li>No projects found.</li>
+    {% endfor %}
+    </ul>
+{% endblock main %}

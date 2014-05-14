@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block main %}
+    <h1>{{ object.name }}</h1>
+    <p>More work to do here by editing cvs/templates/cvs/project_detail.html...</p>
+    <table>
+    {% for field, value in serialized.fields.items %}
+    <tr><td>{{ field }}</td><td>{{ value }}</td></tr>
+    {% endfor %}
+    </table>
+{% endblock main %}

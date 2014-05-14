@@ -7,6 +7,7 @@ from django.contrib import admin
 from mezzanine.conf import settings
 
 import cccsmap.urls
+import cvs.urls
 
 
 admin.autodiscover()
@@ -25,6 +26,7 @@ urlpatterns += i18n_patterns(
 urlpatterns += patterns(
     '',
     ("^maps/", include(cccsmap.urls)),
+    ("^cvs/", include(cvs.urls)),
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
     ("^", include("mezzanine.urls")))
 
