@@ -19,14 +19,6 @@ class HasProjectsMixin(object):
     def project_count(self):
         return self.projects.count()
 
-    @property
-    def projects(self):
-        return Project.objects.filter(**self.project_filter_kwargs)
-
-    @property
-    def project_filter_kwargs(self):
-        raise Exception("project_filter_kwargs must be overridden in {0}".format(self.__class__))
-
 
 class UniqueNamed(CCCSModel):
     name = models.CharField(max_length=512, unique=True)
@@ -90,10 +82,6 @@ class Country(HasProjectsMixin, UniqueNamed):
     def __unicode__(self):
         return u"{0} ({1})".format(self.name, self.iso)
 
-    @property
-    def project_filter_kwargs(self):
-        return {'countries': self}
-
 
 class CCCSTheme(HasProjectsMixin, UniqueNamed):
 
@@ -102,8 +90,8 @@ class CCCSTheme(HasProjectsMixin, UniqueNamed):
         verbose_name_plural = 'CCCS Themes'
 
     @property
-    def project_filter_kwargs(self):
-        return {'cccs_subtheme__theme': self}
+    def projects(self):
+        return Project.objects.filter(cccs_subthemes__theme=self)
 
 
 class CCCSSubTheme(HasProjectsMixin, CCCSModel):
@@ -119,10 +107,6 @@ class CCCSSubTheme(HasProjectsMixin, CCCSModel):
     def __unicode__(self):
         return u"{0}/{1}".format(self.theme.name, self.name)
 
-    @property
-    def project_filter_kwargs(self):
-        return {'cccs_subtheme': self}
-
 
 class CCCSSector(HasProjectsMixin, UniqueNamed):
 
@@ -131,8 +115,8 @@ class CCCSSector(HasProjectsMixin, UniqueNamed):
         verbose_name_plural = 'CCCS Sectors'
 
     @property
-    def project_filter_kwargs(self):
-        return {'cccs_subsector__sector': self}
+    def projects(self):
+        return Project.objects.filter(cccs_subsectors__sector=self)
 
 
 class CCCSSubSector(HasProjectsMixin, CCCSModel):
@@ -148,10 +132,6 @@ class CCCSSubSector(HasProjectsMixin, CCCSModel):
     def __unicode__(self):
         return u"{0}/{1}".format(self.sector.name, self.name)
 
-    @property
-    def project_filter_kwargs(self):
-        return {'cccs_subsector': self}
-
 
 class IFCTheme(HasProjectsMixin, UniqueNamed):
 
@@ -160,8 +140,8 @@ class IFCTheme(HasProjectsMixin, UniqueNamed):
         verbose_name_plural = 'IFC Themes'
 
     @property
-    def project_filter_kwargs(self):
-        return {'ifc_subtheme__theme': self}
+    def projects(self):
+        return Project.objects.filter(ifc_subthemes__theme=self)
 
 
 class IFCSubTheme(HasProjectsMixin, CCCSModel):
@@ -177,20 +157,12 @@ class IFCSubTheme(HasProjectsMixin, CCCSModel):
     def __unicode__(self):
         return u"{0}/{1}".format(self.theme.name, self.name)
 
-    @property
-    def project_filter_kwargs(self):
-        return {'ifc_subtheme': self}
-
 
 class IFCSector(HasProjectsMixin, UniqueNamed):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'IFC Sector'
         verbose_name_plural = 'IFC Sectors'
-
-    @property
-    def project_filter_kwargs(self):
-        return {'ifc_sector': self}
 
 
 class Project(UniqueNamedWithSlug):
@@ -216,10 +188,10 @@ class Project(UniqueNamedWithSlug):
     person_months = models.CharField(max_length=64, null=True, blank=True)
     activities = models.TextField(max_length=4096, null=True, blank=True)
     references = models.TextField(max_length=512, null=True, blank=True)
-    cccs_subtheme = models.ForeignKey(CCCSSubTheme, null=True, blank=True)
-    cccs_subsector = models.ForeignKey(CCCSSubSector, null=True, blank=True)
-    ifc_subtheme = models.ForeignKey(IFCSubTheme, null=True, blank=True)
-    ifc_sector = models.ForeignKey(IFCSector, null=True, blank=True)
+    cccs_subthemes = models.ManyToManyField(CCCSSubTheme, related_name='projects')
+    cccs_subsectors = models.ManyToManyField(CCCSSubSector, related_name='projects')
+    ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects')
+    ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects')
 
     @property
     def admin_url(self):

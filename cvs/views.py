@@ -14,36 +14,56 @@ class ProjectDetailView(DetailView):
         return context
 
 
-class ProjectListView(ListView):
+class ProjectCCCSThemeListView(ListView):
     model = cm.Project
+    categorization_fieldname = 'cccs_subthemes'
+    categorization_parent_fieldname = 'theme'
+    categorization_label = 'CCCS Theme'
 
     def get_context_data(self, **kwargs):
-        context = super(ProjectListView, self).get_context_data(**kwargs)
-        context['use_right_col'] = "No"
-        context['categorization'] = categorize_projects(context['object_list'])
+        context = super(ProjectCCCSThemeListView, self).get_context_data(**kwargs)
+        context['categorization_name'] = self.categorization_label
+        context['use_right_col'] = "No"  # a bit hacky but it will do for now
+        context['categorization'] = categorize_projects(context['object_list'],
+                                                        self.categorization_fieldname,
+                                                        self.categorization_parent_fieldname)
         return context
 
 
-def categorize_projects(projects):
+class ProjectIFCThemeListView(ProjectCCCSThemeListView):
+    categorization_fieldname = 'ifc_subthemes'
+    categorization_label = 'IFC Theme'
+
+
+class ProjectCCCSSectorListView(ProjectCCCSThemeListView):
+    categorization_fieldname = 'cccs_subsectors'
+    categorization_parent_fieldname = 'sector'
+    categorization_label = 'CCCS Sector'
+
+
+def categorize_projects(projects, categorization_fieldname, categorization_parent_fieldname):
     """
     Organise the projects so that they are nested in the ifc theme labels
     """
     categorization = dict()
     for project in projects:
-        theme_name = project.ifc_subtheme.theme.name
-        subtheme_name = project.ifc_subtheme.name
+        sub_categorizations = getattr(project, categorization_fieldname).all()
 
-        if theme_name not in categorization:
-            categorization[theme_name] = dict(subthemes=dict(), count=0)
+        for sub in sub_categorizations:
+            sub_name = sub.name
+            super_name = getattr(sub, categorization_parent_fieldname).name
 
-        if subtheme_name not in categorization[theme_name]['subthemes']:
-            categorization[theme_name]['subthemes'][subtheme_name] = dict(projects=list(), count=0)
+            if super_name not in categorization:
+                categorization[super_name] = dict(subs=dict(), count=0)
 
-        categorization[theme_name]['count'] += 1
-        categorization[theme_name]['id'] = project.ifc_subtheme.theme.id
-        categorization[theme_name]['subthemes'][subtheme_name]['projects'].append(project)
-        categorization[theme_name]['subthemes'][subtheme_name]['count'] += 1
-        categorization[theme_name]['subthemes'][subtheme_name]['id'] = project.ifc_subtheme.id
+            if sub_name not in categorization[super_name]['subs']:
+                categorization[super_name]['subs'][sub_name] = dict(projects=list(), count=0)
+
+            categorization[super_name]['count'] += 1
+            categorization[super_name]['id'] = getattr(sub, categorization_parent_fieldname).id
+            categorization[super_name]['subs'][sub_name]['projects'].append(project)
+            categorization[super_name]['subs'][sub_name]['count'] += 1
+            categorization[super_name]['subs'][sub_name]['id'] = sub.id
 
     return categorization
 

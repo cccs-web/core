@@ -51,7 +51,7 @@ def get_country_dicts(sheet_name):
 def load_categorizations(info, theme_model, sub_theme_model, super_field_name):
     for (theme_name, sub_theme_names) in info.iteritems():
         for sub_theme_name in sub_theme_names:
-            _load_categorization(theme_model, theme_name, sub_theme_model, sub_theme_name, super_field_name)
+            _load_categorizations(theme_model, theme_name, sub_theme_model, sub_theme_name, super_field_name)
 
 
 def get_theme_dict(sheet_name):
@@ -144,51 +144,67 @@ def load_projects(sheet_name):
         project.person_months = project_info['Person-months']
         project.activities = project_info['Activities Performed']
         project.references = project_info['References']
+        for attname, args in (
+                ('cccs_subthemes', (cm.CCCSTheme, project_info['Thematic Issues -GENERAL'],
+                                    cm.CCCSSubTheme, project_info['Sub-Themes -GENERAL'],
+                                    'theme')),
+                ('cccs_subsectors', (cm.CCCSSector, project_info['Sector -GENERAL'],
+                                     cm.CCCSSubSector, project_info['Sub-sector -GENERAL'],
+                                     'sector')),
+                ('ifc_subthemes', (cm.IFCTheme, project_info['Thematic Issues -IFC'],
+                                   cm.IFCSubTheme, project_info['Sub-Themes -IFC'],
+                                   'theme', False))):
+            for categorization in _load_categorizations(*args):
+                getattr(project, attname).add(categorization)
 
-        project.cccs_subtheme = _load_categorization(cm.CCCSTheme,
-                                                     project_info['Thematic Issues -GENERAL'],
-                                                     cm.CCCSSubTheme,
-                                                     project_info['Sub-Themes -GENERAL'],
-                                                     'theme')
-
-        project.cccs_subsector = _load_categorization(cm.CCCSSector,
-                                                      project_info['Sector -GENERAL'],
-                                                      cm.CCCSSubSector,
-                                                      project_info['Sub-sector -GENERAL'],
-                                                      'sector')
-
-        project.ifc_subtheme = _load_categorization(cm.IFCTheme,
-                                                    project_info['Thematic Issues -IFC'],
-                                                    cm.IFCSubTheme,
-                                                    project_info['Sub-Themes -IFC'],
-                                                    'theme')
-
-        ifc_sector_name = project_info['Sector -IFC']
-        if ifc_sector_name is None:
-            ifc_sector_name = 'Unspecified'
-        project.ifc_sector, created = cm.IFCSector.objects.get_or_create(name=ifc_sector_name)
+        ifc_sector_names = get_names_from_string(project_info['Sector -IFC'])
+        for ifc_sector_name in ifc_sector_names:
+            ifc_sector, created = cm.IFCSector.objects.get_or_create(name=ifc_sector_name)
+            if created:
+                ifc_sector.save()
+            project.ifc_sectors.add(ifc_sector)
 
         project.save()
 
 
-def _load_categorization(super_class, super_name, sub_class, sub_name, super_field):
+def _load_categorizations(super_class, super_values, sub_class, sub_values, super_field, add_unspecified=True):
     """
-    Get or create the categorization returning sub instance
+    Get or create the categorizations returning sub instances
     """
-    if super_name is None:
-        super_name = 'Unspecified'
-    if sub_name is None:
-        sub_name = 'Unspecified'
-    super_obj, created = super_class.objects.get_or_create(name=super_name)
-    if created:
-        super_obj.save()
+    if super_values:
+        super_names = get_names_from_string(super_values)
+    else:
+        super_names = []
+    if sub_values:
+        sub_names = get_names_from_string(sub_values)
+    else:
+        sub_names = []
 
-    sub_kwargs = {super_field: super_obj, 'name': sub_name}
-    sub_obj, created = sub_class.objects.get_or_create(**sub_kwargs)
-    if created:
-        sub_obj.save()
+    if len(super_names) != len(sub_names):
+        print("Mismatched theme/subtheme list lengths in cv - using shortest")
+    if add_unspecified and not(super_names and sub_names):
+        super_names = sub_names = ['Unspecified']
 
-    return sub_obj
+    sub_objects = list()
+    for super_name, sub_name in zip(super_names, sub_names):
+        super_obj, created = super_class.objects.get_or_create(name=super_name)
+        if created:
+            super_obj.save()
+
+        sub_kwargs = {super_field: super_obj, 'name': sub_name}
+        sub_obj, created = sub_class.objects.get_or_create(**sub_kwargs)
+        if created:
+            sub_obj.save()
+        sub_objects.append(sub_obj)
+
+    return sub_objects
+
+
+def get_names_from_string(s):
+    if s is None:
+        return []
+    else:
+        return [name.strip() for name in s.split(';') if name]
 
 
 def get_project_dict(sheet_name):
@@ -201,7 +217,6 @@ def get_project_dict(sheet_name):
             continue
         ws = wb.get_sheet_by_name(sheet_name)
         headings = _get_project_dict_headings(ws.rows[0])
-        print("Processing {0}".format(cv))
         for row in ws.rows[1:]:
             project_name = row[1].value
             if project_name is not None:
@@ -212,16 +227,22 @@ def get_project_dict(sheet_name):
                         new_value = c.value
                         if new_value is None:
                             continue
-                        try:
-                            if existing_info[k] is None:
-                                existing_info[k] = new_value
-                            elif new_value != existing_info[k]:
-                                print("Mismatched project info - different cvs have different project data")
-                        except KeyError:
-                            import pdb; pdb.set_trace()
+                        if existing_info[k] is None:
+                            existing_info[k] = new_value
+                        elif new_value != existing_info[k]:
+                            print(u"Mismatched project info: '{0}' vs '{1}'".format(new_value, existing_info[k]))
+                            # Use longest or biggest
+                            try:
+                                if len(new_value) > len(existing_info[k]):
+                                    existing_info[k] = new_value
+                            except TypeError:
+                                try:
+                                    if new_value > existing_info[k]:
+                                        existing_info[k] = new_value
+                                except TypeError:
+                                    pass
                 else:
                     # Add initial values
-                    print(u"    Adding {0} ({1})".format(project_name, row[headings.index('Sub-Themes -GENERAL')].value))
                     projects[project_name] = {k: c.value for (k, c) in zip(headings, row)}
     return projects
 

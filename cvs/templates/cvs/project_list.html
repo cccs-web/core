@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% with use_right_col=False %}
     {% block main %}
-        <h2>Projects by theme</h2>
+        <h2>Projects by {{ categorization_name }}</h2>
         <div class="panel-group" id="theme_accordion">
             {% for theme_name, theme_info in categorization.items %}
                 <div class="panel panel-default">
@@ -16,17 +16,17 @@
                             <!-- Here we insert another nested accordion -->
 
                             <div class="panel-group" id="inneracc{{ theme_info.id }}">
-                                {% for subtheme_name, subtheme_info in theme_info.subthemes.items %}
+                                {% for sub_name, sub_info in theme_info.subs.items %}
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#inneracc{{ theme_info.id }}" href="#collapse{{ subtheme_info.id }}">
-                                                {{ subtheme_name }}&nbsp;&nbsp;&nbsp;<strong>({{ subtheme_info.count }} project{{ subtheme_info.count|pluralize }})</strong>
+                                            <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#inneracc{{ theme_info.id }}" href="#collapse{{ sub_info.id }}">
+                                                {{ sub_name }}&nbsp;&nbsp;&nbsp;<strong>({{ sub_info.count }} project{{ sub_info.count|pluralize }})</strong>
                                             </a></h4>
                                         </div>
-                                        <div id="collapse{{ subtheme_info.id }}" class="panel-body collapse">
+                                        <div id="collapse{{ sub_info.id }}" class="panel-body collapse">
                                             <div class="panel-inner">
                                                 <ul>
-                                                    {% for project in subtheme_info.projects %}
+                                                    {% for project in sub_info.projects %}
                                                         <li><a href="{% url 'project-detail' slug=project.slug %}">{{ project.name }}</a></li>
                                                     {% empty %}
                                                         <li>No projects found.</li>
