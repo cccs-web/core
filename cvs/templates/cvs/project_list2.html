@@ -3,23 +3,23 @@
     {% block main %}
         <h2>Projects by {{ categorization_name }}</h2>
         <div class="panel-group" id="theme_accordion">
-            {% for theme_name, theme_info in categorization.items %}
+            {% for super_name, super_info in categorization.items %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#theme_accordion" href="#acc{{ theme_info.id }}">
-                            {{ theme_name }}&nbsp;&nbsp;&nbsp;<strong>({{ theme_info.count }} project{{ theme_info.count|pluralize }})</strong>
+                        <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#theme_accordion" href="#acc{{ super_info.id }}">
+                            {{ super_name }}&nbsp;&nbsp;&nbsp;<strong>({{ super_info.count }} project{{ super_info.count|pluralize }})</strong>
                         </a></h4>
                     </div>
-                    <div id="acc{{ theme_info.id }}" class="panel-body collapse">
+                    <div id="acc{{ super_info.id }}" class="panel-body collapse">
                         <div class="panel-inner">
 
                             <!-- Here we insert another nested accordion -->
 
-                            <div class="panel-group" id="inneracc{{ theme_info.id }}">
-                                {% for sub_name, sub_info in theme_info.subs.items %}
+                            <div class="panel-group" id="inneracc{{ super_info.id }}">
+                                {% for sub_name, sub_info in super_info.subs.items %}
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#inneracc{{ theme_info.id }}" href="#collapse{{ sub_info.id }}">
+                                            <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#inneracc{{ super_info.id }}" href="#collapse{{ sub_info.id }}">
                                                 {{ sub_name }}&nbsp;&nbsp;&nbsp;<strong>({{ sub_info.count }} project{{ sub_info.count|pluralize }})</strong>
                                             </a></h4>
                                         </div>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% with use_right_col=False %}
+    {% block main %}
+        <h2>Projects by {{ categorization_name }}</h2>
+        <div class="panel-group" id="theme_accordion">
+            {% for cat_name, cat_info in categorization.items %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#theme_accordion" href="#acc{{ cat_info.id }}">
+                            {{ cat_name }}&nbsp;&nbsp;&nbsp;<strong>({{ cat_info.count }} project{{ cat_info.count|pluralize }})</strong>
+                        </a></h4>
+                    </div>
+                    <div id="acc{{ cat_info.id }}" class="panel-body collapse">
+                        <div class="panel-inner">
+                            <ul>
+                                {% for project in cat_info.projects %}
+                                    <li><a href="{% url 'project-detail' slug=project.slug %}">{{ project.name }}</a></li>
+                                {% empty %}
+                                    <li>No projects found.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+    {% endblock main %}
+{% endwith %}
