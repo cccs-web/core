@@ -1,10 +1,52 @@
 {% extends 'base.html' %}
-{% block main %}
-    <ul>
-    {% for project in object_list %}
-        <li><a href="{% url 'project-detail' slug=project.slug %}">{{ project.name }}</a></li>
-    {% empty %}
-        <li>No projects found.</li>
-    {% endfor %}
-    </ul>
+{% with use_right_col=False %}
+    {% block main %}
+        <h2>Projects by theme</h2>
+        <div class="panel-group" id="theme_accordion">
+            {% for theme_name, theme_info in categorization.items %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#theme_accordion" href="#acc{{ theme_info.id }}">
+                            {{ theme_name }}&nbsp;&nbsp;&nbsp;<strong>({{ theme_info.count }} project{{ theme_info.count|pluralize }})</strong>
+                        </a></h4>
+                    </div>
+                    <div id="acc{{ theme_info.id }}" class="panel-body collapse">
+                        <div class="panel-inner">
+
+                            <!-- Here we insert another nested accordion -->
+
+                            <div class="panel-group" id="inneracc{{ theme_info.id }}">
+                                {% for subtheme_name, subtheme_info in theme_info.subthemes.items %}
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><a class="panel-toggle" data-toggle="collapse" data-parent="#inneracc{{ theme_info.id }}" href="#collapse{{ subtheme_info.id }}">
+                                                {{ subtheme_name }}&nbsp;&nbsp;&nbsp;<strong>({{ subtheme_info.count }} project{{ subtheme_info.count|pluralize }})</strong>
+                                            </a></h4>
+                                        </div>
+                                        <div id="collapse{{ subtheme_info.id }}" class="panel-body collapse">
+                                            <div class="panel-inner">
+                                                <ul>
+                                                    {% for project in subtheme_info.projects %}
+                                                        <li><a href="{% url 'project-detail' slug=project.slug %}">{{ project.name }}</a></li>
+                                                    {% empty %}
+                                                        <li>No projects found.</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Inner accordion ends here -->
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
 {% endblock main %}
+{% endwith %}
