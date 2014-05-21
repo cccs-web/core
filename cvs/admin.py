@@ -110,3 +110,9 @@ class IFCSectorAdmin(HasProjectsAdmin):
     list_display = ['name', 'project_count']
 
 admin.site.register(cm.IFCSector, IFCSectorAdmin)
+
+
+class CVAdmin(admin.ModelAdmin):
+    list_display = ['first_name', 'last_name', 'email', 'telephone']
+
+admin.site.register(cm.CV, CVAdmin)

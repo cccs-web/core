@@ -1,7 +1,11 @@
 """
 Load in initial data using the source excel spreadsheets
 """
+import datetime
 from openpyxl import load_workbook
+
+from django.contrib.auth.models import User
+from mezzanine.utils.urls import slugify
 
 import cvs.models as cm
 from cvs.importers.globals import *
@@ -14,6 +18,7 @@ def load_all():
     load_ifc_sectors('.sector-calc, IFC')
     load_categorizations(get_cccs_sector_dict('.sector-calc, CCCS'), cm.CCCSSector, cm.CCCSSubSector, 'sector')
     load_projects('PROJECT')
+    load_cvs('BIODATA')
 
 
 def load_countries(sheet_name):
@@ -120,30 +125,35 @@ def load_projects(sheet_name):
     for project_name, project_info in projects.iteritems():
         project, _ = cm.Project.objects.get_or_create(name=project_name)
         project.name = project_name
-        project.date_range = project_info['Date Range']
-        project.loan_or_grant = project_info['Loan/TA/Grant No']
-        project.features = project_info['Main Project Features']
+
+        for (attname, key) in (('date_range', 'Date Range'),
+                               ('loan_or_grant', 'Loan/TA/Grant No'),
+                               ('features', 'Main Project Features'),
+                               ('region', 'Region'),
+                               ('position', 'Position'),
+                               ('client_end', 'Sponsor / End Client'),
+                               ('client_contract', 'Contracted Through / Direct Client'),
+                               ('client_beneficiary', 'Beneficiary Client'),
+                               ('contract', 'Contract No.'),
+                               ('person_months', 'Person-months'),
+                               ('activities', 'Activities Performed'),
+                               ('references', 'References')):
+            setattr(project, attname, project_info.get(key))
+
         # Multiple countries are allowed but only one from import
-        try:
-            country = cm.Country.objects.get(name=project_info['Country'])
+        country = get_country(project_info['Country'])
+        if country:
             project.countries.add(country)
-        except cm.Country.DoesNotExist:
+        else:
             print(u"No country for \"{0}\": '{1}' does not exist".format(project_name, project_info['Country']))
-        project.region = project_info['Region']
+
         # Break Services On/Off-site into flags and have a go at importing them
         services = project_info.get('Services On/Off-site', None)
         if services is not None:
             project.service_on_site = 'On' in services
             project.service_off_site = 'Off' in services
             project.service_on_site = 'remote' in services
-        project.position = project_info['Position']
-        project.client_end = project_info['Sponsor / End Client']
-        project.client_contract = project_info['Contracted Through / Direct Client']
-        project.client_beneficiary = project_info['Beneficiary Client']
-        project.contract = project_info['Contract No.']
-        project.person_months = project_info['Person-months']
-        project.activities = project_info['Activities Performed']
-        project.references = project_info['References']
+
         for attname, args in (
                 ('cccs_subthemes', (cm.CCCSTheme, project_info['Thematic Issues -GENERAL'],
                                     cm.CCCSSubTheme, project_info['Sub-Themes -GENERAL'],
@@ -255,14 +265,211 @@ def _get_project_dict_headings(heading_row):
         headings.append(canonical(heading_cell.value.strip()))
     return headings
 
+
+def load_cvs(sheet_name):
+    cv_dicts = get_cv_dicts(sheet_name)
+    for cv_dict in cv_dicts:
+        try:
+            cv = cm.CV.objects.get(slug=cv_dict['slug'])
+        except cm.CV.DoesNotExist:
+            cv = cm.CV()
+
+        setup_user(cv_dict, cv)
+
+        for (attname, key) in (('middle_names', 'Given Middle Name'),
+                               ('alternate_names', 'Alternate Names Used'),
+                               ('street', 'Mailing Address'),
+                               ('city', 'City'),
+                               ('state', 'State/Province'),
+                               ('zip', 'ZIP/Postal Code'),
+                               ('telephone', 'Telephone'),):
+            setattr(cv, attname, cv_dict.get(key))
+
+        # do the country fields together
+        for (attname, key) in (('country', 'Country'),
+                               ('citizenship', 'Citizenship'),
+                               ('birth_country', 'Country of Birth')):
+            country = get_country(cv_dict.get(key))
+            if country:
+                setattr(cv, attname, country)
+            else:
+                print("No country:", cv_dict['fname'], cv_dict.get(key))
+
+        dob = cv_dict.get('Date of Birth')
+        if type(dob) == datetime.datetime:
+            cv.dob = dob
+
+        # gender and marital status use the first letter of the relevant word in the field
+        for (attname, key) in (('gender', 'Sex'),
+                               ('marital_status', 'Marital Status')):
+            value = cv_dict.get(key)
+            if value:
+                setattr(cv, attname, value[0].upper())
+
+        cv.save()
+
+
+def _get_country_by_field(s, field_name):
+    kwargs = {field_name: s}
+    try:
+        return cm.Country.objects.get(**kwargs)
+    except cm.Country.DoesNotExist:
+        return None
+
+
+def _get_country_by_name(s):
+    s = canonical(s)
+    return _get_country_by_field(s, 'name')
+
+
+def _get_country_by_iso(s):
+    # strip out any periods
+    s = ''.join(s.split('.'))
+    return _get_country_by_field(s, 'iso_3166')
+
+country_names = cm.Country.objects.all().values_list('name', flat=True)
+
+
+def _guess_country(s):
+    try:
+        country_name = next((country_name for country_name in country_names if country_name in s))
+        return cm.Country.objects.get(name=country_name)
+    except StopIteration:
+        return None
+
+
+def get_country(s):
+    """
+    Try to return a country matching s
+    """
+    if s:
+        for f in (_get_country_by_name,
+                  _get_country_by_iso,
+                  _guess_country):
+            country = f(s)
+            if country:
+                return country
+
+
+def setup_user(cv_dict, cv):
+    """
+    Use existing user if available on cv object. If no user:
+    Find an existing matching user or create one as necessary.
+    """
+    try:
+        return cv.user
+    except cm.User.DoesNotExist:
+
+        for username in gen_username(cv_dict['Given First Name'], cv_dict.get('Surname')):
+            try:
+                if cm.CV.objects.get(user__username=username):
+                    continue
+            except cm.CV.DoesNotExist:
+                break
+
+        user, created = cm.User.objects.get_or_create(username=username)
+
+        if created:
+            user.set_password(u"{0}42why".format(username))
+            user.first_name = cv_dict['Given First Name']
+            user.last_name = cv_dict['Surname']
+            if cv_dict.get('Email'):
+                user.email = cv_dict['Email']
+            user.save()
+
+        cv.user = user
+
+        return user
+
+
+def gen_username(first_name, last_name=None, max_len=30):
+    """
+    Generate username candidates
+    'Jo Ho' -> ['jo', 'joh', 'joho', 'jo1', 'jo2'...]
+    """
+    # TODO: This may duplicate integer suffixed usernames when cropping to max_len because the duplicate
+    # may be ten earlier e.g:
+    # [n for n in gen_username('a', '', max_len=2)] ->
+    # ['a', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a1']
+
+    if last_name is None:
+        last_name = ''
+    if max_len < 1:
+        raise Exception('gen_username: max_len must be greater than zero')
+    if len(first_name) < 1:
+        raise Exception('gen_username: first_name length must be greater than zero')
+
+    previous_name_stash = [None]  # Controls when to stop
+
+    def build(first, second, previous_name_stash):
+        len_first, len_second = len(first), len(second)
+        reduction = max(0, (len_first + len_second) - max_len)
+        first = first[0:max(1, len_first - reduction)]
+        reduction = max(0, reduction - (len_first - 1))
+        second = second[0:max(0, len_second - reduction)]
+
+        new_name = first + second
+        if new_name == previous_name_stash[0]:
+            raise StopIteration
+        previous_name_stash[0] = new_name
+        return new_name
+
+    first_name = first_name.lower()
+    last_name = last_name.lower()
+
+    yield build(first_name, '', previous_name_stash)
+    for i in range(len(last_name)):
+        yield build(first_name, last_name[0:i+1], previous_name_stash)
+    i = 0
+    while True:
+        i += 1
+        yield build(first_name, str(i), previous_name_stash)
+
+
+def get_cv_dicts(sheet_name):
+    cv_dicts = list()
+    for cv in xlsx_cvs:
+        try:
+            wb = load_workbook(filename=cv)
+        except TypeError:
+            print("Unable to open {0}".format(cv))
+            continue
+        ws = wb.get_sheet_by_name(sheet_name)
+        cv_dict = {canonical(row[0].value.strip()): row[1].value
+                   for row in ws.rows if row[0].value is not None}
+        # slug is not perfect (assumes no duplicate names)
+        # but is needed here so we can update cvs effectively
+        if 'Given First Name' in cv_dict:
+            cv_dict['fname'] = cv
+            cv_dict['slug'] = get_slug(cv_dict)
+            cv_dicts.append(cv_dict)
+        else:
+            print("Skipped '{0}' - no given first name".format(cv))
+    return cv_dicts
+
+
+def get_slug(cv_dict):
+    """
+    emulates the cv model get_slug function with the dict data
+    """
+    return slugify(u"{0}-{1}-{2}".format(cv_dict["Given First Name"],
+                                         cv_dict.get("Given Middle Name", ''),
+                                         cv_dict.get("Surname", '')))
+
 # synonyms map a synonym to a canonical value.
-synonyms = {'Services On and Off-site': "Services On/Off-site"}
+synonyms = {'Services On and Off-site': 'Services On/Off-site',
+            'Given Name': 'Given First Name',
+            'Given Second Name': 'Given Middle Name',
+            'Date of Birth (mm/dd/yyyy)': 'Date of Birth',
+            'Date of Birth (mm/dd/yy)': 'Date of Birth',
+            'Family Name / Surname': 'Surname',
+            '=HYPERLINK("http://en.wikipedia.org/wiki/ISO_3166-1", "Country")': 'Country',
+            'UK (British)': 'United Kingdom',
+            'French': 'France'}
 
 
 def canonical(s):
     """
-    Headings are not consistent across all CVS. Here we define canonical forms so that the synonyms
-    don't screw up the importing process.
-    (Lower all case to reduce likely errors)
+    Headings are not consistent across all CVS. Use canonical to eliminae the synonyms.
     """
     return synonyms.get(s, s)
