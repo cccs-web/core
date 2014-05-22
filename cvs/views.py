@@ -1,6 +1,7 @@
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
-from django.core.urlresolvers import reverse
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import redirect
 
 from projects.views import CCCSDetailView
 
@@ -22,6 +23,15 @@ class CVDetailView(CCCSDetailView):
 
 class CVUpdateView(UpdateView):
     model = cm.CV
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return redirect('/accounts/login?next={0}'.format(request.path))
+        elif (request.user == self.get_object().user) or request.user.is_staff:
+            return super(CVUpdateView, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
 
 
 
