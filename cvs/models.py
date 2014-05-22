@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 from projects.models import Country
 
@@ -41,6 +42,9 @@ class CV(models.Model):
     @property
     def email(self):
         return self.user.email
+
+    def get_absolute_url(self):
+        return reverse("cv-detail", args=(self.id,))
 
     def save(self, *args, **kwargs):
         """
