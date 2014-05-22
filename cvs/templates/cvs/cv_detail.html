@@ -7,9 +7,35 @@
             <span class="glyphicon glyphicon-edit"></span>Edit
         </a>
     {% endif %}
-    <table>
+    <table class="table">
         {% for field, value in serialized.fields.items %}
             <tr><td>{{ field }}</td><td>{{ value }}</td></tr>
         {% endfor %}
+    </table>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+        <tr>
+            <td>Project</td>
+            <td>Position</td>
+            <td>Months Worked</td>
+            <td>Activities</td>
+            <td>References</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cvproject in cvproject_list %}
+            <tr>
+                <td>
+                    <a href="{% url 'project-detail' slug=cvproject.project.slug %}">
+                        {{ cvproject.project.name }}
+                    </a>
+                </td>
+                <td>{{ cvproject.position }}</td>
+                <td>{{ cvproject.person_months }}</td>
+                <td>{{ cvproject.activities }}</td>
+                <td>{{ cvproject.references }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 {% endblock main %}

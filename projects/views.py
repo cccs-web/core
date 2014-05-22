@@ -5,6 +5,7 @@ from django.views.generic.list import ListView
 from django.core import serializers
 
 import projects.models as cm
+from cvs.models import CV
 
 
 class CCCSDetailView(DetailView):
@@ -17,6 +18,11 @@ class CCCSDetailView(DetailView):
 
 class ProjectDetailView(CCCSDetailView):
     model = cm.Project
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        context['cvproject_list'] = self.get_object().cvproject_set.all()
+        return context
 
 
 class ProjectCCCSThemeListView(ListView):

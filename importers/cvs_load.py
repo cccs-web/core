@@ -225,35 +225,45 @@ def get_project_dict(sheet_name):
         except TypeError:
             print("Unable to open {0}".format(cv))
             continue
-        ws = wb.get_sheet_by_name(sheet_name)
-        headings = _get_project_dict_headings(ws.rows[0])
-        for row in ws.rows[1:]:
-            project_name = row[1].value
-            if project_name is not None:
-                if project_name in projects:
-                    # Add any values we don't already have
-                    existing_info = projects[project_name]
-                    for k, c in zip(headings, row):
-                        new_value = c.value
-                        if new_value is None:
-                            continue
-                        if existing_info[k] is None:
-                            existing_info[k] = new_value
-                        elif new_value != existing_info[k]:
-                            print(u"Mismatched project info: '{0}' vs '{1}'".format(new_value, existing_info[k]))
-                            # Use longest or biggest
+        _get_project_dicts_from_wb(wb, projects)
+    return projects
+
+
+def _get_project_dicts_from_wb(wb, projects=None):
+    """
+    Get project dicts from ws, adding them into projects if supplied.
+    """
+    if projects is None:
+        projects = dict()
+    ws = wb.get_sheet_by_name('PROJECT')
+    headings = _get_project_dict_headings(ws.rows[0])
+    for row in ws.rows[1:]:
+        project_name = row[1].value
+        if project_name is not None:
+            if project_name in projects:
+                # Add any values we don't already have
+                existing_info = projects[project_name]
+                for k, c in zip(headings, row):
+                    new_value = c.value
+                    if new_value is None:
+                        continue
+                    if existing_info[k] is None:
+                        existing_info[k] = new_value
+                    elif new_value != existing_info[k]:
+                        print(u"Mismatched project info: '{0}' vs '{1}'".format(new_value, existing_info[k]))
+                        # Use longest or biggest
+                        try:
+                            if len(new_value) > len(existing_info[k]):
+                                existing_info[k] = new_value
+                        except TypeError:
                             try:
-                                if len(new_value) > len(existing_info[k]):
+                                if new_value > existing_info[k]:
                                     existing_info[k] = new_value
                             except TypeError:
-                                try:
-                                    if new_value > existing_info[k]:
-                                        existing_info[k] = new_value
-                                except TypeError:
-                                    pass
-                else:
-                    # Add initial values
-                    projects[project_name] = {k: c.value for (k, c) in zip(headings, row)}
+                                pass
+            else:
+                # Add initial values
+                projects[project_name] = {k: c.value for (k, c) in zip(headings, row)}
     return projects
 
 
@@ -306,7 +316,19 @@ def load_cvs(sheet_name):
             if value:
                 setattr(cv, attname, value[0].upper())
 
-        cv.save()
+        cv.save()  # This must be done here so there is an entity to link related objects to
+
+        for project_name, project_info in cv_dict['projects'].iteritems():
+            cv_project = cm.CVProject()
+            cv_project.project = pm.Project.objects.get(name=project_name)
+            cv_project.cv = cv
+            for (attname, key) in (
+                    ('position', 'Position'),
+                    ('person_months', 'Person-months'),
+                    ('activities', 'Activities Performed'),
+                    ('references', 'References')):
+                setattr(cv_project, attname, project_info.get(key))
+            cv_project.save()
 
 
 def _get_country_by_field(s, field_name):
@@ -442,6 +464,7 @@ def get_cv_dicts(sheet_name):
         if 'Given First Name' in cv_dict:
             cv_dict['fname'] = cv
             cv_dict['slug'] = get_slug(cv_dict)
+            cv_dict['projects'] = _get_project_dicts_from_wb(wb)
             cv_dicts.append(cv_dict)
         else:
             print("Skipped '{0}' - no given first name".format(cv))

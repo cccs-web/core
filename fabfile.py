@@ -18,6 +18,8 @@ def reset_cvs():
             # Drop the existing database tables and recreate them
             with fab.settings(warn_only=True):  # Might have no tables
                 cvs_tables = fab.run('psql -d cccs -c "SELECT tablename FROM pg_tables WHERE schemaname = \'public\';" | grep \'^ cvs_\'')
+                cvs_tables += ' '
+                cvs_tables += fab.run('psql -d cccs -c "SELECT tablename FROM pg_tables WHERE schemaname = \'public\';" | grep \'^ projects_\'')
             for cvs_table in cvs_tables.split():
                 fab.run('psql -d cccs -c "DROP TABLE IF EXISTS {0} CASCADE;"'.format(cvs_table))
             fab.run('django-admin.py syncdb')  # rebuild the empty database tables

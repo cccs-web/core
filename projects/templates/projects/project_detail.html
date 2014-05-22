@@ -3,8 +3,34 @@
     <h1>{{ object.name }}</h1>
     <p>More work to do here by editing cvs/templates/cvs/project_detail.html...</p>
     <table>
-    {% for field, value in serialized.fields.items %}
-    <tr><td>{{ field }}</td><td>{{ value }}</td></tr>
-    {% endfor %}
+        {% for field, value in serialized.fields.items %}
+            <tr><td>{{ field }}</td><td>{{ value }}</td></tr>
+        {% endfor %}
+    </table>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+        <tr>
+            <td>Consultant</td>
+            <td>Position</td>
+            <td>Months Worked</td>
+            <td>Activities</td>
+            <td>References</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cvproject in cvproject_list %}
+            <tr>
+                <td>
+                    <a href="{% url 'cv-detail' pk=cvproject.cv.id %}">
+                        {{ cvproject.cv.user.last_name }}, {{ cvproject.cv.user.first_name }}
+                    </a>
+                </td>
+                <td>{{ cvproject.position }}</td>
+                <td>{{ cvproject.person_months }}</td>
+                <td>{{ cvproject.activities }}</td>
+                <td>{{ cvproject.references }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 {% endblock main %}

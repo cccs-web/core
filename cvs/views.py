@@ -11,11 +11,6 @@ import cvs.models as cm
 class CVListView(ListView):
     model = cm.CV
 
-    def get_context_data(self, **kwargs):
-        context = super(CVListView, self).get_context_data(**kwargs)
-        context['cv_list'] = context['cv_list'].order_by('user__last_name')
-        return context
-
 
 class CVDetailMixin(object):
     model = cm.CV
@@ -29,6 +24,8 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
     def get_context_data(self, **kwargs):
         context = super(CVDetailView, self).get_context_data(**kwargs)
         context['can_update'] = self.can_update(self.request)
+        context['use_right_col'] = "No"
+        context['cvproject_list'] = self.get_object().cvproject_set.all()
         return context
 
 

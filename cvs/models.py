@@ -30,6 +30,7 @@ class CV(models.Model):
     class Meta:
         verbose_name = "CV"
         verbose_name_plural = "CVs"
+        ordering = ['user__last_name']
 
     @property
     def first_name(self):
@@ -66,3 +67,15 @@ class CV(models.Model):
         return slugify(u"{0}-{1}-{2}".format(self.user.first_name,
                                              self.middle_names,
                                              self.user.last_name))
+
+
+class CVProject(models.Model):
+    cv = models.ForeignKey(CV)
+    project = models.ForeignKey('projects.Project')
+    position = models.CharField(max_length=256, null=True, blank=True)
+    person_months = models.CharField(max_length=64, null=True, blank=True)
+    activities = models.TextField(max_length=4096, null=True, blank=True)
+    references = models.TextField(max_length=512, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('cv', 'project')
