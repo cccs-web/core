@@ -7,13 +7,16 @@ from django.core import serializers
 import cvs.models as cm
 
 
-class ProjectDetailView(DetailView):
-    model = cm.Project
+class CCCSDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
-        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        context = super(CCCSDetailView, self).get_context_data(**kwargs)
         context['serialized'] = serializers.serialize('python', [self.get_object()])[0]
         return context
+
+
+class ProjectDetailView(CCCSDetailView):
+    model = cm.Project
 
 
 class ProjectCCCSThemeListView(ListView):
@@ -110,3 +113,5 @@ def categorize_projects2(projects, categorization_fieldname, categorization_pare
     return OrderedDict(((k, categorization[k]) for k in sorted(categorization.keys())))
 
 
+class CVDetailView(CCCSDetailView):
+    model = cm.CV
