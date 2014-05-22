@@ -4,19 +4,19 @@ Load in initial data using the source excel spreadsheets
 import datetime
 from openpyxl import load_workbook
 
-from django.contrib.auth.models import User
 from mezzanine.utils.urls import slugify
 
+import projects.models as pm
 import cvs.models as cm
-from cvs.importers.globals import *
+from importers.cvs_globals import *
 
 
 def load_all():
     load_countries('.country-calc, CCCS')
-    load_categorizations(get_theme_dict('.theme-calc, CCCS'), cm.CCCSTheme, cm.CCCSSubTheme, 'theme')
-    load_categorizations(get_theme_dict('.theme-calc, IFC'), cm.IFCTheme, cm.IFCSubTheme, 'theme')
+    load_categorizations(get_theme_dict('.theme-calc, CCCS'), pm.CCCSTheme, pm.CCCSSubTheme, 'theme')
+    load_categorizations(get_theme_dict('.theme-calc, IFC'), pm.IFCTheme, pm.IFCSubTheme, 'theme')
     load_ifc_sectors('.sector-calc, IFC')
-    load_categorizations(get_cccs_sector_dict('.sector-calc, CCCS'), cm.CCCSSector, cm.CCCSSubSector, 'sector')
+    load_categorizations(get_cccs_sector_dict('.sector-calc, CCCS'), pm.CCCSSector, pm.CCCSSubSector, 'sector')
     load_projects('PROJECT')
     load_cvs('BIODATA')
 
@@ -24,7 +24,7 @@ def load_all():
 def load_countries(sheet_name):
     country_dicts = get_country_dicts(sheet_name)
     for info in country_dicts:
-        country, _ = cm.Country.objects.get_or_create(name=info['name'])
+        country, _ = pm.Country.objects.get_or_create(name=info['name'])
         for (k, v) in info.iteritems():
             setattr(country, k, v)
         country.save()
@@ -81,7 +81,7 @@ def get_theme_dict(sheet_name):
 def load_ifc_sectors(sheet_name):
     sector_names = get_ifc_sector_names(sheet_name)
     for sector_name in sector_names:
-        sector, created = cm.IFCSector.objects.get_or_create(name=sector_name)
+        sector, created = pm.IFCSector.objects.get_or_create(name=sector_name)
         if created:
             sector.save()
 
@@ -123,7 +123,7 @@ def get_cccs_sector_dict(sheet_name):
 def load_projects(sheet_name):
     projects = get_project_dict(sheet_name)
     for project_name, project_info in projects.iteritems():
-        project, _ = cm.Project.objects.get_or_create(name=project_name)
+        project, _ = pm.Project.objects.get_or_create(name=project_name)
         project.name = project_name
 
         for (attname, key) in (('date_range', 'Date Range'),
@@ -155,21 +155,21 @@ def load_projects(sheet_name):
             project.service_on_site = 'remote' in services
 
         for attname, args in (
-                ('cccs_subthemes', (cm.CCCSTheme, project_info['Thematic Issues -GENERAL'],
-                                    cm.CCCSSubTheme, project_info['Sub-Themes -GENERAL'],
+                ('cccs_subthemes', (pm.CCCSTheme, project_info['Thematic Issues -GENERAL'],
+                                    pm.CCCSSubTheme, project_info['Sub-Themes -GENERAL'],
                                     'theme')),
-                ('cccs_subsectors', (cm.CCCSSector, project_info['Sector -GENERAL'],
-                                     cm.CCCSSubSector, project_info['Sub-sector -GENERAL'],
+                ('cccs_subsectors', (pm.CCCSSector, project_info['Sector -GENERAL'],
+                                     pm.CCCSSubSector, project_info['Sub-sector -GENERAL'],
                                      'sector')),
-                ('ifc_subthemes', (cm.IFCTheme, project_info['Thematic Issues -IFC'],
-                                   cm.IFCSubTheme, project_info['Sub-Themes -IFC'],
+                ('ifc_subthemes', (pm.IFCTheme, project_info['Thematic Issues -IFC'],
+                                   pm.IFCSubTheme, project_info['Sub-Themes -IFC'],
                                    'theme', False))):
             for categorization in _load_categorizations(*args):
                 getattr(project, attname).add(categorization)
 
         ifc_sector_names = get_names_from_string(project_info['Sector -IFC'])
         for ifc_sector_name in ifc_sector_names:
-            ifc_sector, created = cm.IFCSector.objects.get_or_create(name=ifc_sector_name)
+            ifc_sector, created = pm.IFCSector.objects.get_or_create(name=ifc_sector_name)
             if created:
                 ifc_sector.save()
             project.ifc_sectors.add(ifc_sector)
@@ -312,8 +312,8 @@ def load_cvs(sheet_name):
 def _get_country_by_field(s, field_name):
     kwargs = {field_name: s}
     try:
-        return cm.Country.objects.get(**kwargs)
-    except cm.Country.DoesNotExist:
+        return pm.Country.objects.get(**kwargs)
+    except pm.Country.DoesNotExist:
         return None
 
 
@@ -327,13 +327,13 @@ def _get_country_by_iso(s):
     s = ''.join(s.split('.'))
     return _get_country_by_field(s, 'iso_3166')
 
-country_names = cm.Country.objects.all().values_list('name', flat=True)
+country_names = pm.Country.objects.all().values_list('name', flat=True)
 
 
 def _guess_country(s):
     try:
         country_name = next((country_name for country_name in country_names if country_name in s))
-        return cm.Country.objects.get(name=country_name)
+        return pm.Country.objects.get(name=country_name)
     except StopIteration:
         return None
 

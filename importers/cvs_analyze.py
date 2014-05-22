@@ -3,7 +3,7 @@ Analysis utillities for the CV spreadsheets.
 """
 from openpyxl import load_workbook
 
-from cvs.importers.globals import *
+from importers.cvs_globals import *
 
 
 def distinct_column_values(sheet_name, column_index):
