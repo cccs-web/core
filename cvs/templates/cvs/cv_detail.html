@@ -2,9 +2,11 @@
 {% block main %}
     <h1>{{ object.name }}</h1>
     <p>More work to do here by editing cvs/templates/cvs/cv_detail.html...</p>
-    <a href="{% url "cv-update" pk=object.id %}" class="btn btn-sm btn-default">
-        <span class="glyphicon glyphicon-edit"></span>Edit
-    </a>
+    {% if can_update %}
+        <a href="{% url "cv-update" pk=object.id %}" class="btn btn-sm btn-default">
+            <span class="glyphicon glyphicon-edit"></span>Edit
+        </a>
+    {% endif %}
     <table>
         {% for field, value in serialized.fields.items %}
             <tr><td>{{ field }}</td><td>{{ value }}</td></tr>
