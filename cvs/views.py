@@ -13,7 +13,7 @@ class CVListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CVListView, self).get_context_data(**kwargs)
-        context['object_list'] = context['object_list'].order_by('user__last_name')
+        context['cv_list'] = context['cv_list'].order_by('user__last_name')
         return context
 
 

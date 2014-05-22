@@ -1,0 +1,9 @@
+<ul>
+    {% for cv in cv_list %}
+        <li>
+            <a href="{% url 'cv-detail' pk=cv.id %}">
+                {{ cv.user.last_name }}, {{ cv.user.first_name }} {{ cv.user.middle_names }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

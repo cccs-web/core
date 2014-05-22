@@ -1,12 +1,4 @@
 {% extends 'base.html' %}
 {% block main %}
-    <ul>
-        {% for cv in object_list %}
-            <li>
-                <a href="{% url 'cv-detail' pk=cv.id %}">
-                    {{ cv.user.last_name }}, {{ cv.user.first_name }} {{ cv.user.middle_names }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% include "cvs/includes/cv_list.html" %}
 {% endblock main %}
