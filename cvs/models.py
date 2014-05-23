@@ -4,7 +4,6 @@ from django.core.urlresolvers import reverse
 
 from projects.models import Country
 
-from mezzanine.utils.urls import slugify
 from mezzanine.core.models import Displayable
 
 
@@ -26,7 +25,6 @@ class CV(Displayable):
                                                              ('S', 'Single'),
                                                              ('D', 'Divorced'),
                                                              ('W', 'Widowed')), null=True, blank=True)
-    search_fields = ['title']
 
     class Meta:
         verbose_name = "CV"

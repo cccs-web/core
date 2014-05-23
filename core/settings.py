@@ -283,6 +283,12 @@ OPTIONAL_APPS = (
 
 DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 
+SEARCH_MODEL_CHOICES = (
+    'pages.Page',
+    'blog.BlogPost',
+    'cvs.CV',
+    'projects.Project')
+
 ###################
 # DEPLOY SETTINGS #
 ###################
