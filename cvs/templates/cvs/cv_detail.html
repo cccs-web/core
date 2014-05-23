@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block main %}
-    <h1>{{ object.name }}</h1>
+    <h1>CV for {{ object.user.first_name }} {{ object.user.last_name }}</h1>
     <p>More work to do here by editing cvs/templates/cvs/cv_detail.html...</p>
     {% if can_update %}
-        <a href="{% url "cv-update" pk=object.id %}" class="btn btn-sm btn-default">
+        <a href="{% url "cv-update" slug=object.slug %}" class="btn btn-sm btn-default">
             <span class="glyphicon glyphicon-edit"></span>Edit
         </a>
     {% endif %}

@@ -11,14 +11,16 @@ import cvs.models as cm
 from importers.cvs_globals import *
 
 
+# I thought it would be nice to have all the sheet names here for clarity but it isn't. I'm gradually
+# phasing them out for literals because it is (for once) clearer.
 def load_all():
     load_countries('.country-calc, CCCS')
     load_categorizations(get_theme_dict('.theme-calc, CCCS'), pm.CCCSTheme, pm.CCCSSubTheme, 'theme')
     load_categorizations(get_theme_dict('.theme-calc, IFC'), pm.IFCTheme, pm.IFCSubTheme, 'theme')
     load_ifc_sectors('.sector-calc, IFC')
     load_categorizations(get_cccs_sector_dict('.sector-calc, CCCS'), pm.CCCSSector, pm.CCCSSubSector, 'sector')
-    load_projects('PROJECT')
-    load_cvs('BIODATA')
+    load_projects()
+    load_cvs()
 
 
 def load_countries(sheet_name):
@@ -120,11 +122,11 @@ def get_cccs_sector_dict(sheet_name):
     return sectors
 
 
-def load_projects(sheet_name):
-    projects = get_project_dict(sheet_name)
+def load_projects():
+    projects = get_project_dict()
     for project_name, project_info in projects.iteritems():
-        project, _ = pm.Project.objects.get_or_create(name=project_name)
-        project.name = project_name
+        project, _ = pm.Project.objects.get_or_create(title=project_name)
+        project.title = project_name
 
         for (attname, key) in (('date_range', 'Date Range'),
                                ('loan_or_grant', 'Loan/TA/Grant No'),
@@ -217,7 +219,7 @@ def get_names_from_string(s):
         return [name.strip() for name in s.split(';') if name]
 
 
-def get_project_dict(sheet_name):
+def get_project_dict():
     projects = dict()
     for cv in xlsx_cvs:
         try:
@@ -276,8 +278,8 @@ def _get_project_dict_headings(heading_row):
     return headings
 
 
-def load_cvs(sheet_name):
-    cv_dicts = get_cv_dicts(sheet_name)
+def load_cvs():
+    cv_dicts = get_cv_dicts()
     for cv_dict in cv_dicts:
         try:
             cv = cm.CV.objects.get(slug=cv_dict['slug'])
@@ -320,7 +322,7 @@ def load_cvs(sheet_name):
 
         for project_name, project_info in cv_dict['projects'].iteritems():
             cv_project = cm.CVProject()
-            cv_project.project = pm.Project.objects.get(name=project_name)
+            cv_project.project = pm.Project.objects.get(title=project_name)
             cv_project.cv = cv
             for (attname, key) in (
                     ('position', 'Position'),
@@ -448,7 +450,7 @@ def gen_username(first_name, last_name=None, max_len=30):
         yield build(first_name, str(i), previous_name_stash)
 
 
-def get_cv_dicts(sheet_name):
+def get_cv_dicts():
     cv_dicts = list()
     for cv in xlsx_cvs:
         try:
@@ -456,7 +458,7 @@ def get_cv_dicts(sheet_name):
         except TypeError:
             print("Unable to open {0}".format(cv))
             continue
-        ws = wb.get_sheet_by_name(sheet_name)
+        ws = wb.get_sheet_by_name('BIODATA')
         cv_dict = {canonical(row[0].value.strip()): row[1].value
                    for row in ws.rows if row[0].value is not None}
         # slug is not perfect (assumes no duplicate names)

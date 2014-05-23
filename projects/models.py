@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
-from mezzanine.utils.urls import unique_slug, slugify
+from mezzanine.core.models import Displayable
 
 
 class CCCSModel(models.Model):
@@ -29,39 +29,6 @@ class UniqueNamed(CCCSModel):
 
     def __unicode__(self):
         return u"{0}".format(self.name)
-
-
-class UniqueNamedWithSlug(UniqueNamed):
-    slug = models.CharField(max_length=2000, blank=True, null=True,
-                            help_text="Leave blank to have the slug (url) auto-generated from "
-                                      "the title.")
-
-    class Meta(UniqueNamed.Meta):
-        abstract = True
-
-    def save(self, *args, **kwargs):
-        """
-        If no slug is provided, generates one before saving.
-        """
-        if not self.slug:
-            self.slug = self.generate_unique_slug()
-        super(UniqueNamedWithSlug, self).save(*args, **kwargs)
-
-    def generate_unique_slug(self):
-        """
-        Create a unique slug by passing the result of get_slug() to
-        utils.urls.unique_slug, which appends an index if necessary.
-        """
-        # For custom content types, use the ``Page`` instance for
-        # slug lookup.
-        slug_qs = self.__class__.objects.exclude(id=self.id)
-        return unique_slug(slug_qs, "slug", self.get_slug())
-
-    def get_slug(self):
-        """
-        Allows subclasses to implement their own slug creation logic.
-        """
-        return slugify(self.name)
 
 
 class Country(HasProjectsMixin, UniqueNamed):
@@ -165,7 +132,7 @@ class IFCSector(HasProjectsMixin, UniqueNamed):
         verbose_name_plural = 'IFC Sectors'
 
 
-class Project(UniqueNamedWithSlug):
+class Project(Displayable):
     date_range = models.CharField(help_text="Deprecate and copy values into from_date/to_date",
                                   max_length=128, null=True, blank=True)
     from_date = models.DateField(help_text="Date project started",
@@ -196,3 +163,10 @@ class Project(UniqueNamedWithSlug):
         """
         url_name = 'admin:{0}_{1}_change'.format(self._meta.app_label,  self._meta.model_name)
         return reverse(url_name,  args=[self.id])
+
+    @property
+    def name(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("project-detail", args=(self.slug,))

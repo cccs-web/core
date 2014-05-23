@@ -4,12 +4,12 @@ from django.core.urlresolvers import reverse
 
 from projects.models import Country
 
-from mezzanine.utils.urls import unique_slug, slugify
+from mezzanine.utils.urls import slugify
+from mezzanine.core.models import Displayable
 
 
-class CV(models.Model):
+class CV(Displayable):
     user = models.OneToOneField(User, related_name="cv")
-    slug = models.CharField(max_length=512, null=True, blank=True, unique=True)
     middle_names = models.CharField(max_length=128, null=True, blank=True)
     alternate_names = models.CharField(max_length=128, null=True, blank=True)
     street = models.CharField(max_length=128, null=True, blank=True)
@@ -26,6 +26,7 @@ class CV(models.Model):
                                                              ('S', 'Single'),
                                                              ('D', 'Divorced'),
                                                              ('W', 'Widowed')), null=True, blank=True)
+    search_fields = ['title']
 
     class Meta:
         verbose_name = "CV"
@@ -45,28 +46,16 @@ class CV(models.Model):
         return self.user.email
 
     def get_absolute_url(self):
-        return reverse("cv-detail", args=(self.id,))
+        return reverse("cv-detail", args=(self.slug,))
 
     def save(self, *args, **kwargs):
-        """
-        If no slug is provided, generates one before saving.
-        """
-        if not self.slug and self.user.first_name:
-            self.slug = self.generate_unique_slug()
+        self.title = self._build_title()
         super(CV, self).save(*args, **kwargs)
 
-    def generate_unique_slug(self):
-        """
-        Create a unique slug by passing the result of get_slug() to
-        utils.urls.unique_slug, which appends an index if necessary.
-        """
-        slug_qs = type(self).objects.exclude(id=self.id)
-        return unique_slug(slug_qs, "slug", self.get_slug())
-
-    def get_slug(self):
-        return slugify(u"{0}-{1}-{2}".format(self.user.first_name,
-                                             self.middle_names,
-                                             self.user.last_name))
+    def _build_title(self):
+        return '-'.join([n for n in (self.user.first_name,
+                                     self.middle_names,
+                                     self.user.last_name) if n])
 
 
 class CVProject(models.Model):

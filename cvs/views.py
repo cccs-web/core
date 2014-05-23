@@ -2,7 +2,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, modelform_factory
 from django.http.response import HttpResponseRedirect
 
 from projects.views import CCCSDetailView
@@ -32,9 +32,11 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
 
 
 CVProjectFormSet = inlineformset_factory(cm.CV, cm.CVProject)
+CVUpdateForm = modelform_factory(cm.CV, exclude=('slug',))
 
 
 class CVUpdateView(CVDetailMixin, UpdateView):
+    form_class = CVUpdateForm
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
