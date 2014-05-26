@@ -62,7 +62,8 @@ class CVUpdateView(CVDetailMixin, UpdateView):
     def get_cv_formset(self, model_class):
         formset_kwargs = {
             'instance': self.object,
-            'queryset': model_class.objects.filter(cv=self.object)}
+            'queryset': model_class.objects.filter(cv=self.object),
+            'prefix': model_class._meta.model_name}
         cv_formset_class = CV_FORMSET_MAP[model_class]
         if self.request.method == 'POST':
             cv_formset = cv_formset_class(self.request.POST, **formset_kwargs)
