@@ -145,6 +145,10 @@ class CVEmployment(CVDateRangeSet):
     accomplishments = models.TextField(max_length=8192, null=True, blank=True)
     references = models.CharField(max_length=256, null=True, blank=True)
 
+    class Meta:
+        verbose_name = "Employment"
+        verbose_name_plural = "Employment"
+
 
 class CVPublication(CVSet):
     publication_date = models.DateField(null=True, blank=True)
@@ -153,3 +157,7 @@ class CVPublication(CVSet):
     title = models.CharField(max_length=512)
     distribution = models.CharField(max_length=512, null=True, blank=True)
     identifier = models.CharField(max_length=128, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Publication"
+        verbose_name_plural = "Publications"
