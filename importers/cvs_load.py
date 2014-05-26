@@ -2,6 +2,9 @@
 Load in initial data using the source excel spreadsheets
 """
 import datetime
+import re
+import calendar
+
 from openpyxl import load_workbook
 
 from mezzanine.utils.urls import slugify
@@ -128,6 +131,9 @@ def load_projects():
         project, _ = pm.Project.objects.get_or_create(title=project_name)
         project.title = project_name
 
+        def gp(key):
+            return project_info.get(key)
+
         for (attname, key) in (('date_range', 'Date Range'),
                                ('loan_or_grant', 'Loan/TA/Grant No'),
                                ('features', 'Main Project Features'),
@@ -137,17 +143,16 @@ def load_projects():
                                ('client_contract', 'Contracted Through / Direct Client'),
                                ('client_beneficiary', 'Beneficiary Client'),
                                ('contract', 'Contract No.'),
-                               ('person_months', 'Person-months'),
                                ('activities', 'Activities Performed'),
                                ('references', 'References')):
-            setattr(project, attname, project_info.get(key))
+            setattr(project, attname, gp(key))
 
         # Multiple countries are allowed but only one from import
-        country = get_country(project_info['Country'])
+        country = get_country(gp('Country'))
         if country:
             project.countries.add(country)
         else:
-            print(u"No country for \"{0}\": '{1}' does not exist".format(project_name, project_info['Country']))
+            print(u"No country for \"{0}\": '{1}' does not exist".format(project_name, gp('Country')))
 
         # Break Services On/Off-site into flags and have a go at importing them
         services = project_info.get('Services On/Off-site', None)
@@ -157,19 +162,19 @@ def load_projects():
             project.service_on_site = 'remote' in services
 
         for attname, args in (
-                ('cccs_subthemes', (pm.CCCSTheme, project_info['Thematic Issues -GENERAL'],
-                                    pm.CCCSSubTheme, project_info['Sub-Themes -GENERAL'],
+                ('cccs_subthemes', (pm.CCCSTheme, gp('Thematic Issues -GENERAL'),
+                                    pm.CCCSSubTheme, gp('Sub-Themes -GENERAL'),
                                     'theme')),
-                ('cccs_subsectors', (pm.CCCSSector, project_info['Sector -GENERAL'],
-                                     pm.CCCSSubSector, project_info['Sub-sector -GENERAL'],
+                ('cccs_subsectors', (pm.CCCSSector, gp('Sector -GENERAL'),
+                                     pm.CCCSSubSector, gp('Sub-sector -GENERAL'),
                                      'sector')),
-                ('ifc_subthemes', (pm.IFCTheme, project_info['Thematic Issues -IFC'],
-                                   pm.IFCSubTheme, project_info['Sub-Themes -IFC'],
+                ('ifc_subthemes', (pm.IFCTheme, gp('Thematic Issues -IFC'),
+                                   pm.IFCSubTheme, gp('Sub-Themes -IFC'),
                                    'theme', False))):
             for categorization in _load_categorizations(*args):
                 getattr(project, attname).add(categorization)
 
-        ifc_sector_names = get_names_from_string(project_info['Sector -IFC'])
+        ifc_sector_names = get_names_from_string(gp('Sector -IFC'))
         for ifc_sector_name in ifc_sector_names:
             ifc_sector, created = pm.IFCSector.objects.get_or_create(name=ifc_sector_name)
             if created:
@@ -237,39 +242,63 @@ def _get_project_dicts_from_wb(wb, projects=None):
     """
     if projects is None:
         projects = dict()
-    ws = wb.get_sheet_by_name('PROJECT')
-    headings = _get_project_dict_headings(ws.rows[0])
-    for row in ws.rows[1:]:
-        project_name = row[1].value
-        if project_name is not None:
-            if project_name in projects:
-                # Add any values we don't already have
-                existing_info = projects[project_name]
-                for k, c in zip(headings, row):
-                    new_value = c.value
-                    if new_value is None:
-                        continue
-                    if existing_info[k] is None:
-                        existing_info[k] = new_value
-                    elif new_value != existing_info[k]:
-                        print(u"Mismatched project info: '{0}' vs '{1}'".format(new_value, existing_info[k]))
-                        # Use longest or biggest
+
+    project_dicts = _get_all_row_dicts(wb, 'PROJECT', 1)
+    for project_info in project_dicts:
+        project_name = project_info['Assignment or Project Name']
+        if project_name in projects:
+            # Add any values we don't already have
+            existing_info = projects[project_name]
+            for k, val in project_info.items():
+                if k not in existing_info:
+                    existing_info[k] = val
+                elif val != existing_info[k]:
+                    print(u"Project {0} [{1}] candidates: '{2}' vs '{3}'".format(
+                        project_name,
+                        k,
+                        val,
+                        existing_info[k]))
+                    # Use longest or biggest
+                    try:
+                        if len(val) > len(existing_info[k]):
+                            existing_info[k] = val
+                    except TypeError:
                         try:
-                            if len(new_value) > len(existing_info[k]):
-                                existing_info[k] = new_value
+                            if val > existing_info[k]:
+                                existing_info[k] = val
                         except TypeError:
-                            try:
-                                if new_value > existing_info[k]:
-                                    existing_info[k] = new_value
-                            except TypeError:
-                                pass
-            else:
-                # Add initial values
-                projects[project_name] = {k: c.value for (k, c) in zip(headings, row)}
+                            pass
+        else:
+            projects[project_name] = project_info
     return projects
 
 
-def _get_project_dict_headings(heading_row):
+def _get_edutraining_dicts_from_wb(wb):
+    """
+    Get edutraining as a list of lists and access by index (it is a mess).
+    """
+    ws = wb.get_sheet_by_name('EDU _ TRAINING')
+    return [[cell.value for cell in row] for row in ws.rows[2:]]
+
+
+def _get_all_row_dicts(wb, sheet_name, test_row_index):
+    ws = wb.get_sheet_by_name(sheet_name)
+    headings = _get_column_headings(ws.rows[0])
+    employment_list = list()
+    for row in ws.rows[1:]:
+        test_value = row[test_row_index].value
+        if test_value is not None:
+            info = dict()
+            for k, c in zip(headings, row):
+                value = c.value
+                if value is None:
+                    continue
+                info[k] = value
+            employment_list.append(info)
+    return employment_list
+
+
+def _get_column_headings(heading_row):
     headings = list()
     for heading_cell in heading_row:
         if heading_cell.value is None:
@@ -285,6 +314,7 @@ def load_cvs():
             cv = cm.CV.objects.get(slug=cv_dict['slug'])
         except cm.CV.DoesNotExist:
             cv = cm.CV()
+        cv.slug = cv_dict['slug']
 
         setup_user(cv_dict, cv)
 
@@ -320,9 +350,11 @@ def load_cvs():
 
         cv.save()  # This must be done here so there is an entity to link related objects to
 
-        for project_name, project_info in cv_dict['projects'].iteritems():
-            cv_project = cm.CVProject()
-            cv_project.project = pm.Project.objects.get(title=project_name)
+        for project_info in cv_dict['projects']:
+            project_name = project_info['Assignment or Project Name']
+            project = pm.Project.objects.get(title=project_name)
+            cv_project, _ = cm.CVProject.objects.get_or_create(cv=cv, project=project)
+            cv_project.project = project
             cv_project.cv = cv
             for (attname, key) in (
                     ('position', 'Position'),
@@ -331,6 +363,260 @@ def load_cvs():
                     ('references', 'References')):
                 setattr(cv_project, attname, project_info.get(key))
             cv_project.save()
+
+        for row in cv_dict['edutraining']:
+            _add_cv_education(row[0:5], cv)
+            _add_cv_training(row[5:8], cv)
+            _add_cv_membership(row[8:11], cv)
+            _add_cv_languages(row[11:15], cv)
+
+        _add_cv_employment(cv_dict['employment'], cv)
+        _add_cv_publication(cv_dict['publications'], cv)
+
+
+def _set_values(obj, value_set):
+    for (attname, value) in value_set:
+        if value:
+            setattr(obj, attname, value)
+
+
+def _set_dates(obj, period):
+    for (attname, dt) in zip(('from_date', 'to_date'), _build_period(period)):
+        if dt:
+            setattr(obj, attname, dt)
+
+
+def _add_cv_education(row, cv):
+    """
+    Add cv education entries
+    """
+    (institution, years, degree, majors, minors) = row
+    if majors or minors:
+        subject = _build_education_subject(majors, minors)
+        education, _ = cm.CVEducation.objects.get_or_create(cv=cv, subject=subject)
+        _set_values(education, (
+            ('cv', cv),
+            ('subject', subject),
+            ('institution', institution),
+            ('qualification', degree)))
+        _set_dates(education, years)
+        education.save()
+
+
+def _add_cv_training(row, cv):
+    (institution, years, subject) = row
+    if subject:
+        training, _ = cm.CVTraining.objects.get_or_create(cv=cv, subject=subject, institution=institution)
+        _set_values(training, (
+            ('cv', cv),
+            ('subject', subject),
+            ('institution', institution)))
+        _set_dates(training, years)
+        training.save()
+
+
+def _add_cv_membership(row, cv):
+    (organization, years, role) = row
+    if organization:
+        membership, _ = cm.CVMembership.objects.get_or_create(cv=cv, organization=organization)
+        _set_values(membership, (
+            ('cv', cv),
+            ('organization', organization),
+            ('role', role)))
+        _set_dates(membership, years)
+        membership.save()
+
+
+def _add_cv_languages(row, cv):
+    (dialect, reading, speaking, writing) = row
+    if dialect:
+        language, created = cm.Language.objects.get_or_create(name=dialect)
+        cvlanguage, _ = cm.CVLanguage.objects.get_or_create(cv=cv, language=language)
+        _set_values(cvlanguage, (
+            ('cv', cv),
+            ('language', language),
+            ('reading', reading),
+            ('speaking', speaking),
+            ('writing', writing)))
+        cvlanguage.save()
+
+
+def _add_cv_employment(employments, cv):
+    for info in employments:
+        info['from_date'], info['to_date'] = _build_period(info['Dates'], True)
+        employment, created = cm.CVEmployment.objects.get_or_create(
+            cv=cv,
+            employer=info['Employer'],
+            from_date=info['from_date'],
+            to_date=info['to_date'])
+        _set_values(employment, (
+            ('cv', cv),
+            ('from_date', info['from_date']),
+            ('to_date', info['to_date']),
+            ('employer', info['Employer']),
+            ('location', info.get('Location')),
+            ('position', info.get('Position')),
+            ('accomplishments', info.get('Duties and Accomplishments')),
+            ('references', info.get('Reference(s)'))))
+        employment.save()
+
+
+def _add_cv_publication(publications, cv):
+    for info in publications:
+        title = info['Title']
+        publication, created = cm.CVPublication.objects.get_or_create(
+            cv=cv,
+            title=title)
+        _set_values(publication, (
+            ('cv', cv),
+            ('publication_date', _build_date(info.get('Date'))),
+            ('publication_type', info.get('Type')),
+            ('author', info.get('Editors/Authors')),
+            ('title', title),
+            ('distribution', info.get('Distribution')),
+            ('identifier', info.get('ID#'))))
+        try:
+            publication.save()
+        except:
+            import pdb; pdb.set_trace()
+
+
+def _build_education_subject(majors, minors):
+    if majors and minors:
+        return u"{0} with {1}".format(majors, minors)
+    elif majors:
+        return majors
+    elif minors:
+        return minors
+    else:
+        raise Exception("majors and minors not specified.")
+
+short_month_names = '|'.join(calendar.month_abbr)[1:]
+long_month_names = '|'.join(calendar.month_name)[1:]
+month_re = '({0}|{1})'.format(short_month_names, long_month_names)
+
+
+def _build_date(date_str):
+    """
+    date_str could be a use mm/dd/yyyy, mm/dd/yy or funny stuff such as:
+    "2007, Sept 10-12"
+    We need to try for the most likely meaningful date.
+    """
+    if date_str is None:
+        return None
+
+    if isinstance(date_str, int):
+        return datetime.datetime(year=int(date_str), month=1, day=1)
+
+    if isinstance(date_str, datetime.datetime):
+        return date_str
+
+    year = month = day = None
+
+    # Try simple US formats (allow any separator character)
+    match = re.match(r'\b(\d+).(\d+).(\d+)\b', date_str)
+    if match:
+        (month, day, year) = [int(i) for i in match.groups()]
+        if year < 100:  # Fix to four digits
+            if year > 14:
+                year += 1900
+            else:
+                year += 2000
+    else:
+        # Try extracting year, month and day one by one
+        match = re.search(r'(\d{4})', date_str)  # 2 digit year is too hard here
+        if match is None:
+            return None
+
+        year_str = match.groups()[0]
+        date_str = date_str.replace(year_str, '')
+        year = int(year_str)
+
+        match = re.search(month_re, date_str)
+        if match:
+            month_str = match.groups()[0]
+            date_str = date_str.replace(month_str, '')
+            month = int(month_to_month_number(month_str))
+
+        match = re.search(r'(\d+)', date_str)
+        if match:
+            day_str = match.groups()[0]
+            day = int(day_str)
+
+    if year is None:
+        return None
+
+    if month is None or (month < 0 or month > 13):
+        month = 1
+
+    first_day, last_day = calendar.monthrange(year, month)
+    if day < first_day or day > last_day:
+        day = 1
+
+    return datetime.datetime(year=year, month=month, day=day)
+
+
+def _build_period(period, use_from_for_to=False):
+    """
+    period is often just one year e.g. 1966, often a hyphenated range e.g. "1967-1971",
+    sometimes a list of years,  and sometmes some sort of date.
+    Years are almost always four digit.
+    """
+    if period is None:
+        return None, None
+    if isinstance(period, int):
+        dt = datetime.datetime(year=int(period), month=1, day=1)
+        return dt, dt if use_from_for_to else None
+
+    if use_from_for_to:
+        # Change it back if there is the word 'present' or 'current' in the period
+        use_from_for_to = not re.search(r'present|current', period, re.IGNORECASE)
+
+    # The trick I've used here is to break out a list of possible years and months and then use those to build the
+    # likely from and to dates rather than faffing about with complicated regular expressions.
+    years = re.findall(r'(\d{4})', period)
+    months = re.findall(month_re, period, re.IGNORECASE)
+
+    if not years:
+        return None, None
+
+    from_year = years[0]
+    from_month = 'Jan'
+    if months:
+        from_month = months[0]
+
+    to_year = None
+    to_month = 'Dec'
+    if years[1:]:
+        to_year = years[1]
+    elif use_from_for_to:
+        to_year = from_year
+    if months[1:]:
+        to_month = months[1]
+
+    from_dt = datetime.datetime(year=int(from_year),
+                                month=month_to_month_number(from_month),
+                                day=1)
+    if to_year:
+        to_year = int(to_year)
+        to_month_num = month_to_month_number(to_month)
+        to_dt = datetime.datetime(year=to_year,
+                                  month=to_month_num,
+                                  day=calendar.monthrange(to_year, to_month_num)[1])
+    else:
+        to_dt = None
+
+    return from_dt, to_dt
+
+
+def month_to_month_number(month_str):
+    try:
+        return datetime.datetime.strptime(month_str, '%b').month
+    except ValueError:
+        try:
+            return datetime.datetime.strptime(month_str, '%B').month
+        except ValueError:  # improve message
+            raise ValueError("time data {0} is not a month name or abbreviation".format(month_str))
 
 
 def _get_country_by_field(s, field_name):
@@ -383,7 +669,7 @@ def setup_user(cv_dict, cv):
     try:
         return cv.user
     except cm.User.DoesNotExist:
-
+        username = None
         for username in gen_username(cv_dict['Given First Name'], cv_dict.get('Surname')):
             try:
                 if cm.CV.objects.get(user__username=username):
@@ -394,6 +680,7 @@ def setup_user(cv_dict, cv):
         user, created = cm.User.objects.get_or_create(username=username)
 
         if created:
+            user.username = username
             user.set_password(u"{0}42why".format(username))
             user.first_name = cv_dict['Given First Name']
             user.last_name = cv_dict['Surname']
@@ -466,7 +753,10 @@ def get_cv_dicts():
         if 'Given First Name' in cv_dict:
             cv_dict['fname'] = cv
             cv_dict['slug'] = get_slug(cv_dict)
-            cv_dict['projects'] = _get_project_dicts_from_wb(wb)
+            cv_dict['projects'] = _get_all_row_dicts(wb, 'PROJECT', 1)
+            cv_dict['edutraining'] = _get_edutraining_dicts_from_wb(wb)
+            cv_dict['employment'] = _get_all_row_dicts(wb, 'EMPLOYMENT', 1)
+            cv_dict['publications'] = _get_all_row_dicts(wb, 'PUBLICATIONS', 3)
             cv_dicts.append(cv_dict)
         else:
             print("Skipped '{0}' - no given first name".format(cv))

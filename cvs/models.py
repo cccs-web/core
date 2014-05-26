@@ -2,9 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from projects.models import Country
+from projects.models import Country, UniqueNamed
 
 from mezzanine.core.models import Displayable
+
+
+class Language(UniqueNamed):
+    pass
 
 
 class CV(Displayable):
@@ -56,8 +60,22 @@ class CV(Displayable):
                                      self.user.last_name) if n])
 
 
-class CVProject(models.Model):
+class CVSet(models.Model):
     cv = models.ForeignKey(CV)
+
+    class Meta:
+        abstract = True
+
+
+class CVDateRangeSet(CVSet):
+    from_date = models.DateField(null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class CVProject(CVSet):
     project = models.ForeignKey('projects.Project')
     position = models.CharField(max_length=256, null=True, blank=True)
     person_months = models.CharField(max_length=64, null=True, blank=True)
@@ -65,4 +83,73 @@ class CVProject(models.Model):
     references = models.TextField(max_length=512, null=True, blank=True)
 
     class Meta:
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
         unique_together = ('cv', 'project')
+
+
+class CVLearning(CVDateRangeSet):
+    institution = models.CharField(max_length=128, null=True, blank=True)
+    subject = models.CharField(max_length=256)
+
+    class Meta(CVSet.Meta):
+        abstract = True
+
+
+class CVTraining(CVLearning):
+
+    class Meta:
+        verbose_name = "Training"
+        verbose_name_plural = "Training"
+
+
+class CVEducation(CVLearning):
+    qualification = models.CharField(max_length=64, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Education"
+        verbose_name_plural = "Education"
+
+
+class CVMembership(CVDateRangeSet):
+    organization = models.CharField(max_length=128)
+    role = models.CharField(max_length=256, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Membership"
+        verbose_name_plural = "Memberships"
+
+
+LANGUAGE_ABILITY_CHOICES = ((5, "Native (equiv)"),
+                            (4, "Fluent"),
+                            (3, "Working"),
+                            (2, "Limited"),
+                            (1, "Elementary"))
+
+
+class CVLanguage(CVSet):
+    language = models.ForeignKey(Language)
+    reading = models.PositiveSmallIntegerField(choices=LANGUAGE_ABILITY_CHOICES, null=True, blank=True)
+    speaking = models.PositiveSmallIntegerField(choices=LANGUAGE_ABILITY_CHOICES, null=True, blank=True)
+    writing = models.PositiveSmallIntegerField(choices=LANGUAGE_ABILITY_CHOICES, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Language"
+        verbose_name_plural = "Languages"
+
+
+class CVEmployment(CVDateRangeSet):
+    employer = models.CharField(max_length=256)
+    location = models.CharField(max_length=256, null=True, blank=True)
+    position = models.CharField(max_length=256, null=True, blank=True)
+    accomplishments = models.TextField(max_length=8192, null=True, blank=True)
+    references = models.CharField(max_length=256, null=True, blank=True)
+
+
+class CVPublication(CVSet):
+    publication_date = models.DateField(null=True, blank=True)
+    publication_type = models.CharField(max_length=256, null=True, blank=True)
+    author = models.CharField(max_length=256, null=True, blank=True)
+    title = models.CharField(max_length=512)
+    distribution = models.CharField(max_length=512, null=True, blank=True)
+    identifier = models.CharField(max_length=128, null=True, blank=True)

@@ -27,7 +27,6 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
         context = super(CVDetailView, self).get_context_data(**kwargs)
         context['can_update'] = self.can_update(self.request)
         context['use_right_col'] = "No"
-        context['cvproject_list'] = self.get_object().cvproject_set.all()
         return context
 
 

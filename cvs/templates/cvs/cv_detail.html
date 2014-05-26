@@ -12,6 +12,11 @@
             <tr><td>{{ field }}</td><td>{{ value }}</td></tr>
         {% endfor %}
     </table>
+    <h2>Education</h2>
+    <h2>Training</h2>
+    <h2>Professional Membership</h2>
+    <h2>Languages</h2>
+    <h2>Projects</h2>
     <table class="table table-striped table-bordered table-hover table-condensed">
         <thead>
         <tr>
@@ -23,7 +28,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for cvproject in cvproject_list %}
+        {% for cvproject in object.cvproject_set.all %}
             <tr>
                 <td>
                     <a href="{% url 'project-detail' slug=cvproject.project.slug %}">
