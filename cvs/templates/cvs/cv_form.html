@@ -6,9 +6,33 @@
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Update" />
+    <h2>Education</h2>
+        {{ formset_cveducation.management_form }}
+        {% for cveducation_form in formset_cveducation %}
+            {{ cveducation_form }}
+        {% endfor %}
+        <input type="submit" value="Update" />
+    <h2>Training</h2>
+        {{ formset_cvtraining.management_form }}
+        {% for cvtraining_form in formset_cvtraining %}
+            {{ cvtraining_form }}
+        {% endfor %}
+        <input type="submit" value="Update" />
+    <h2>Professional Membership</h2>
+        {{ formset_cvmembership.management_form }}
+        {% for cvmembership_form in formset_cvmembership %}
+            {{ cvmembership_form }}
+        {% endfor %}
+        <input type="submit" value="Update" />
+    <h2>Languages</h2>
+        {{ formset_cvlanguage.management_form }}
+        {% for cvlanguage_form in formset_cvlanguage %}
+            {{ cvlanguage_form }}
+        {% endfor %}
+        <input type="submit" value="Update" />
     <h2>Projects</h2>
-        {{ cvproject_formset.management_form }}
-        {% for cvproject_form in cvproject_formset %}
+        {{ formset_cvproject.management_form }}
+        {% for cvproject_form in formset_cvproject %}
             {{ cvproject_form }}
         {% endfor %}
         <input type="submit" value="Update" />

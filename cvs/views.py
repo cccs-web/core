@@ -32,6 +32,13 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
 
 CVProjectFormSet = inlineformset_factory(cm.CV, cm.CVProject)
 CVUpdateForm = modelform_factory(cm.CV, exclude=('slug',))
+CVMODEL_CLASSES = (cm.CVEducation,
+                   cm.CVTraining,
+                   cm.CVMembership,
+                   cm.CVLanguage,
+                   cm.CVProject)
+CV_FORMSET_MAP = {cls: inlineformset_factory(cm.CV, cls)
+                        for cls in CVMODEL_CLASSES}
 
 
 class CVUpdateView(CVDetailMixin, UpdateView):
@@ -48,18 +55,20 @@ class CVUpdateView(CVDetailMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(CVUpdateView, self).get_context_data(**kwargs)
         context['use_right_col'] = "No"
-        context['cvproject_formset'] = self.get_cvproject_formset()
+        for model_class in CVMODEL_CLASSES:
+            context['formset_' + model_class._meta.model_name] = self.get_cv_formset(model_class)
         return context
 
-    def get_cvproject_formset(self):
-        cvproject_formset_kwargs = {
+    def get_cv_formset(self, model_class):
+        formset_kwargs = {
             'instance': self.object,
-            'queryset': cm.CVProject.objects.filter(cv=self.object)}
+            'queryset': model_class.objects.filter(cv=self.object)}
+        cv_formset_class = CV_FORMSET_MAP[model_class]
         if self.request.method == 'POST':
-            cvproject_formset = CVProjectFormSet(self.request.POST, **cvproject_formset_kwargs)
+            cv_formset = cv_formset_class(self.request.POST, **formset_kwargs)
         else:
-            cvproject_formset = CVProjectFormSet(**cvproject_formset_kwargs)
-        return cvproject_formset
+            cv_formset = cv_formset_class(**formset_kwargs)
+        return cv_formset
 
     def form_valid(self, form):
         context = self.get_context_data()
