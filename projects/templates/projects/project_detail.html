@@ -21,7 +21,7 @@
         {% for cvproject in cvproject_list %}
             <tr>
                 <td>
-                    <a href="{% url 'cv-detail' pk=cvproject.cv.id %}">
+                    <a href="{% url 'cv-detail' slug=cvproject.cv.slug %}">
                         {{ cvproject.cv.user.last_name }}, {{ cvproject.cv.user.first_name }}
                     </a>
                 </td>
