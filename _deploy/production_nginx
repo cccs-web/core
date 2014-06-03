@@ -1,6 +1,16 @@
 server {
     listen       80;
     server_name  production.crossculturalconsult.com www.production.crossculturalconsult.com;
+    rewrite ^ https://$server_name$request_uri? permanent;
+}
+server {
+    listen       443;
+    server_name  production.crossculturalconsult.com www.production.crossculturalconsult.com;
+
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/chained.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+
     access_log   /var/log/nginx/production.crossculturalconsult.com.access.log;
     error_log    /var/log/nginx/production.crossculturalconsult.com.error.log;
     root /home/webcore/production/;
