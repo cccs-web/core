@@ -20,13 +20,13 @@ class Village(models.Model):
 
 # Auto-generated `LayerMapping` dictionary for Village model
 village_mapping = {
-    'name' : 'name',
-    'population' : 'population',
-    'provinsi' : 'PROVINSI',
-    'kecamatan' : 'KECAMATAN',
-    'desa' : 'DESA',
-    'quartile' : 'Quartile',
-    'dataseries' : 'DataSeries',
-    'geom' : 'POINT',
+    'name': 'name',
+    'population': 'population',
+    'provinsi': 'PROVINSI',
+    'kecamatan': 'KECAMATAN',
+    'desa': 'DESA',
+    'quartile': 'Quartile',
+    'dataseries': 'DataSeries',
+    'geom': 'POINT',
 }
 
