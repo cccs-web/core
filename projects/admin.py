@@ -27,7 +27,6 @@ admin.site.register(pm.Project, ProjectAdmin)
 
 
 class ProjectInline(admin.TabularInline):
-    model = pm.Project
     extra = 0
 
     def __init__(self, parent_model, admin_site):
@@ -36,7 +35,7 @@ class ProjectInline(admin.TabularInline):
 
 
     def project_name(self, instance):
-        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.admin_url, name=instance.name))
+        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.project.admin_url, name=instance.project.name))
 
     readonly_fields = ('project_name',)
 
@@ -44,9 +43,21 @@ class ProjectInline(admin.TabularInline):
         return False
 
 
+class ProjectCCCSSubThemeInline(ProjectInline):
+    model = pm.Project.cccs_subthemes.through
+
+
+class ProjectCCCSSubSectorInline(ProjectInline):
+    model = pm.Project.cccs_subsectors.through
+
+
+class ProjectIFCSubThemeInline(ProjectInline):
+    model = pm.Project.ifc_subthemes.through
+
+
 class CCCSSubThemeAdmin(HasProjectsAdmin):
     list_display = ('name', 'theme', 'project_count')
-    inlines = [ProjectInline]
+    inlines = [ProjectCCCSSubThemeInline]
 
 admin.site.register(pm.CCCSSubTheme, CCCSSubThemeAdmin)
 
@@ -67,7 +78,7 @@ admin.site.register(pm.CCCSTheme, CCCSThemeAdmin)
 
 class CCCSSubSectorAdmin(HasProjectsAdmin):
     list_display = ('name', 'sector', 'project_count')
-    inlines = [ProjectInline]
+    inlines = [ProjectCCCSSubSectorInline]
 
 admin.site.register(pm.CCCSSubSector, CCCSSubSectorAdmin)
 
@@ -101,7 +112,7 @@ admin.site.register(pm.IFCTheme, IFCThemeAdmin)
 
 class IFCSubThemeAdmin(HasProjectsAdmin):
     list_display = ('name', 'theme', 'project_count')
-    inlines = [ProjectInline]
+    inlines = [ProjectIFCSubThemeInline]
 
 admin.site.register(pm.IFCSubTheme, IFCSubThemeAdmin)
 

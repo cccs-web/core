@@ -99,6 +99,10 @@ class CCCSSubSector(HasProjectsMixin, CCCSModel):
     def __unicode__(self):
         return u"{0}/{1}".format(self.sector.name, self.name)
 
+    @property
+    def projects(self):
+        return Project.objects.filter(cccs_subsectors=self)
+
 
 class IFCTheme(HasProjectsMixin, UniqueNamed):
 
