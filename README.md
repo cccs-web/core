@@ -1,4 +1,4 @@
-CCCS-web : Online tools for social analysis.
+CCCS-web: Online tools for social analysis.
 =====================================
 
 This repository contains the framework for CCCS web architecture.
