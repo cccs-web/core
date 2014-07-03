@@ -44,11 +44,21 @@ USE_TZ = True
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = "en"
 
-# Supported languages
-_ = lambda s: s
+USE_MODELTRANSLATION = True
+
+USE_I18N = True
+
+from django.utils.translation import ugettext_lazy as _
+
 LANGUAGES = (
     ('en', _('English')),
-)
+    ('de', _('German')),
+    ('es', _('Spanish'),
+    ('fr', _('French'))),
+    ('id', _('Indonesian')))
+
+# Keep slugs etc. in English when generated automatically
+MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'en'
 
 # A boolean that turns on/off debug mode. When set to ``True``, stack traces
 # are displayed for error pages. Should always be set to ``False`` in
@@ -59,10 +69,6 @@ DEBUG = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-USE_I18N = False
 
 # Tuple of IP addresses, as strings, that:
 #   * See debug comments, when DEBUG is true
