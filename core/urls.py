@@ -26,6 +26,7 @@ urlpatterns += i18n_patterns(
 
 urlpatterns += patterns(
     '',
+    (r'^i18n/', include('django.conf.urls.i18n')),
     ("^maps/", include(cccsmap.urls)),
     ("^projects/", include(projects.urls)),
     ("^cvs/", include(cvs.urls)),
