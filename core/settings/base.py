@@ -53,8 +53,8 @@ from django.utils.translation import ugettext_lazy as _
 LANGUAGES = (
     ('en', _('English')),
     ('de', _('German')),
-    ('es', _('Spanish'),
-    ('fr', _('French'))),
+    ('es', _('Spanish')),
+    ('fr', _('French')),
     ('id', _('Indonesian')))
 
 # Keep slugs etc. in English when generated automatically
@@ -155,8 +155,8 @@ INSTALLED_APPS = (
     "mezzanine.core",
     "mezzanine.generic",
     "mezzanine.blog",
-    "mezzanine.forms",
     "mezzanine.pages",
+    "mezzanine.forms",
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
