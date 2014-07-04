@@ -228,16 +228,6 @@ SEARCH_MODEL_CHOICES = (
     'cvs.CV',
     'projects.Project')
 
-###################
-# DEPLOY SETTINGS #
-###################
-
-GUNICORN_BIND = "127.0.0.1:8000"
-PROCESS_USER = 'webcore'
-PROCESS_NAME = 'cccs_production'
-SITE_TITLE = 'Cross-Cultural Consulting Services'
-SITE_TAGLINE = None
-
 ####################
 # DYNAMIC SETTINGS #
 ####################

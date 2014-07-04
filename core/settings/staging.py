@@ -6,7 +6,7 @@ DEBUG = True
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": "cccs",
+        "NAME": "cccs_staging",
         "USER": "cccs",
         "PASSWORD": DBPASSWORD,
         "HOST": "",
@@ -17,9 +17,9 @@ DATABASES = {
 # DEPLOY SETTINGS #
 ###################
 
-GUNICORN_BIND = "127.0.0.1:8000"
+GUNICORN_BIND = "127.0.0.1:8200"
 PROCESS_USER = 'webcore'
-PROCESS_NAME = 'cccs_production'
-SITE_TITLE = 'Cross-Cultural Consulting Services'
+PROCESS_NAME = 'cccs_staging'
+SITE_TITLE = 'CCCS Staging'
 SITE_TAGLINE = None
 VIRTUALENV = 'cccs'
