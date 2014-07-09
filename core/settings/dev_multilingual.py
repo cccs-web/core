@@ -13,3 +13,5 @@ DATABASES = {
         "PORT": ""}}
 
 VIRTUALENV = 'cccs'
+
+POSTGIS_VERSION = (2, 1, 2)
