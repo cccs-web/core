@@ -104,7 +104,7 @@ import os
 
 # Full filesystem path to the project.
 _dirs = os.path.abspath(__file__).split('/')
-PROJECT_ROOT = BASE_DIR = '/'.join(_dirs[0:-3])  # Django 1.6 compat - PROJECT_ROOT is wrong name
+PROJECT_ROOT = BASE_DIR = '/'.join(_dirs[0:-4])  # Django 1.6 compat - PROJECT_ROOT is wrong name
 
 # Name of the directory for the project.
 PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
