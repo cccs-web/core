@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 from django.core.exceptions import ImproperlyConfigured
 
 try:
-    from .secrets import *
+    from ..secrets import *
 except ImportError:
     raise ImproperlyConfigured('You need a secrets.py file - contact aaron.dennis@crossculturalconsult.com')
 

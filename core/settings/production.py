@@ -1,4 +1,4 @@
-from .base import *
+from .includes.common import *
 
 DEBUG = True
 
