@@ -5,6 +5,6 @@
 source /home/cristi/.virtualenvs/cccs/bin/activate
 source /home/cristi/.virtualenvs/cccs/bin/postactivate
 
-cd /home/cristi/production
+cd /home/cristi/cccs_web
 
 exec gunicorn -c /home/cristi/cccs_web/_deploy/gunicorn.conf.py core.wsgi:application
