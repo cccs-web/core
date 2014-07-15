@@ -22,7 +22,7 @@ admin.site.register(pm.Country, CountryAdmin)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
-    filter_horizontal = ('countries',)
+    filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
 
 
 admin.site.register(pm.Project, ProjectAdmin)
