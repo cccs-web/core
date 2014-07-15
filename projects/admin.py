@@ -20,7 +20,8 @@ admin.site.register(pm.Country, CountryAdmin)
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'date_range', 'locality', 'region')
+    list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
+    list_filter = ('countries', 'to_date')
     filter_horizontal = ('countries',)
 
 

@@ -160,6 +160,9 @@ class Project(Displayable):
     ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects')
     ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects')
 
+    class Meta:
+        ordering = ('title',)
+
     @property
     def admin_url(self):
         """
