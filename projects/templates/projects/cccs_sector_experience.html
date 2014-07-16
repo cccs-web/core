@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block meta_title %}
+    Sector Experience
+{% endblock meta_title %}
+{% block title %}
+    Sector Experience
+{% endblock title %}
+{% with use_right_col=False %}
+    {% block main %}
+        <h3 class="top">CCCS project experience spans the following sectors:</h3>
+        <div class="row">
+            {% for categorization_col in categorization_cols %}
+                <div class="col-md-6">
+                    <ul>
+                        {% for super_name, super_info in categorization_col.items %}
+                            <li><strong>{{ super_name }}</strong></li>
+                            <ul>
+                                {% for sub_name, sub_info in super_info.subs.items %}
+                                    <li>
+                                        <a href="{% url 'project-list-cccs-subsector' pk=sub_info.id %}">
+                                            {{ sub_name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        <p>
+            Beyond our direct corporate experiences, the range of our sectoral capacity and consulting
+            expertise is extended by the experience of our Associates. For further insights into our
+            extended capacity, refer to our discussions on the
+            <a href="/cccs-network/">CCCS Network section</a>.
+        </p>
+    {% endblock main %}
+{% endwith %}
