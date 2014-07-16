@@ -10,17 +10,19 @@ DATABASES = {
         "USER": "cccs",
         "PASSWORD": DBPASSWORD,
         "HOST": "",
-        "PORT": ""}}
+        "PORT": ""
+    }
+}
 
-VIRTUALENV = 'cccs'
+VIRTUALENV = "cccs"
 
 ###################
 # DEPLOY SETTINGS #
 ###################
 
 GUNICORN_BIND = "127.0.0.1:8000"
-PROCESS_USER = 'cristi'
-PROCESS_NAME = 'cristi_cccs'
+PROCESS_USER = "cristi"
+PROCESS_NAME = "cristi_cccs"
 SITE_TITLE = "Cristi's CCCS"
 SITE_TAGLINE = None
-VIRTUALENV = 'cccs'
+VIRTUALENV = "cccs"

@@ -11,7 +11,6 @@ PAGE_MENU_TEMPLATES = (
     (3, "Footer", "pages/menus/footer.html"))
 USE_SOUTH = False
 
-
 ########################
 # MAIN DJANGO SETTINGS #
 ########################

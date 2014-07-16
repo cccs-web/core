@@ -10,8 +10,9 @@ DATABASES = {
         "USER": "cccs",
         "PASSWORD": DBPASSWORD,
         "HOST": "",
-        "PORT": ""}}
-
+        "PORT": ""
+    }
+}
 
 ###################
 # DEPLOY SETTINGS #
