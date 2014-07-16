@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 import projects.models as pm
+import cvs.models as cm
 
 
 class HasProjectsAdmin(admin.ModelAdmin):
@@ -19,10 +20,21 @@ class CountryAdmin(HasProjectsAdmin):
 admin.site.register(pm.Country, CountryAdmin)
 
 
+class CVProjectInline(admin.TabularInline):
+    extra = 1
+    model = cm.CVProject
+    exclude = ('cv',)
+    readonly_fields = ('cv_link',)
+
+    def cv_link(self, instance):
+        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.cv.admin_url, name=instance.cv.title))
+
+
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
+    inlines = (CVProjectInline,)
 
 
 admin.site.register(pm.Project, ProjectAdmin)
