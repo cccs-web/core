@@ -4,8 +4,10 @@ __pycache__/*
 *.py[cod]
 gunicorn_logs/
 *.db
+.sass-cache/
 .DS_Store
 .coverage
 local_settings.py
 static_collected/
+interchange/
 media/
