@@ -160,8 +160,7 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    #"mezzanine.mobile",
-)
+    "mezzanine_pagedown")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -227,6 +226,11 @@ SEARCH_MODEL_CHOICES = (
     'blog.BlogPost',
     'cvs.CV',
     'projects.Project')
+
+# mezzanine-pagedown
+RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
+RICHTEXT_FILTERS = ['mezzanine_pagedown.filters.extra']
+RICHTEXT_FILTER_LEVEL = 3
 
 ####################
 # DYNAMIC SETTINGS #

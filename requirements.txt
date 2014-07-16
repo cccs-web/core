@@ -8,3 +8,4 @@ simplejson==3.4.1
 openpyxl==1.8.6
 Fabric==1.8.3
 django-modeltranslation==0.7.3
+mezzanine-pagedown==0.7
