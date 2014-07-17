@@ -52,10 +52,8 @@ from django.utils.translation import ugettext_lazy as _
 
 LANGUAGES = (
     ('en', _('English')),
-    ('de', _('German')),
-    ('es', _('Spanish')),
     ('fr', _('French')),
-    ('id', _('Indonesian')))
+    ('ru', _('Russian')))
 
 # Keep slugs etc. in English when generated automatically
 MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'en'
