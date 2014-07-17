@@ -39,7 +39,6 @@
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
         <script src="{% static "responsiveslides/responsiveslides.js" %}"></script>
         {% block extra_js %}{% endblock %}
-        {% include "includes/footer_scripts.html" %}
     {% endcompress %}
 
     <!--[if lt IE 9]>
@@ -101,8 +100,9 @@
 
 <div class="container">
     <div class="row">
+        {% include "includes/standard_slides.html" %}
+        <br>
         <div class="col-md-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} left">
-            {% include "includes/standard_slides.html" %}
             {% block main %}{% endblock %}
         </div>
         {% if "Yes" == use_right_col|default:"Yes" %}
