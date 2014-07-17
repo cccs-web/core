@@ -8,4 +8,7 @@ gunicorn_logs/
 .coverage
 local_settings.py
 static_collected/
+interchange/
+scss/
+.sass-cache/
 media/
