@@ -220,8 +220,6 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
-DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
-
 SEARCH_MODEL_CHOICES = (
     'pages.Page',
     'blog.BlogPost',
