@@ -52,13 +52,12 @@ from django.utils.translation import ugettext_lazy as _
 
 LANGUAGES = (
     ('en', _('English')),
-    ('de', _('German')),
-    ('es', _('Spanish')),
     ('fr', _('French')),
-    ('id', _('Indonesian')))
+    ('ru', _('Russian')))
 
 # Keep slugs etc. in English when generated automatically
 MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'en'
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 
 # A boolean that turns on/off debug mode. When set to ``True``, stack traces
 # are displayed for error pages. Should always be set to ``False`` in
@@ -161,7 +160,8 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     "mezzanine_pagedown",
-    "mezzanine_slides")
+    "mezzanine_slides",
+    "modeltranslation")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
