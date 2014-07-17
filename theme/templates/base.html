@@ -27,6 +27,7 @@
                 <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
             {% endif %}
         {% endifinstalled %}
+        <link rel="stylesheet" href="{% static "responsiveslides/responsiveslides.css" %}"/>
         {% block extra_css %}
             <link rel="stylesheet" href="{% static "css/custom.css" %}">
         {% endblock %}
@@ -36,6 +37,7 @@
         <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        <script src="{% static "responsiveslides/responsiveslides.js" %}"></script>
         {% block extra_js %}{% endblock %}
         {% include "includes/footer_scripts.html" %}
     {% endcompress %}
@@ -95,13 +97,14 @@
             {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
         {% endspaceless %}
     </ul>
-
 </div>
 
 <div class="container">
-    <div class="row"><div class="col-md-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} left">
-    {% block main %}{% endblock %}
-    </div>
+    <div class="row">
+        <div class="col-md-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} left">
+            {% include "includes/standard_slides.html" %}
+            {% block main %}{% endblock %}
+        </div>
         {% if "Yes" == use_right_col|default:"Yes" %}
             <div class="col-md-3 right">
                 <div class="panel panel-default">

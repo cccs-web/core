@@ -160,7 +160,8 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    "mezzanine_pagedown")
+    "mezzanine_pagedown",
+    "mezzanine_slides")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
