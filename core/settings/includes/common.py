@@ -158,8 +158,7 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    #"mezzanine.mobile",
-)
+    "mezzanine_slides")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -217,8 +216,6 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
 )
-
-DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 
 SEARCH_MODEL_CHOICES = (
     'pages.Page',
