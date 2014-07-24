@@ -9,4 +9,4 @@ openpyxl==1.8.6
 Fabric==1.8.3
 django-modeltranslation==0.7.3
 mezzanine-pagedown==0.7
-mezzanine-slides==2.0.1
+-e git://github.com/pwhipp/mezzanine-slides.git#egg=mezzanine-slides
