@@ -22,7 +22,7 @@
         <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}" />
         {% endifinstalled %}
         <link href="{% static "css/app.css" %}" rel="stylesheet" type="text/css" />
-        <script data-main="{% static "js/app/config/DesktopInit" %}" src="{% static "js/libs/require.js" %}" type="text/javascript"></script>
+        <script data-main="{% static "js/app/config/init" %}" src="{% static "js/libs/require.js" %}" type="text/javascript"></script>
         {% block extra_head %}{% endblock %}
     </head>
 
