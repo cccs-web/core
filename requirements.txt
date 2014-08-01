@@ -11,3 +11,4 @@ django-modeltranslation==0.7.3
 mezzanine-pagedown==0.7
 -e git://github.com/pwhipp/mezzanine-slides.git#egg=mezzanine-slides
 South==1.0
+setproctitle==1.1.8
