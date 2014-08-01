@@ -22,6 +22,7 @@ class HasProjectsMixin(object):
 
 class UniqueNamed(CCCSModel):
     name = models.CharField(max_length=512, unique=True)
+    plural_name = models.CharField(max_length=512, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -29,6 +30,13 @@ class UniqueNamed(CCCSModel):
 
     def __unicode__(self):
         return u"{0}".format(self.name)
+
+    @property
+    def plural(self):
+        if self.plural_name is None or len(self.plural_name) == 0:
+            return u"{0}s".format(self.name)
+        else:
+            return self.plural_name
 
 
 class Country(HasProjectsMixin, UniqueNamed):
