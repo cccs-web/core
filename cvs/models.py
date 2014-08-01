@@ -11,6 +11,10 @@ class Language(UniqueNamed):
     pass
 
 
+class AssociateRole(UniqueNamed):
+    pass
+
+
 class CV(Displayable):
     user = models.OneToOneField(User, related_name="cv")
     middle_names = models.CharField(max_length=128, null=True, blank=True)
@@ -29,6 +33,7 @@ class CV(Displayable):
                                                              ('S', 'Single'),
                                                              ('D', 'Divorced'),
                                                              ('W', 'Widowed')), null=True, blank=True)
+    associate_role = models.ForeignKey(AssociateRole, null=True, blank=True)
 
     class Meta:
         verbose_name = "CV"
