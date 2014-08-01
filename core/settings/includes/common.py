@@ -9,7 +9,7 @@ except ImportError:
 PAGE_MENU_TEMPLATES = (
     (1, "Top navigation bar", "pages/menus/dropdown.html"),
     (3, "Footer", "pages/menus/footer.html"))
-USE_SOUTH = False
+USE_SOUTH = True
 
 ADMINS = (
     ('Paul Whipp', 'paul.whipp@gmail.com'))
@@ -152,7 +152,8 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "mezzanine_pagedown",
     "mezzanine_slides",
-    "modeltranslation")
+    "modeltranslation",
+    "south")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
