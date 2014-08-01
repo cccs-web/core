@@ -2,6 +2,8 @@ from django.contrib import admin
 
 import cvs.models as cm
 
+admin.site.register(cm.AssociateRole, admin.ModelAdmin)
+
 
 class CVProjectInline(admin.TabularInline):
     model = cm.CVProject
