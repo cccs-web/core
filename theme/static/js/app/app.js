@@ -151,6 +151,7 @@ require([
         var 
             mainMenu = $('<div>').append($('#navbar1').clone()).remove().html(),
             w = $(window).width(),
+            toplinksh = $('.navbar-header').html(),
             tlh = -1*(toplinksh) + 'px';
             if (DEBUG) console.log(tlh);
 
@@ -202,7 +203,5 @@ require([
             $(this).closest('.colv').remove();
             checkSlibings();
         });
-
-
     }
 );
