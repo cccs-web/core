@@ -26,10 +26,6 @@ require([
 
         // Initialize Foundation JS ( with optional configuration and overrides )
         $(document).foundation({
-            reveal: {
-                animation: 'fadeIn'
-                , animation_speed: 250
-            },
 
             // A set of global Joyride configuration options, 
             // They can also be overriden in particular HTML data-options attributes
@@ -77,6 +73,11 @@ require([
                     expose_cover: '<div class="joyride-expose-cover"></div>'
                 },
                 expose_add_class : '' // One or more space-separated class names to be added to exposed element
+            },
+
+            reveal: {
+                animation: 'fadeIn'
+                , animation_speed: 250
             },
 
             orbit: {
@@ -144,5 +145,64 @@ require([
         setInterval(function() {
             $('.icon-bar').velocity("callout.pulse");
         }, 2000);
+
+
+        // Topbar
+        var 
+            mainMenu = $('<div>').append($('#navbar1').clone()).remove().html(),
+            w = $(window).width(),
+            tlh = -1*(toplinksh) + 'px';
+            if (DEBUG) console.log(tlh);
+
+        if  ( w > 1023 ) {
+            $('nav').removeClass('navbar-fixed-top');
+            $('body').removeAttr('style');
+            $('nav .container').append(mainMenu).find('#navbar').remove();
+            $('#navbar1').removeClass('dropdown-menu').removeAttr('role'); 
+
+            $('body').css('margin-top',tlh);
+            $('#navbar1').append('<li><a><span id="toggle-topbar"></span></a></li>');
+            
+            $('#toggle-topbar').click(function() {
+                if ( $('body').css('margin-top') == tlh ) {
+                    $('body').animate({ 'margin-top': '0' },'slow');
+                    $(this).toggleClass('open');
+                } else {
+                    $('body').animate({ 'margin-top':tlh },'fast');
+                    $(this).toggleClass('open');
+                }
+            });
+
+        } else {
+            $('nav').addClass('navbar-fixed-top');
+            ( w > 767 ) ? $('body').css('padding-top','6em') : $('body').css('padding-top','5em');
+        }
+
+
+        // Check numbers of slibings in a particular element
+        function checkSlibings() {
+            $('.colv').removeClass('only-child first-child last-child');
+
+            $('.has-colv').each(function() {
+                var columnsNumber = $(this).find('.colv').size();
+                
+                if ( columnsNumber === 1 ) {
+                    $(this).find('.colv').addClass('only-child');         
+                } else {
+                    $(this).find('.colv:first').addClass('first-child');
+                    $(this).find('.colv:last').addClass('last-child');
+                } 
+            });
+        };
+
+        checkSlibings();
+
+        // Alerts in the mix -- just an example
+        $('.close').on('click',function() {
+            $(this).closest('.colv').remove();
+            checkSlibings();
+        });
+
+
     }
 );

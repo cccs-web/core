@@ -3,7 +3,7 @@ if (typeof DEBUG === 'undefined') DEBUG = true;
 
 // RequireJS config object -- Desktop devices
 requirejs.config({
-    baseUrl : './js'
+    baseUrl : '/static/js'
 
     , paths : {
         // jQuery
@@ -114,8 +114,8 @@ requirejs.config({
     , deps : ['app']
     
     // the duration that require should wait before abandoning the load
-    , waitSeconds : 300
+    // , waitSeconds : 300
     
     // prevents caching during development
-    , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
+    // , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
 });
