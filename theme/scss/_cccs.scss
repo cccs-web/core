@@ -1,11 +1,9 @@
-// CCCS Theme
+// cccs.scss
+
 body {
-	.navbar-brand {
-		position: relative;
-		max-width: 5em;
-		
-		img {
-			width: 10em;
-		}
-	}	
+	background: #eee;	
+}
+
+#wrapper {
+	background: #fff;
 }

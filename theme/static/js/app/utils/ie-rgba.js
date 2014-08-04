@@ -1,11 +1,7 @@
 function ieRGBA(rr, gg, bb, aa) {
     'use strict';
     
-    /*
-    @rr, @gg, @bb (Integer) Color value - 0 to 255
-    @aa (Float) Opacity - 0 to 1 eg. 0.5
-    returns: #AARRGGBB (Hex String)
-    */
+    /* @rr, @gg, @bb (Integer) Color value - 0 to 255 @aa (Float) Opacity - 0 to 1 eg. 0.5 returns: #AARRGGBB (Hex String) */
 
     return '#' + [
         parseInt(aa * 255, 10).toString(16),

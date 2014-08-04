@@ -1,0 +1,160 @@
+////////////////////////////////////////////////////////////////
+//
+// for UI kit presentation purpose
+// tests, overrides, experiments
+//
+
+// COLORS
+// $primary-color: #5171e6;
+// $secondary-color: #a993db;
+// $alert-color: #995571;
+// $success-color: #349927;
+// $warning-color: #eac081;
+// $info-color: #455799;
+// $bl: #000;
+// $grey2: #222;
+// $grey3: #333;
+// $grey4: #444;
+// $grey5: #555;
+// $grey8: #888;
+// $grey9: #999;
+// $greyb: #bbb;
+// $greyc: #ccc;
+// $greyd: #ddd;
+// $greye: #eee;
+// $wh: #fff;
+
+// buttons
+.primary {
+	background: $primary-color;
+}
+
+.secondary {
+	background: $secondary-color;
+}
+
+.alert {
+	background: $alert-color;
+}
+
+.success {
+	background: $success-color;
+}
+
+.warning {
+	background: $warning-color;
+}
+
+.info {
+	background: $info-color;
+}
+
+.lft {
+	.primary,
+	.secondary,
+	.alert,
+	.success,
+	.warning,
+	.info {
+		color: rgba($wh,.5);
+		padding: 2rem;
+
+		&:hover {
+			opacity: .9;
+		}
+	}
+
+	hr { 
+		margin: 5rem 0;
+	}
+}
+
+hr { 
+	margin: 15rem 0;
+}
+
+
+// Clearing  
+
+.clearing-blackout {
+	.clearing-container {
+		.visible-img {
+			.clearing-caption {
+				background: rgba($grey4,.75);
+				color: invert($grey4);
+			}
+		}
+		.carousel {
+			margin-top: 0;
+			
+			.clearing-thumbs {
+				li {
+					margin-right: 1px;
+					border: 0;
+					border-top: 1px solid transparent;
+
+					&.visible {
+						border-top: 1px solid rgba($wh,.5);
+					}
+				}
+			}
+		}
+	}
+}
+
+// @include single-transition(background-color)
+
+select {
+	background-size: 2.5rem auto;
+	// background-color: $wh;
+	-moz-appearance: none;
+	text-indent: 0.01px;
+	text-overflow: '';
+
+}
+
+select::-ms-expand {
+	display: none;
+}
+
+fieldset {
+	background-color: rgba($greye,.5);
+	border: 1px solid $greyd;
+}
+
+legend {
+	border: 1px solid $greyd;
+}
+
+[class$="-off-canvas-menu"] {
+	min-height: 30rem;
+}
+
+
+
+dl.tabs {
+	dd {
+		border: 1px solid $greye;
+	}
+}
+
+.range-slider {
+	&.disabled, &[disabled] {
+		.range-slider-handle { 
+			background: $greyc;	
+			cursor: not-allowed;
+
+			&:hover {
+				background: $greyc;
+			}
+		}
+
+		.range-slider-active-segment {
+			background: rgba($greyc,.5);
+		}
+	}
+	
+	.range-slider-active-segment {
+		background: $greyc;
+	}
+}
