@@ -4,6 +4,73 @@ body {
 	background: #eee;	
 }
 
-#wrapper {
-	background: #fff;
+::selection {
+    background-color: rgba($yell,.75);
+    color: $grey4;
 }
+
+::-moz-selection {
+    background-color: rgba($yell,.75);
+    color: $grey4;
+}
+
+a {
+    @include fading-opacity(100,100);
+}
+
+.bold {
+    font-weight: bolder !important;
+}
+
+.smaller {
+    font-size: 90% !important;
+}
+
+.bigger {
+    font-size: 120% !important;
+}
+
+.uppercase {
+    text-transform: uppercase !important;
+}
+
+.lowercase {
+    text-transform: lowercase !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-margin-top {
+    margin-top: 0 !important;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-padding-top {
+    padding-top: 0 !important;
+}
+
+.no-padding-bottom {
+    padding-bottom: 0 !important;
+}
+
+.no-wrap {
+    white-space: nowrap !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.showing {
+    display: block !important;
+}
+

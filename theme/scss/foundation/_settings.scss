@@ -1210,39 +1210,39 @@ $tooltip-max-width: 20rem;
 $include-html-top-bar-classes: $include-html-classes;
 
 // Background color for the top bar
-$topbar-bg-color: $grey4;
-$topbar-bg: $topbar-bg-color;
+$topbar-bg-color: $body-bg;
+$topbar-bg: $body-bg;
 
 // Height and margin
-$topbar-height: 45px;
-$topbar-margin-bottom: 2rem;
+$topbar-height: rem-calc(64px);
+$topbar-margin-bottom: 1rem;
 
 // Controlling the styles for the title in the top bar
 $topbar-title-weight: $font-weight-normal;
 $topbar-title-font-size: rem-calc(16);
 
 // Style the top bar dropdown elements
-$topbar-dropdown-bg: $grey4;
-$topbar-dropdown-link-color: $greyd;
-$topbar-dropdown-link-bg: rgba($grey3,.5);
+$topbar-dropdown-bg: none;
+$topbar-dropdown-link-color: $grey3;
+$topbar-dropdown-link-bg: $greyd;
 $topbar-dropdown-link-weight: $font-weight-normal;
 $topbar-dropdown-toggle-size: 5px;
-$topbar-dropdown-toggle-color: $wh;
+$topbar-dropdown-toggle-color: $bl;
 $topbar-dropdown-toggle-alpha: 0.25;
 
 // Set the link colors and styles for top-level nav
-$topbar-link-color: $greye;
-$topbar-link-color-hover: $wh;
+$topbar-link-color: $grey4;
+$topbar-link-color-hover: $grey3;
 $topbar-link-color-active: $topbar-link-color-hover;
 $topbar-link-color-active-hover: $topbar-link-color-hover;
 $topbar-link-weight: $font-weight-normal;
 $topbar-link-font-size: rem-calc(14);
 $topbar-link-hover-lightness: -2%; // Darken by 10%
 $topbar-link-bg: $topbar-bg;
-$topbar-link-bg-color-hover: $grey4;
-$topbar-link-bg-hover: $grey3;
-$topbar-link-bg-active: $primary-color;
-$topbar-link-bg-active-hover: scale-color($primary-color, $lightness: -14%);
+$topbar-link-bg-color-hover: $wh;
+$topbar-link-bg-hover: $greye;
+$topbar-link-bg-active: none;
+$topbar-link-bg-active-hover: none;
 $topbar-link-font-family: inherit;
 $topbar-link-text-transform: none;
 $topbar-link-padding: $topbar-height / 3;
@@ -1260,10 +1260,10 @@ $topbar-dropdown-label-bg: $topbar-dropdown-bg;
 $topbar-menu-link-transform: uppercase;
 $topbar-menu-link-font-size: rem-calc(13);
 $topbar-menu-link-weight: $font-weight-bold;
-$topbar-menu-link-color: $wh;
-$topbar-menu-icon-color: $wh;
-$topbar-menu-link-color-toggled: $grey8;
-$topbar-menu-icon-color-toggled: $grey8;
+$topbar-menu-link-color: $grey8;
+$topbar-menu-icon-color: $grey8;
+$topbar-menu-link-color-toggled: $wh;
+$topbar-menu-icon-color-toggled: $wh;
 
 // Transitions and breakpoint styles
 $topbar-transition-speed: 300ms;

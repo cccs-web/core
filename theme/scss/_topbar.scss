@@ -1,0 +1,81 @@
+// Topbar component styling
+#topbar {
+	.top-bar {
+		width: 100%;
+		padding-bottom: $topbar-height;
+		border-bottom: 1px solid $greyd;
+		@include shadow(0,2rem,3rem,4px,rgba($bl,.05),false);
+
+		.title-area {
+			line-height: 3.25; 
+
+			li {
+				float: left;
+
+				&.name {
+					h1 {
+						line-height: 3.75rem;
+					}
+				}
+
+				#cccs-logo {
+					width: 4rem;
+				}
+
+				#cccs-text {
+					width: 10rem;
+					margin: 1.25rem 0 .5rem;
+				}
+			}
+		}
+
+		.top-bar-section {
+			> ul {
+				> li {
+					border-left: 1px solid $greye;
+
+					&.has-dropdown {
+						a {
+							padding-right: 3rem !important; 
+						}
+
+						.dropdown {
+							li {
+								&.has-dropdown {
+									a {
+										&:after {
+											top: 50%;
+											margin-top: -.5rem;
+										}
+									}
+								}
+
+								&.nav-label {
+									background: $topbar-dropdown-link-bg;
+
+									label { 
+										padding: .5rem;
+										font-size: 0.5rem;
+									}
+								}
+
+								a {
+									padding: .5rem;
+									font-size: rem-calc(12px);
+									line-height: 1.5;
+									border-bottom: 1px solid rgba($wh,.05);
+									@include fading-opacity(98,100);
+
+									&:hover {
+										color: $greye;
+										background: scale-color($grey5, $lightness: -10%);
+									}
+								}
+							}
+						}
+					}			
+				}
+			}
+		}
+	}
+}
