@@ -78,4 +78,48 @@
 			}
 		}
 	}
+
+	.search {
+		width: 100%;
+		min-height: 2.5rem;
+		display: none;
+		background: $greye;
+
+		ul {
+			li {
+				display: inline-block;
+				list-style-type: none;
+				float: left;
+
+				dl {
+					margin: .25rem 0 0; 
+
+					dt {
+						em {
+							color: $greyc;
+						}
+					}
+				}
+
+				.srcel {
+					margin: .15rem 0 0;
+
+					&.input-text {
+						border: 0;
+						margin-left: 1.5rem;
+						height: 2.2rem;
+						font-size: .75rem;
+						background: rgba($wh,.5);
+						@include single-transition(all, .25s, ease-in-out);
+
+						&:focus {
+							color: $grey4;
+							background: $wh;
+							@include single-transition(all, .5s, ease-in-out);
+						}
+					}
+				}
+			}
+		}
+	}
 }

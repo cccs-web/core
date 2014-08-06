@@ -4,25 +4,6 @@
 // tests, overrides, experiments
 //
 
-// COLORS
-// $primary-color: #5171e6;
-// $secondary-color: #a993db;
-// $alert-color: #995571;
-// $success-color: #349927;
-// $warning-color: #eac081;
-// $info-color: #455799;
-// $bl: #000;
-// $grey2: #222;
-// $grey3: #333;
-// $grey4: #444;
-// $grey5: #555;
-// $grey8: #888;
-// $grey9: #999;
-// $greyb: #bbb;
-// $greyc: #ccc;
-// $greyd: #ddd;
-// $greye: #eee;
-// $wh: #fff;
 
 // buttons
 .primary {
@@ -50,12 +31,7 @@
 }
 
 .lft {
-	.primary,
-	.secondary,
-	.alert,
-	.success,
-	.warning,
-	.info {
+	.primary, .secondary, .alert, .success, .warning, .info {
 		color: rgba($wh,.5);
 		padding: 2rem;
 
@@ -105,12 +81,10 @@ hr {
 // @include single-transition(background-color)
 
 select {
-	background-size: 2.5rem auto;
-	// background-color: $wh;
+	@include background-size(2.5rem auto);
 	-moz-appearance: none;
 	text-indent: 0.01px;
 	text-overflow: '';
-
 }
 
 select::-ms-expand {
@@ -129,8 +103,6 @@ legend {
 [class$="-off-canvas-menu"] {
 	min-height: 30rem;
 }
-
-
 
 dl.tabs {
 	dd {
