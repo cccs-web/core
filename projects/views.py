@@ -4,8 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.core import serializers
 
-import projects.models as cm
-from cvs.models import CV
+import projects.models as pm
 
 
 class CCCSDetailView(DetailView):
@@ -17,7 +16,7 @@ class CCCSDetailView(DetailView):
 
 
 class ProjectDetailView(CCCSDetailView):
-    model = cm.Project
+    model = pm.Project
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
@@ -26,7 +25,7 @@ class ProjectDetailView(CCCSDetailView):
 
 
 class ProjectCCCSThemeListView(ListView):
-    model = cm.Project
+    model = pm.Project
     categorization_fieldname = 'cccs_subthemes'
     categorization_parent_fieldname = 'theme'
     categorization_label = 'CCCS Theme'
@@ -37,8 +36,8 @@ class ProjectCCCSThemeListView(ListView):
         context['categorization_name'] = self.categorization_label
         context['use_right_col'] = "No"  # a bit hacky but it will do for now
         context['categorization'] = categorize_projects2(context['object_list'],
-                                                        self.categorization_fieldname,
-                                                        self.categorization_parent_fieldname)
+                                                         self.categorization_fieldname,
+                                                         self.categorization_parent_fieldname)
         return context
 
 
@@ -53,8 +52,43 @@ class ProjectCCCSSectorListView(ProjectCCCSThemeListView):
     categorization_label = 'CCCS Sector'
 
 
+class ProjectCCCSSubSectorListView(ListView):
+    model = pm.Project
+    template_name = "projects/project_cccs_sub_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectCCCSSubSectorListView, self).get_context_data(**kwargs)
+        sub = pm.CCCSSubSector.objects.get(pk=int(self.kwargs['pk']))
+        context['sub'] = sub
+        context['projects'] = pm.Project.objects.filter(cccs_subsectors=sub)
+        return context
+
+
+class ProjectCCCSSectorExperienceView(ProjectCCCSThemeListView):
+    categorization_fieldname = 'cccs_subsectors'
+    categorization_parent_fieldname = 'sector'
+    categorization_label = 'CCCS Sector'
+    template_name = "projects/cccs_sector_experience.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectCCCSSectorExperienceView, self).get_context_data(**kwargs)
+        # Create a roughly equal pair of columns for the categorization
+        categorization = context['categorization']
+        categorization_cols = (OrderedDict(), OrderedDict())
+
+        def next_col():
+            while True:
+                yield 0
+                yield 1
+        col = next_col()
+        for super_name in categorization:
+            categorization_cols[col.next()][super_name] = categorization[super_name]
+        context['categorization_cols'] = categorization_cols
+        return context
+
+
 class ProjectCountryListView(ListView):
-    model = cm.Project
+    model = pm.Project
     categorization_fieldname = 'countries'
     categorization_label = 'Country'
     template_name = "projects/project_list1.html"

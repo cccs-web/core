@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block meta_title %}
+    {{ sub.name }} Projects
+{% endblock meta_title %}
+{% block title %}
+    {{ sub.name }} Projects
+{% endblock title %}
+{% with use_right_col=False %}
+    {% block main %}
+        <dl>
+        {% for project in projects %}
+            <dt><a href="{% url 'project-detail' slug=project.slug %}">{{ project.name }}</a></dt>
+            <dd>{{ project.description }}</dd>
+        {% endfor %}
+        </dl>
+    {% endblock main %}
+{% endwith %}

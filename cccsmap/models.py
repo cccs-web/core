@@ -14,6 +14,9 @@ class Village(models.Model):
     geom = models.PointField(srid=4326)
     objects = models.GeoManager()
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 

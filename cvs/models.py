@@ -47,6 +47,14 @@ class CV(Displayable):
     def email(self):
         return self.user.email
 
+    @property
+    def admin_url(self):
+        """
+        Return admin url to change self
+        """
+        url_name = 'admin:{0}_{1}_change'.format(self._meta.app_label,  self._meta.model_name)
+        return reverse(url_name,  args=[self.id])
+
     def get_absolute_url(self):
         return reverse("cv-detail", args=(self.slug,))
 
@@ -83,8 +91,8 @@ class CVProject(CVSet):
     references = models.TextField(max_length=512, null=True, blank=True)
 
     class Meta:
-        verbose_name = "Project"
-        verbose_name_plural = "Projects"
+        verbose_name = "CV Project"
+        verbose_name_plural = "CV Projects"
         unique_together = ('cv', 'project')
 
 

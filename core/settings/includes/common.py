@@ -9,7 +9,7 @@ except ImportError:
 PAGE_MENU_TEMPLATES = (
     (1, "Top navigation bar", "pages/menus/dropdown.html"),
     (3, "Footer", "pages/menus/footer.html"))
-USE_SOUTH = False
+USE_SOUTH = True
 
 ########################
 # MAIN DJANGO SETTINGS #
@@ -18,9 +18,9 @@ USE_SOUTH = False
 # People who get code error notifications.
 # In the format (('Full Name', 'email@example.com'),
 #                ('Full Name', 'anotheremail@example.com'))
+
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
+    ('Paul Whipp', 'paul.whipp@gmail.com'))
 MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -51,13 +51,12 @@ from django.utils.translation import ugettext_lazy as _
 
 LANGUAGES = (
     ('en', _('English')),
-    ('de', _('German')),
-    ('es', _('Spanish')),
     ('fr', _('French')),
-    ('id', _('Indonesian')))
+    ('ru', _('Russian')))
 
 # Keep slugs etc. in English when generated automatically
 MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'en'
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 
 # A boolean that turns on/off debug mode. When set to ``True``, stack traces
 # are displayed for error pages. Should always be set to ``False`` in
@@ -159,8 +158,10 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    #"mezzanine.mobile",
-)
+    "mezzanine_pagedown",
+    "mezzanine_slides",
+    "modeltranslation",
+    "south")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -219,13 +220,16 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
-DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
-
 SEARCH_MODEL_CHOICES = (
     'pages.Page',
     'blog.BlogPost',
     'cvs.CV',
     'projects.Project')
+
+# mezzanine-pagedown
+RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
+RICHTEXT_FILTERS = ['mezzanine_pagedown.filters.extra']
+RICHTEXT_FILTER_LEVEL = 3
 
 ####################
 # DYNAMIC SETTINGS #
