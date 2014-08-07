@@ -1,17 +1,15 @@
 <!doctype html>
-<html class='no-js' lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+<html class="no-js" lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 {% load pages_tags mezzanine_tags i18n future staticfiles  %}
-
     <head>
-
-        <meta charset='utf-8' />
+        <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name='MobileOptimized' content='width' />
-        <meta name='HandheldFriendly' content='true' />
-        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta name="MobileOptimized" content="width" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="keywords" content="{% block meta_keywords %}{% endblock %}" />
         <meta name="description" content="{% block meta_description %}{% endblock %}" />
-        <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
 
         <title> {% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %} </title>
 
@@ -34,112 +32,155 @@
 
     	<div id="wrapper" class="off-canvas-wrap" data-offcanvas data-role="page">
     		<div class="inner-wrap">
-			    <div class="row">
-			    	<div class="small-12 columns">
-				        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-				            <div class="container">
-				                <div class="navbar-header">
-				                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				                        <span class="sr-only">{% trans "Toggle Navigation" %}</span>
-				                        <span class="icon-bar"></span>
-				                        <span class="icon-bar"></span>
-				                        <span class="icon-bar"></span>
-				                    </button>
-				                    {% if settings.SITE_TITLE %}
-				                    <a class="navbar-brand" href="/">
-				                        <img src="/media/uploads/site/cccs_gradient.png" alt="cccs logo" />
+		        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		            <div class="container">
+		                <div class="navbar-header">
+							{% trans "Toggle Navigation" %}
 
-				                        {{ settings.SITE_TITLE }}</a>
-				                        {% endif %}
-				                        {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
-				                    </div>
-				                    <div class="navbar-collapse collapse">
-				                        {% search_form "all" %}
-				                        {% page_menu "pages/menus/dropdown.html" %}
-				                    </div>
-				                </div>
-				            </div>
+		                    {% if settings.SITE_TITLE %}
+		                    <a class="navbar-brand" href="/">
+		                        <img src="{% static "imgs/cccs2.svg" %}" alt="cccs logo" />
 
-				            <div class="container">
+		                        {{ settings.SITE_TITLE }}</a>
+		                        {% endif %}
+		                        {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
+		                    </div>
+		                </div>
+		            </div>
 
-				                {% nevercache %}
-				                {% if messages %}
-				                <div class="messages">
-				                    {% for message in messages %}
-				                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-				                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				                        {{ message }}
-				                    </div>
-				                    {% endfor %}
-				                </div>
-				                {% endif %}
-				                {% endnevercache %}
+		            <div class="container">
 
-				                <h1>{% block title %}{% endblock %}</h1>
+		                {% nevercache %}
+		                {% if messages %}
+		                <div class="messages">
+		                    {% for message in messages %}
+		                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+		                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		                        {{ message }}
+		                    </div>
+		                    {% endfor %}
+		                </div>
+		                {% endif %}
+		                {% endnevercache %}
 
-				                <ul class="breadcrumb">
-				                    {% spaceless %}
-				                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-				                    {% endspaceless %}
-				                </ul>
-				            </div>
+		                <h1>{% block title %}{% endblock %}</h1>
 
-				            <div class="container">
-				                <div class="row"><div class="col-md-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} left">
-				                    {% block main %}{% endblock %}
-				                </div>
-				                {% if "Yes" == use_right_col|default:"Yes" %}
-				                <div class="col-md-3 right">
-				                    <div class="panel panel-default">
-				                        <form action="{% url 'set_language' %}" method="post">
-				                            {% csrf_token %}
-				                            <input name="next" type="hidden" value="{{ redirect_to }}" />
-				                            <select name="language">
-				                                {% get_language_info_list for LANGUAGES as languages %}
-				                                {% for language in languages %}
-				                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-				                                    {{ language.name_local }} ({{ language.code }})
-				                                </option>
-				                                {% endfor %}
-				                            </select>
-				                            <input type="submit" value="Go" />
-				                        </form>
-				                    </div>
-				                    <div class="panel panel-default">
-				                        {% nevercache %}
-				                        {% include "accounts/includes/user_panel.html" %}
-				                        {% endnevercache %}
-				                        <div class="panel-body">
-				                            {% block right_panel %}
-				                            {% endblock %}
-				                        </div>
-				                    </div>
-				                </div>
-				                {% endif %}
-				            </div>
-				        </div>
-				        
-				        <footer>
-				            <div class="container">
-				                {% page_menu "pages/menus/footer.html" %}
+		                <ul class="breadcrumb">
+		                    {% spaceless %}
+		                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+		                    {% endspaceless %}
+		                </ul>
+		            </div>
 
-				                <div class="row">
-				                    <p class="site-info text-center">
-				                        {% trans "Powered by" %}
-				                        <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %},
-				                        <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
-				                        {% trans "and" %}
-				                        <a href="http://www.djangoproject.com">Django</a>
-				                        {% ifinstalled mezzanine.mobile %}
-				                        <span class="separator">|</span>
-				                        <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
-				                        {% endifinstalled %}
-				                    </p>
-				                </div>
-				            </div>
-				        </footer>	    		
-			    	</div>
-			    </div>
+		            <div class="container">
+		                <div class="row"><div class="col-md-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} left">
+		                    {% block main %}{% endblock %}
+		                </div>
+		                {% if "Yes" == use_right_col|default:"Yes" %}
+		                <div class="col-md-3 right">
+		                    <div class="panel panel-default">
+		                        <form action="{% url 'set_language' %}" method="post">
+		                            {% csrf_token %}
+		                            <input name="next" type="hidden" value="{{ redirect_to }}" />
+		                            <select name="language">
+		                                {% get_language_info_list for LANGUAGES as languages %}
+		                                {% for language in languages %}
+		                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+		                                    {{ language.name_local }} ({{ language.code }})
+		                                </option>
+		                                {% endfor %}
+		                            </select>
+		                            <input type="submit" value="Go" />
+		                        </form>
+		                    </div>
+		                    <div class="panel panel-default">
+		                        {% nevercache %}
+		                        {% include "accounts/includes/user_panel.html" %}
+		                        {% endnevercache %}
+		                        <div class="panel-body">
+		                            {% block right_panel %}
+		                            {% endblock %}
+		                        </div>
+		                    </div>
+		                </div>
+		                {% endif %}
+		            </div>
+		        </div>
+
+		        <header id="topbar" class="sticky">
+		        	<nav class="top-bar" data-topbar>
+		        		<ul class="title-area">
+		        			<li class="toggle-topbar">
+		        				<a href="#"><i class="icon-clipboard"></i></a>
+		        			</li>
+		        			<li class="name">
+		        				<h1><a href=""><img id="cccs-logo" src="static/imgs/cccs.svg" title="Cross-Cultural Consulting Services" /></a></h1>
+		        			</li>
+		        			<li class="hide-for-large-down">
+		        				<a href=""><img id="cccs-text" src="static/imgs/cccs_text.svg" /></a>
+		        			</li>
+		        		</ul>		        		
+
+		        		<section class="top-bar-section">
+		        			{% page_menu "pages/menus/dropdown.html" %}
+		        		</section>
+		        	</nav>
+		        </header>
+
+	        	<aside class="search">
+                    {% search_form "all" %}
+	        	</aside>
+
+		        <aside class="right-off-canvas-menu">
+		        	<ul class="off-canvas-list">
+		        		<li><label>Internationalisation</label></li>
+		        		<li><a href="#">Romanian</a></li>
+		        		<li><a href="#">English</a></li>
+		        		<li><a href="#">Russian</a></li>
+		        		<li><a href="#">French</a></li>
+		        		<li><a href="#">Spanish</a></li>
+		        	</ul>
+		        </aside>
+
+		        <section id="breadcrumbs" class="row">
+		        	<div class="small-12 columns">
+		        		
+		        	</div>
+		        </section>
+
+		        <section id="alerts" class="row">
+		        	<div class="small-12 columns">
+		        		
+		        	</div>
+		        </section>
+
+		        <section id="content" data-role="content" class="row">
+		        	<div class="small-12 columns">
+		        		
+		        	</div>
+		        </section>
+
+		        <footer id="footer" data-role="footer" class="row">
+		            <div class="small-12 columns">
+		                {% page_menu "pages/menus/footer.html" %}
+
+		                <div class="row">
+		                	<div class="small-12 columns">
+			                    <p class="site-info text-center">
+			                        {% trans "Powered by" %}
+			                        <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %},
+			                        <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
+			                        {% trans "and" %}
+			                        <a href="http://www.djangoproject.com">Django</a>
+			                        {% ifinstalled mezzanine.mobile %}
+			                        <span class="separator">|</span>
+			                        <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+			                        {% endifinstalled %}
+			                    </p>
+		                	</div>
+		                </div>
+		            </div>
+		        </footer>	    		
 
     			<a class="exit-off-canvas"></a>
     		</div>
