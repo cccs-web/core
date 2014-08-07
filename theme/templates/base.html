@@ -32,81 +32,6 @@
 
     	<div id="wrapper" class="off-canvas-wrap" data-offcanvas data-role="page">
     		<div class="inner-wrap">
-		        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-		            <div class="container">
-		                <div class="navbar-header">
-							{% trans "Toggle Navigation" %}
-
-		                    {% if settings.SITE_TITLE %}
-		                    <a class="navbar-brand" href="/">
-		                        <img src="{% static "imgs/cccs2.svg" %}" alt="cccs logo" />
-
-		                        {{ settings.SITE_TITLE }}</a>
-		                        {% endif %}
-		                        {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
-		                    </div>
-		                </div>
-		            </div>
-
-		            <div class="container">
-
-		                {% nevercache %}
-		                {% if messages %}
-		                <div class="messages">
-		                    {% for message in messages %}
-		                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-		                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		                        {{ message }}
-		                    </div>
-		                    {% endfor %}
-		                </div>
-		                {% endif %}
-		                {% endnevercache %}
-
-		                <h1>{% block title %}{% endblock %}</h1>
-
-		                <ul class="breadcrumb">
-		                    {% spaceless %}
-		                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-		                    {% endspaceless %}
-		                </ul>
-		            </div>
-
-		            <div class="container">
-		                <div class="row"><div class="col-md-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} left">
-		                    {% block main %}{% endblock %}
-		                </div>
-		                {% if "Yes" == use_right_col|default:"Yes" %}
-		                <div class="col-md-3 right">
-		                    <div class="panel panel-default">
-		                        <form action="{% url 'set_language' %}" method="post">
-		                            {% csrf_token %}
-		                            <input name="next" type="hidden" value="{{ redirect_to }}" />
-		                            <select name="language">
-		                                {% get_language_info_list for LANGUAGES as languages %}
-		                                {% for language in languages %}
-		                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-		                                    {{ language.name_local }} ({{ language.code }})
-		                                </option>
-		                                {% endfor %}
-		                            </select>
-		                            <input type="submit" value="Go" />
-		                        </form>
-		                    </div>
-		                    <div class="panel panel-default">
-		                        {% nevercache %}
-		                        {% include "accounts/includes/user_panel.html" %}
-		                        {% endnevercache %}
-		                        <div class="panel-body">
-		                            {% block right_panel %}
-		                            {% endblock %}
-		                        </div>
-		                    </div>
-		                </div>
-		                {% endif %}
-		            </div>
-		        </div>
-
 		        <header id="topbar" class="sticky">
 		        	<nav class="top-bar" data-topbar>
 		        		<ul class="title-area">
@@ -139,25 +64,84 @@
 		        		<li><a href="#">Russian</a></li>
 		        		<li><a href="#">French</a></li>
 		        		<li><a href="#">Spanish</a></li>
+		        		
+		        		<li><label>Internationalisation</label></li>
+		        		<li>
+		        			<div class="panel panel-default">
+		        				<form action="{% url 'set_language' %}" method="post">
+		        					{% csrf_token %}
+		        					<input name="next" type="hidden" value="{{ redirect_to }}" />
+		        					<select name="language">
+		        						{% get_language_info_list for LANGUAGES as languages %}
+		        						{% for language in languages %}
+		        						<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+		        							{{ language.name_local }} ({{ language.code }})
+		        						</option>
+		        						{% endfor %}
+		        					</select>
+		        					<input type="submit" value="Go" />
+		        				</form>
+		        			</div>		        				        			
+		        		</li>
 		        	</ul>
 		        </aside>
 
 		        <section id="breadcrumbs" class="row">
 		        	<div class="small-12 columns">
-		        		
+		                <ul class="breadcrumbs">
+		                    {% spaceless %}
+		                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+		                    {% endspaceless %}
+		                </ul>		        		
 		        	</div>
 		        </section>
 
 		        <section id="alerts" class="row">
 		        	<div class="small-12 columns">
-		        		
+		                {% nevercache %}
+		                {% if messages %}
+		                <div class="messages">
+		                    {% for message in messages %}
+		                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+		                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		                        {{ message }}
+		                    </div>
+		                    {% endfor %}
+		                </div>
+		                {% endif %}
+		                {% endnevercache %}		        		
 		        	</div>
 		        </section>
 
 		        <section id="content" data-role="content" class="row">
 		        	<div class="small-12 columns">
-		        		
+	                    {% if settings.SITE_TITLE %}
+                        {{ settings.SITE_TITLE }}
+                        {% endif %}
+                        {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
+                    </div>
+                    
+		        	<div class="small-12 columns">
+		                <!-- <h1>{% block title %}{% endblock %}</h1> -->
 		        	</div>
+		        		
+		        	<div class="small-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} columns">
+		        		{% block main %}{% endblock %}
+		        	</div>
+		        	{% if "Yes" == use_right_col|default:"Yes" %}
+		        	<div class="small-3 columns">
+
+		        		<div class="panel panel-default">
+		        			{% nevercache %}
+		        			{% include "accounts/includes/user_panel.html" %}
+		        			{% endnevercache %}
+		        			<div class="panel-body">
+		        				{% block right_panel %}
+		        				{% endblock %}
+		        			</div>
+		        		</div>
+		        	</div>
+		        	{% endif %}		        		
 		        </section>
 
 		        <footer id="footer" data-role="footer" class="row">
