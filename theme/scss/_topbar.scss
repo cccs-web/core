@@ -5,6 +5,23 @@
 		padding-bottom: $topbar-height;
 		border-bottom: 1px solid $greyd;
 		@include shadow(0,2rem,3rem,4px,rgba($bl,.05),false);
+		@include single-transition(all, .5s, ease-in-out);
+
+		&.scrolling {
+			@include shadow(0,.2rem,.2rem,.2rem,rgba($bl,.1),false);
+
+			.top-bar-section {
+				> ul {
+					> li {
+						&.has-dropdown {
+							.dropdown {
+								@include shadow(0,.2rem,.2rem,.2rem,rgba($bl,.1),false);
+							}
+						}
+					}
+				}
+			}
+		}
 
 		.title-area {
 			line-height: 3.25; 
@@ -19,7 +36,7 @@
 				}
 
 				#cccs-logo {
-					width: 4rem;
+					width: 4.5rem;
 				}
 
 				#cccs-text {
@@ -40,6 +57,9 @@
 						}
 
 						.dropdown {
+							@include shadow(0,.2rem,.2rem,0,rgba($bl,.1),false);
+							@include single-transition(all, .25s, ease-in-out);
+
 							li {
 								&.has-dropdown {
 									a {
@@ -92,7 +112,7 @@
 				float: left;
 
 				dl {
-					margin: .25rem 0 0; 
+					margin: .25rem 2rem 0 0; 
 
 					dt {
 						em {
@@ -106,7 +126,7 @@
 
 					&.input-text {
 						border: 0;
-						margin-left: 1.5rem;
+						margin: .15rem 0 0;
 						height: 2.2rem;
 						font-size: .75rem;
 						background: rgba($wh,.5);
@@ -121,5 +141,11 @@
 				}
 			}
 		}
+	}
+}
+
+@media #{$medium-up} {
+	.search {
+		padding: 0 3rem;
 	}
 }

@@ -117,5 +117,5 @@ requirejs.config({
     , waitSeconds : 300
     
     // prevents caching during development
-    // , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
+    , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
 });

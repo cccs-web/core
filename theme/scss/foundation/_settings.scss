@@ -37,7 +37,7 @@ $include-html-global-classes: $include-html-classes;
 $include-html-grid-classes: $include-html-classes;
 $include-xl-html-grid-classes: true;
 
-$row-width: rem-calc(1400);
+$row-width: rem-calc(1280);
 $total-columns: 12;
 
 // Global
@@ -66,7 +66,7 @@ $primary-color: #5171e6;
 $secondary-color: #a993db;
 $alert-color: #995571;
 $success-color: #349927;
-$warning-color: #eac081;
+$warning-color: #cdc495;
 $info-color: #455799;
 $yell: #fff5ae;
 $bl: #000;
@@ -139,22 +139,22 @@ $cursor-default-value: default;
 $include-html-type-classes: $include-html-classes;
 
 // We use these to control header font styles
-$header-font-family: 'Roboto Condensed', sans-serif;
-$header-font-weight: 300;
+$header-font-family: 'Open Sans Condensed', sans-serif;
+$header-font-weight: 700;
 $header-font-style: normal;
-$header-font-color: $grey5;
+$header-font-color: $alert-color;
 $header-line-height: 150%;
 $header-top-margin: .5rem;
 $header-bottom-margin: .5rem;
 $header-text-rendering: optimizeLegibility;
 
 // We use these to control header font sizes
-$h1-font-size: rem-calc(44);
-$h2-font-size: rem-calc(36);
-$h3-font-size: rem-calc(28);
-$h4-font-size: rem-calc(24);
-$h5-font-size: rem-calc(18);
-$h6-font-size: 1rem;
+$h1-font-size: rem-calc(28);
+$h2-font-size: rem-calc(24);
+$h3-font-size: rem-calc(21);
+$h4-font-size: rem-calc(18);
+$h5-font-size: rem-calc(16);
+$h6-font-size: rem-calc(14);
 
 // We use these to control header size reduction on small screens
 $h1-font-reduction: rem-calc(10) !default;
@@ -700,7 +700,7 @@ $tabbar-height: rem-calc(45);
 $tabbar-icon-width: $tabbar-height;
 $tabbar-line-height: $tabbar-height;
 $tabbar-color: $greye;
-$tabbar-middle-padding: 0 rem-calc(10);
+$tabbar-middle-padding: 0 rem-calc(16);
 
 // Off Canvas Divider Styles
 $tabbar-right-section-border: solid 1px rgba($wh,.25);
@@ -1189,11 +1189,11 @@ $has-tip-border-bottom-hover: dotted 1px scale-color($primary-color, $lightness:
 $has-tip-font-color-hover: $primary-color;
 $has-tip-cursor-type: help;
 
-$tooltip-padding: rem-calc(12);
-$tooltip-bg: $grey4;
-$tooltip-font-size: rem-calc(14);
+$tooltip-padding: rem-calc(8);
+$tooltip-bg: $grey5;
+$tooltip-font-size: rem-calc(10);
 $tooltip-font-weight: inherit;
-$tooltip-font-color: $wh;
+$tooltip-font-color: $greye;
 $tooltip-line-height: 150%;
 $tooltip-close-font-size: rem-calc(9);
 $tooltip-close-font-weight: $font-weight-normal;
@@ -1201,7 +1201,7 @@ $tooltip-close-font-color: $grey8;
 $tooltip-font-size-sml: rem-calc(14);
 $tooltip-radius: $global-radius;
 $tooltip-rounded: $global-rounded;
-$tooltip-pip-size: 6px;
+$tooltip-pip-size: 4px;
 $tooltip-max-width: 20rem;
 
 //
@@ -1246,7 +1246,7 @@ $topbar-link-bg-active: $wh;
 $topbar-link-bg-active-hover: none;
 $topbar-link-font-family: inherit;
 $topbar-link-text-transform: none;
-$topbar-link-padding: $topbar-height / 3;
+$topbar-link-padding: $topbar-height / 4;
 
 $topbar-button-font-size: 0.75rem;
 $topbar-button-top: 7px;
