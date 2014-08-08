@@ -145,6 +145,18 @@
 }
 
 @media #{$medium-up} {
+	.top-bar {
+		.top-bar-section {
+			> ul {
+				> li {
+					&:last-child {
+						padding-right: 1rem;
+					}
+				}
+			}
+		}
+	}
+
 	.search {
 		padding: 0 3rem;
 	}

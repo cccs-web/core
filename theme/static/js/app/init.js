@@ -66,8 +66,8 @@ requirejs.config({
 
         // jQuery Cookie
         , 'jCookie' :                   { deps: ['jquery'] }
-        , 'velocityUI':                 { deps: ['jquery', 'jVelocity'] }
-        , 'jVelocity':                  { deps: ['jquery'] } 
+        // , 'velocityUI':                 { deps: ['jquery', 'jVelocity'] }
+        // , 'jVelocity':                  { deps: ['jquery'] } 
 
         // Fastclick
         , 'fastclick' :                 { exports: 'FastClick'}
@@ -117,5 +117,5 @@ requirejs.config({
     , waitSeconds : 300
     
     // prevents caching during development
-    , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
+    // , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
 });

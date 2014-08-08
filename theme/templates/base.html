@@ -39,10 +39,10 @@
 		        				<a href="#"><i class="icon-clipboard"></i></a>
 		        			</li>
 		        			<li class="name">
-		        				<h1><a href=""><img id="cccs-logo" src="static/imgs/cccs.svg" title="Cross-Cultural Consulting Services" /></a></h1>
+		        				<h1><a href="/"><img id="cccs-logo" src="{% static "imgs/cccs.svg" %}" title="Cross-Cultural Consulting Services" /></a></h1>
 		        			</li>
-		        			<li class="hide-for-large-down">
-		        				<a href=""><img id="cccs-text" src="static/imgs/cccs_text.svg" /></a>
+		        			<li class="hide-for-medium-down">
+		        				<a href="/"><img id="cccs-text" src="{% static "imgs/cccs_text.svg" %}" /></a>
 		        			</li>
 		        		</ul>		        		
 
@@ -171,7 +171,7 @@
     	</div>
 
 
-	<div id="myModal" class="reveal-modal small" data-reveal>
+	<div id="logon_register" class="reveal-modal small" data-reveal>
 		<h2>Signup or register with CCCS</h2>
 		<p><small>Please login filling the following form. If you don't have an account yet you could easily register <a href="">here</a></small></p>
 		<ul class="tabs" data-tab>
@@ -386,6 +386,13 @@
 			</div>
 		</div>
 		<a class="close-reveal-modal">&#215;</a>
+	</div>
+
+	<a href="#" data-reveal-id="myModal">Click Me For A Modal</a>
+
+	<div id="ajaxed" class="reveal-modal" data-reveal>
+		test
+		
 	</div>
 
     </body>
