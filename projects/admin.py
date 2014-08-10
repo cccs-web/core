@@ -33,6 +33,7 @@ class CVProjectInline(admin.TabularInline):
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
+    search_fields = ('title', 'region')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
     inlines = (CVProjectInline,)
 
