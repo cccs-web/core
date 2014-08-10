@@ -94,6 +94,7 @@ class CVProject(CVSet):
         verbose_name = "CV Project"
         verbose_name_plural = "CV Projects"
         unique_together = ('cv', 'project')
+        ordering = ('-project__to_date',)
 
 
 class CVLearning(CVDateRangeSet):
