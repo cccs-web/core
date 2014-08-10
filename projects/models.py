@@ -155,10 +155,10 @@ class Project(Displayable):
     client_contract = models.CharField(max_length=128, null=True, blank=True)
     client_beneficiary = models.CharField(max_length=128, null=True, blank=True)
     contract = models.CharField(max_length=64, null=True, blank=True)
-    cccs_subthemes = models.ManyToManyField(CCCSSubTheme, related_name='projects')
-    cccs_subsectors = models.ManyToManyField(CCCSSubSector, related_name='projects')
-    ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects')
-    ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects')
+    cccs_subthemes = models.ManyToManyField(CCCSSubTheme, related_name='projects', null=True, blank=True)
+    cccs_subsectors = models.ManyToManyField(CCCSSubSector, related_name='projects', null=True, blank=True)
+    ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects', null=True, blank=True)
+    ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True)
 
     class Meta:
         ordering = ('title',)
