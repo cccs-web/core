@@ -36,6 +36,10 @@ class ProjectAdmin(admin.ModelAdmin):
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
     inlines = (CVProjectInline,)
 
+    def name(self, instance):
+        return getattr(instance, 'name')
+    name.admin_order_field = 'title'
+
 
 admin.site.register(pm.Project, ProjectAdmin)
 
