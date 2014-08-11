@@ -83,8 +83,13 @@ admin.site.register(pm.CCCSSubTheme, CCCSSubThemeAdmin)
 
 class CCCSSubThemeInline(admin.TabularInline):
     model = pm.CCCSSubTheme
-    list_display = ['name', 'project_count']
     extra = 1
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        field = super(CCCSSubThemeInline, self).formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == 'name':
+            field.widget.attrs['style'] = 'width: 64em;'
+        return field
 
 
 class CCCSThemeAdmin(HasProjectsAdmin):
