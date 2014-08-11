@@ -68,7 +68,7 @@ class CCCSSubTheme(HasProjectsMixin, CCCSModel):
     class Meta:
         verbose_name = 'CCCS SubTheme'
         verbose_name_plural = 'CCCS SubThemes'
-        ordering = ['name']
+        ordering = ['theme__name', 'name']
         unique_together = ('theme', 'name')
 
     def __unicode__(self):
@@ -93,7 +93,7 @@ class CCCSSubSector(HasProjectsMixin, CCCSModel):
     class Meta:
         verbose_name = 'CCCS SubSector'
         verbose_name_plural = 'CCCS SubSectors'
-        ordering = ['name']
+        ordering = ['sector__name', 'name']
         unique_together = ('sector', 'name')
 
     def __unicode__(self):
@@ -122,7 +122,7 @@ class IFCSubTheme(HasProjectsMixin, CCCSModel):
     class Meta:
         verbose_name = 'IFC SubTheme'
         verbose_name_plural = 'IFC SubThemes'
-        ordering = ['name']
+        ordering = ['theme__name', 'name']
         unique_together = ('theme', 'name')
 
     def __unicode__(self):
