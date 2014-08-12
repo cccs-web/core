@@ -7,4 +7,4 @@ source /home/webcore/.virtualenvs/staging/bin/postactivate
 
 cd /home/webcore/staging
 
-exec gunicorn -c /home/webcore/staging/_deploy/gunicorn.conf.py core.wsgi:application
+exec gunicorn -c /home/webcore/staging/deploy/gunicorn.conf.py core.wsgi:application
