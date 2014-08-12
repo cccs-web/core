@@ -94,11 +94,16 @@ class CVProject(CVSet):
     person_months = models.CharField(max_length=64, null=True, blank=True)
     activities = models.TextField(max_length=4096, null=True, blank=True)
     references = models.TextField(max_length=512, null=True, blank=True)
+    from_date = models.DateField(help_text="Date started working on project",
+                                 null=True, blank=True)
+    to_date = models.DateField(help_text="Date finished working on project",
+                               null=True, blank=True)
 
     class Meta:
         verbose_name = "CV Project"
         verbose_name_plural = "CV Projects"
         unique_together = ('cv', 'project')
+        ordering = ('-to_date',)
 
 
 class CVLearning(CVDateRangeSet):
