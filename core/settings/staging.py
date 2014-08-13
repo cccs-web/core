@@ -18,7 +18,7 @@ DATABASES = {
 ###################
 
 GUNICORN_BIND = "127.0.0.1:8200"
-PROCESS_USER = 'webcore'
+PROCESS_USER = 'cccs'
 PROCESS_NAME = 'cccs_staging'
 SITE_TITLE = 'CCCS Staging'
 SITE_TAGLINE = None
