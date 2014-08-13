@@ -2,9 +2,9 @@
 # Run the gunicorn service
 
 # Make sure we're in the right virtual env and location
-source /home/webcore/.virtualenvs/staging/bin/activate
-source /home/webcore/.virtualenvs/staging/bin/postactivate
+source /home/cccs/.virtualenvs/staging/bin/activate
+source /home/cccs/.virtualenvs/staging/bin/postactivate
 
-cd /home/webcore/staging
+cd /home/cccs/staging
 
-exec gunicorn -c /home/webcore/staging/deploy/gunicorn.conf.py core.wsgi:application
+exec gunicorn -c /home/cccs/staging/deploy/gunicorn.conf.py core.wsgi:application
