@@ -1,6 +1,6 @@
 from .includes.common import *
 
-DEBUG = True
+DEBUG = False
 
 # Make these unique, and don't share it with anybody.
 DATABASES = {
