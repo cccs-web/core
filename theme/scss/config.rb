@@ -2,7 +2,7 @@
 dir = File.dirname(__FILE__)
 
 # The output style // :expanded or :nested or :compact or :compressed
-output_style = :compressed
+output_style = :expanded
 
 # Set this to the root of your project when deployed:
 # http_path = "/"
@@ -14,4 +14,4 @@ relative_assets = true
 
 # Compass configurations
 sass_path = dir
-css_path = File.join(dir, "../../static_collected/", "css")
+css_path = File.join(dir, "../static/", "css")
