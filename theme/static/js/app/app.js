@@ -136,18 +136,6 @@ require([
         // launch the joyride - needs a special init call
         // $(document).foundation('joyride','start');
 
-        // open a modal when page loads
-
-        var logon = $('#ajaxed').load('http://cristi.crossculturalconsult.com/accounts/signup/?next=/ #content');
-        console.log(logon);
-
-        $('#ajaxed').foundation('reveal', 'open');
-
-        $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
-            $('#ajaxed').append('<a class="close-reveal-modal">&#215;</a>');
-            console.log('opened ' + $(this));
-        });
-
         // Now that Foundation has loaded everything I want to: 
         // set new .clearing-thumbs inline style without touching the foundation component
         $(document.body).on("opened.fndtn.clearing", function(event) {

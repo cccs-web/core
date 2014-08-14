@@ -32,6 +32,7 @@
 
     	<div id="wrapper" class="off-canvas-wrap" data-offcanvas data-role="page">
     		<div class="inner-wrap">
+
 		        <header id="topbar" class="sticky">
 		        	<nav class="top-bar" data-topbar>
 		        		<ul class="title-area">
@@ -50,11 +51,12 @@
 		        			{% page_menu "pages/menus/dropdown.html" %}
 		        		</section>
 		        	</nav>
-		        </header>
+	
+		        	<nav class="search">
+	                    {% search_form "all" %}
+		        	</nav>
 
-	        	<aside class="search">
-                    {% search_form "all" %}
-	        	</aside>
+		        </header>
 
 		        <aside class="right-off-canvas-menu">
 		        	<ul class="off-canvas-list">
