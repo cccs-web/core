@@ -22,6 +22,7 @@ class HasProjectsMixin(object):
 
 class UniqueNamed(CCCSModel):
     name = models.CharField(max_length=512, unique=True)
+    plural_name = models.CharField(max_length=512, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -29,6 +30,13 @@ class UniqueNamed(CCCSModel):
 
     def __unicode__(self):
         return u"{0}".format(self.name)
+
+    @property
+    def plural(self):
+        if self.plural_name is None or len(self.plural_name) == 0:
+            return u"{0}s".format(self.name)
+        else:
+            return self.plural_name
 
 
 class Country(HasProjectsMixin, UniqueNamed):
@@ -68,7 +76,7 @@ class CCCSSubTheme(HasProjectsMixin, CCCSModel):
     class Meta:
         verbose_name = 'CCCS SubTheme'
         verbose_name_plural = 'CCCS SubThemes'
-        ordering = ['name']
+        ordering = ['theme__name', 'name']
         unique_together = ('theme', 'name')
 
     def __unicode__(self):
@@ -93,7 +101,7 @@ class CCCSSubSector(HasProjectsMixin, CCCSModel):
     class Meta:
         verbose_name = 'CCCS SubSector'
         verbose_name_plural = 'CCCS SubSectors'
-        ordering = ['name']
+        ordering = ['sector__name', 'name']
         unique_together = ('sector', 'name')
 
     def __unicode__(self):
@@ -122,7 +130,7 @@ class IFCSubTheme(HasProjectsMixin, CCCSModel):
     class Meta:
         verbose_name = 'IFC SubTheme'
         verbose_name_plural = 'IFC SubThemes'
-        ordering = ['name']
+        ordering = ['theme__name', 'name']
         unique_together = ('theme', 'name')
 
     def __unicode__(self):
@@ -155,10 +163,10 @@ class Project(Displayable):
     client_contract = models.CharField(max_length=128, null=True, blank=True)
     client_beneficiary = models.CharField(max_length=128, null=True, blank=True)
     contract = models.CharField(max_length=64, null=True, blank=True)
-    cccs_subthemes = models.ManyToManyField(CCCSSubTheme, related_name='projects')
-    cccs_subsectors = models.ManyToManyField(CCCSSubSector, related_name='projects')
-    ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects')
-    ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects')
+    cccs_subthemes = models.ManyToManyField(CCCSSubTheme, related_name='projects', null=True, blank=True)
+    cccs_subsectors = models.ManyToManyField(CCCSSubSector, related_name='projects', null=True, blank=True)
+    ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects', null=True, blank=True)
+    ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True)
 
     class Meta:
         ordering = ('title',)

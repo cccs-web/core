@@ -33,8 +33,13 @@ class CVProjectInline(admin.TabularInline):
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
+    search_fields = ('title', 'region')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
     inlines = (CVProjectInline,)
+
+    def name(self, instance):
+        return getattr(instance, 'name')
+    name.admin_order_field = 'title'
 
 
 admin.site.register(pm.Project, ProjectAdmin)
@@ -78,8 +83,13 @@ admin.site.register(pm.CCCSSubTheme, CCCSSubThemeAdmin)
 
 class CCCSSubThemeInline(admin.TabularInline):
     model = pm.CCCSSubTheme
-    list_display = ['name', 'project_count']
     extra = 1
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        field = super(CCCSSubThemeInline, self).formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == 'name':
+            field.widget.attrs['style'] = 'width: 64em;'
+        return field
 
 
 class CCCSThemeAdmin(HasProjectsAdmin):

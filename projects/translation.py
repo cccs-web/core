@@ -4,10 +4,19 @@ Register all our translated fields for models here.
 
 from modeltranslation.translator import translator, TranslationOptions
 
-from .models import Project
+import projects.models as pm
+
+
+class UniqueNamedTranslationOptions(TranslationOptions):
+    fields = ('name', 'plural_name')
+
+translator.register(pm.CCCSSector, UniqueNamedTranslationOptions)
+translator.register(pm.IFCTheme, UniqueNamedTranslationOptions)
+translator.register(pm.IFCSector, UniqueNamedTranslationOptions)
+translator.register(pm.CCCSTheme, UniqueNamedTranslationOptions)
 
 
 class ProjectTranslationOptions(TranslationOptions):
     fields = ('title', 'features', 'region', 'locality')
 
-translator.register(Project, ProjectTranslationOptions)
+translator.register(pm.Project, ProjectTranslationOptions)
