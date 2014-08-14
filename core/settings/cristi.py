@@ -26,3 +26,4 @@ PROCESS_NAME = "cristi_cccs"
 SITE_TITLE = "Cristi's CCCS"
 SITE_TAGLINE = None
 VIRTUALENV = "cccs"
+POSTGIS_VERSION = 2.1
