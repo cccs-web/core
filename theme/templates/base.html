@@ -60,33 +60,27 @@
 		        </header>
 
 		        <aside class="right-off-canvas-menu">
-		        	<ul class="off-canvas-list">
-		        		<li><label>Internationalisation</label></li>
-		        		<li><a href="#">Romanian</a></li>
-		        		<li><a href="#">English</a></li>
-		        		<li><a href="#">Russian</a></li>
-		        		<li><a href="#">French</a></li>
-		        		<li><a href="#">Spanish</a></li>
-		        		
-		        		<li><label>Internationalisation</label></li>
-		        		<li>
-		        			<div class="panel panel-default">
-		        				<form action="{% url 'set_language' %}" method="post">
-		        					{% csrf_token %}
-		        					<input name="next" type="hidden" value="{{ redirect_to }}" />
-		        					<select name="language">
-		        						{% get_language_info_list for LANGUAGES as languages %}
-		        						{% for language in languages %}
-		        						<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-		        							{{ language.name_local }} ({{ language.code }})
-		        						</option>
-		        						{% endfor %}
-		        					</select>
-		        					<input type="submit" value="Go" />
-		        				</form>
-		        			</div>		        				        			
-		        		</li>
-		        	</ul>
+    				<form action="{% url 'set_language' %}" method="post">
+    					{% csrf_token %}
+    					<input name="next" type="hidden" value="{{ redirect_to }}" />
+			        	<ul class="off-canvas-list">
+								<!-- 
+				        		<select name="language">
+			        				<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+			        					{{ language.name_local }} ({{ language.code }})
+			        				</option>
+			        			</select>
+			        			<input type="submit" value="Go" />
+			        			 -->
+			        		<li><label>Internationalisation</label></li>
+			        		{% get_language_info_list for LANGUAGES as languages %}
+			        		{% for language in languages %}
+			        		<li>
+			        			 <a href="#">{{ language.name_local }} ({{ language.code }})</a>
+			        		</li>
+			        		{% endfor %}
+			        	</ul>
+			        </form>
 		        </aside>
 
 		        <section id="breadcrumbs" class="row">
