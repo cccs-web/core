@@ -1,46 +1,58 @@
 {% load i18n future pages_tags %}
 {% spaceless %}
-    {% if page_branch_in_menu %}
+{% if page_branch_in_menu %}
 
-        {% if branch_level == 0 %}
-            <ul class="nav navbar-nav">
-                {% for page in page_branch %}
-                    {% if not has_home and page.is_primary and forloop.first %}
-                        <li{% if on_home %} class="active"{% endif %} id="dropdown-menu-home">
-                            <a href="{% url "home" %}">{% trans "Home" %}</a>
-                        </li>
-                    {% endif %}
-                    {% if page.in_menu %}
-                        <li class="{% if page.has_children_in_menu %}dropdown{% endif %}
-               {% if page.is_current_or_ascendant %}active{% endif %}"
-                            id="{{ page.html_id }}">
-                            <a href="{{ page.get_absolute_url }}"
-                                    {% if page.has_children_in_menu %}
-                               class="dropdown-toggle disabled" data-toggle="dropdown"
-                                    {% endif %}>
-                                {{ page.meta_title }}
-                                {% if page.has_children_in_menu %}<b class="caret"></b>{% endif %}
-                            </a>
-                            {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-
-        {% else %}
-            <ul class="dropdown-menu">
-                {% for page in page_branch %}
-                    {% if page.in_menu %}
-                        <li class="{% if page.has_children_in_menu %}dropdown-submenu{% endif %}
-               {% if page.is_current_or_ascendant %}active{% endif %}"
-                            id="{{ page.html_id }}">
-                            <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
-                            {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% endif %}
-
+{% if branch_level == 0 %}
+<ul class="right">
+    {% for page in page_branch %}
+    {% if not has_home and page.is_primary and forloop.first %}
+    <li{% if on_home %} class="active"{% endif %} id="dropdown-menu-home">
+        <a href="{% url "home" %}">{% trans "Home" %}</a>
+    </li>
     {% endif %}
+    {% if page.in_menu %}
+    <li class="{% if page.has_children_in_menu %}has-dropdown{% endif %}
+               {% if page.is_current_or_ascendant %}active{% endif %}"
+                id="{{ page.html_id }}">
+        <a href="{{ page.get_absolute_url }}">
+            {{ page.meta_title }}
+        </a>
+        {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+    <li class="" id="search">
+        <a href="">
+            <i class="icon-search2"></i>    
+        </a>
+    </li>
+    <li class="toolip has-tip" id="users" data-tooltip="" title="Login/ Signup">
+        <a href="#" data-reveal-id="logon_register">
+            <i class="icon-user"></i>   
+        </a>
+    </li>
+    <li class="toolip has-tip" id="i18n" data-tooltip="" title="Language">
+        <a href="#">
+            <a class="right-off-canvas-toggle" href="#"><i class="icon-world"></i></a>
+        </a>
+    </li>    
+
+</ul>
+
+{% else %}
+<ul class="dropdown">
+    {% for page in page_branch %}
+    {% if page.in_menu %}
+    <li class="{% if page.has_children_in_menu %}has-dropdown{% endif %}
+               {% if page.is_current_or_ascendant %}active{% endif %}"
+            id="{{ page.html_id }}">
+        <a href="{{ page.get_absolute_url }}">{{ page.meta_title }}</a>
+        {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endif %}
 {% endspaceless %}

@@ -34,6 +34,7 @@
     		<div class="inner-wrap">
 
 		        <header id="topbar" class="sticky">
+
 		        	<nav class="top-bar" data-topbar>
 		        		<ul class="title-area">
 		        			<li class="toggle-topbar">
@@ -152,17 +153,7 @@
 
 		                <div class="row">
 		                	<div class="small-12 columns">
-			                    <p class="site-info text-center">
-			                        {% trans "Powered by" %}
-			                        <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %},
-			                        <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
-			                        {% trans "and" %}
-			                        <a href="http://www.djangoproject.com">Django</a>
-			                        {% ifinstalled mezzanine.mobile %}
-			                        <span class="separator">|</span>
-			                        <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
-			                        {% endifinstalled %}
-			                    </p>
+		                	<hr />
 		                	</div>
 		                </div>
 		            </div>
@@ -172,230 +163,222 @@
     		</div>
     	</div>
 
-
-	<div id="logon_register" class="reveal-modal small" data-reveal>
-		<h2>Signup or register with CCCS</h2>
-		<p><small>Please login filling the following form. If you don't have an account yet you could easily register <a href="">here</a></small></p>
-		<ul class="tabs" data-tab>
-			<li class="tab-title active" class="tooltip has-tip tip-top" data-tooltip title="Login">
-				<a href="#login"><i class="icon-key"></i></a>
-			</li>
-			<li class="tab-title" class="tooltip has-tip tip-top" data-tooltip title="Register">
-				<a href="#register"><i class="icon-news"></i></a>
-			</li>
-			<li class="tab-title" class="tooltip has-tip tip-top" data-tooltip title="General form UI elements">
-				<a href="#forms-ui"><i class="icon-adjustments"></i></a>
-			</li>
-		</ul>
-		<div class="tabs-content">
-			<div class="content active" id="login">
-	            <form method="post">
-	                <fieldset>
-	                    <legend>
-	                        Log in 
-	                    </legend>
-	                    <input type="hidden" name="referrer" value="https://production.crossculturalconsult.com/">
-	                    <input type="hidden" name="csrfmiddlewaretoken" value="ID4FzTGofneTMTCYf4FrrZoGLvcoICbE">
-	                    <div class="form-group input_id_username ">
-	                        <label class="control-label" for="id_username">
-	                            Username or email address 
-	                        </label>
-	                        <input autofocus="" id="id_username" name="username" required="" type="text">
-	                    </div>
-	                    <div class="form-group input_id_password ">
-	                        <label class="control-label" for="id_password">
-	                            Password
-	                        </label>
-	                        <input id="id_password" name="password" required="" type="password">
-	                    </div>
-	                    <div class="form-actions">
-	                        <input class="button alert small" type="submit" value="Log in">
-	                    </div>
-	                </fieldset>
-	            </form>
-			</div>
-			<div class="content" id="register">
-				<form method="post">
-					<fieldset>
-						<legend>Sign up
-						</legend>
-						<input type="hidden" name="referrer" value="https://production.crossculturalconsult.com/accounts/login/?next=/">
-						<input type="hidden" name="csrfmiddlewaretoken" value="ID4FzTGofneTMTCYf4FrrZoGLvcoICbE">
-						<div class="form-group input_id_first_name ">
-							<label class="control-label" for="id_first_name">
-								First name
-							</label>
-							<input autofocus="" id="id_first_name" maxlength="30" name="first_name" type="text">
-						</div>
-						<div class="form-group input_id_last_name ">
-							<label class="control-label" for="id_last_name">
-								Last name
-							</label>
-							<input id="id_last_name" maxlength="30" name="last_name" type="text">
-						</div>
-						<div class="form-group input_id_email ">
-							<label class="control-label" for="id_email">
-								Email address
-							</label>
-							<input id="id_email" maxlength="75" name="email" type="email">
-						</div>
-						<div class="form-group input_id_username ">
-							<label class="control-label" for="id_username">
-								Username
-							</label>
-							<input id="id_username" maxlength="30" name="username" required="" type="text">
-							<p class="help-block">
-								Only letters, numbers, dashes or underscores please
-							</p>
-						</div>
-						<div class="form-group input_id_password1 ">
-							<label class="control-label" for="id_password1">
-								Password
-							</label>
-							<input autocomplete="off" id="id_password1" name="password1" type="password">
-						</div>
-						<div class="form-group input_id_password2 ">
-							<label class="control-label" for="id_password2">
-								Password (again)
-							</label>
-							<input autocomplete="off" id="id_password2" name="password2" type="password">
-						</div>
-						<div class="form-actions">
-	                        <input class="button success small" type="submit" value="Signup">
-						</div>
-					</fieldset>
-				</form>				
-			</div>
-			<div class="content" id="forms-ui">
-				<form>
-					<fieldset>
-						<legend>Fieldset</legend>
-						<div class="row">
-							<div class="large-12 columns">
-								<label>Input Label<input type="text" placeholder="large-12.columns" />
-								</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="large-4 columns">
-								<label>Input Label<input type="text" placeholder="large-4.columns" />
-								</label>
-							</div>
-							<div class="large-4 columns">
-								<label>Input Label<input type="text" placeholder="large-4.columns" />
-								</label>
-							</div>
-							<div class="large-4 columns">
-								<div class="row collapse">
-									<label>Input Label</label>
-									<div class="small-9 columns">
-										<input type="text" placeholder="small-9.columns" />
-									</div>
-									<div class="small-3 columns">
-										<span class="postfix">.com</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="large-12 columns">
-								<label>Select Box
-									<select>
-										<option value="husker">Husker</option>
-										<option value="starbuck">Starbuck</option>
-										<option value="hotdog">Hot Dog</option>
-										<option value="apollo">Apollo</option>
-									</select>
-								</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="large-6 columns">
-								<label>Choose Your Favorite</label>
-								<input type="radio" name="pokemon" value="Red" id="pokemonRed">
-								<label for="pokemonRed">Red</label>
-								<input type="radio" name="pokemon" value="Blue" id="pokemonBlue">
-								<label for="pokemonBlue">Blue</label>
-							</div>
-							<div class="large-6 columns">
-								<label>Check these out</label>
-								<input id="checkbox1" type="checkbox">
-								<label for="checkbox1">Checkbox 1</label>
-								<input id="checkbox2" type="checkbox">
-								<label for="checkbox2">Checkbox 2</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="large-12 columns">
-								<label>Textarea Label<textarea placeholder="small-12.columns">
-								</textarea>
-							</label>
-						</div>
-					</div>
-					<div class="row collapse">
-						<div class="small-3 large-2 columns">
-							<span class="prefix">http://</span>
-						</div>
-						<div class="small-9 large-10 columns">
-							<input type="text" placeholder="Enter your URL...">
-						</div>
-					</div>
-					<div class="row">
-						<div class="large-6 columns">
-							<div class="row collapse">
-								<div class="small-10 columns">
-									<input type="text" placeholder="Hex Value">
-								</div>
-								<div class="small-2 columns">
-									<a href="#" class="button postfix">Go</a>
-								</div>
-							</div>
-						</div>
-						<div class="large-6 columns">
-							<div class="row collapse">
-								<div class="small-9 columns">
-									<input type="text" placeholder="Value">
-								</div>
-								<div class="small-3 columns">
-									<span class="postfix radius">Label</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="large-6 columns">
-							<label class="error">Error<input type="text" class="error" />
-							</label>
-							<small class="error">Invalid entry</small>
-						</div>
-						<div class="large-6 columns error">
-							<label>Another Error<input type="text" />
-							</label>
-							<small class="error">Invalid entry</small>
-						</div>
-					</div>
-					<textarea class="error" placeholder="Message..."> </textarea>
-					<small class="error">Invalid entry</small>
-					<div class="range-slider" data-slider>
-						<span class="range-slider-handle">
-						</span>
-						<span class="range-slider-active-segment">
-						</span>
-						<input type="hidden">
-					</div>
-					</fieldset>
-				</form>		
-			</div>
-		</div>
-		<a class="close-reveal-modal">&#215;</a>
-	</div>
-
-	<a href="#" data-reveal-id="myModal">Click Me For A Modal</a>
-
-	<div id="ajaxed" class="reveal-modal" data-reveal>
-		test
-		
-	</div>
+    	<div id="logon_register" class="reveal-modal small" data-reveal>
+    		<h2>Signup or register with CCCS</h2>
+    		<p><small>Please login filling the following form. If you don't have an account yet you could easily register <a href="">here</a></small></p>
+    		<ul class="tabs" data-tab>
+    			<li class="tab-title active" class="tooltip has-tip tip-top" data-tooltip title="Login">
+    				<a href="#login"><i class="icon-key"></i></a>
+    			</li>
+    			<li class="tab-title" class="tooltip has-tip tip-top" data-tooltip title="Register">
+    				<a href="#register"><i class="icon-news"></i></a>
+    			</li>
+    			<li class="tab-title" class="tooltip has-tip tip-top" data-tooltip title="General form UI elements">
+    				<a href="#forms-ui"><i class="icon-adjustments"></i></a>
+    			</li>
+    		</ul>
+    		<div class="tabs-content">
+    			<div class="content active" id="login">
+    				<form method="post">
+    					<fieldset>
+    						<legend>
+    							Log in 
+    						</legend>
+    						<input type="hidden" name="referrer" value="https://production.crossculturalconsult.com/">
+    						<input type="hidden" name="csrfmiddlewaretoken" value="ID4FzTGofneTMTCYf4FrrZoGLvcoICbE">
+    						<div class="form-group input_id_username ">
+    							<label class="control-label" for="id_username">
+    								Username or email address 
+    							</label>
+    							<input autofocus="" id="id_username" name="username" required="" type="text">
+    						</div>
+    						<div class="form-group input_id_password ">
+    							<label class="control-label" for="id_password">
+    								Password
+    							</label>
+    							<input id="id_password" name="password" required="" type="password">
+    						</div>
+    						<div class="form-actions">
+    							<input class="button alert small" type="submit" value="Log in">
+    						</div>
+    					</fieldset>
+    				</form>
+    			</div>
+    			<div class="content" id="register">
+    				<form method="post">
+    					<fieldset>
+    						<legend>Sign up
+    						</legend>
+    						<input type="hidden" name="referrer" value="https://production.crossculturalconsult.com/accounts/login/?next=/">
+    						<input type="hidden" name="csrfmiddlewaretoken" value="ID4FzTGofneTMTCYf4FrrZoGLvcoICbE">
+    						<div class="form-group input_id_first_name ">
+    							<label class="control-label" for="id_first_name">
+    								First name
+    							</label>
+    							<input autofocus="" id="id_first_name" maxlength="30" name="first_name" type="text">
+    						</div>
+    						<div class="form-group input_id_last_name ">
+    							<label class="control-label" for="id_last_name">
+    								Last name
+    							</label>
+    							<input id="id_last_name" maxlength="30" name="last_name" type="text">
+    						</div>
+    						<div class="form-group input_id_email ">
+    							<label class="control-label" for="id_email">
+    								Email address
+    							</label>
+    							<input id="id_email" maxlength="75" name="email" type="email">
+    						</div>
+    						<div class="form-group input_id_username ">
+    							<label class="control-label" for="id_username">
+    								Username
+    							</label>
+    							<input id="id_username" maxlength="30" name="username" required="" type="text">
+    							<p class="help-block">
+    								Only letters, numbers, dashes or underscores please
+    							</p>
+    						</div>
+    						<div class="form-group input_id_password1 ">
+    							<label class="control-label" for="id_password1">
+    								Password
+    							</label>
+    							<input autocomplete="off" id="id_password1" name="password1" type="password">
+    						</div>
+    						<div class="form-group input_id_password2 ">
+    							<label class="control-label" for="id_password2">
+    								Password (again)
+    							</label>
+    							<input autocomplete="off" id="id_password2" name="password2" type="password">
+    						</div>
+    						<div class="form-actions">
+    							<input class="button success small" type="submit" value="Signup">
+    						</div>
+    					</fieldset>
+    				</form>				
+    			</div>
+    			<div class="content" id="forms-ui">
+    				<form>
+    					<fieldset>
+    						<legend>Fieldset</legend>
+    						<div class="row">
+    							<div class="large-12 columns">
+    								<label>Input Label<input type="text" placeholder="large-12.columns" />
+    								</label>
+    							</div>
+    						</div>
+    						<div class="row">
+    							<div class="large-4 columns">
+    								<label>Input Label<input type="text" placeholder="large-4.columns" />
+    								</label>
+    							</div>
+    							<div class="large-4 columns">
+    								<label>Input Label<input type="text" placeholder="large-4.columns" />
+    								</label>
+    							</div>
+    							<div class="large-4 columns">
+    								<div class="row collapse">
+    									<label>Input Label</label>
+    									<div class="small-9 columns">
+    										<input type="text" placeholder="small-9.columns" />
+    									</div>
+    									<div class="small-3 columns">
+    										<span class="postfix">.com</span>
+    									</div>
+    								</div>
+    							</div>
+    						</div>
+    						<div class="row">
+    							<div class="large-12 columns">
+    								<label>Select Box
+    									<select>
+    										<option value="husker">Husker</option>
+    										<option value="starbuck">Starbuck</option>
+    										<option value="hotdog">Hot Dog</option>
+    										<option value="apollo">Apollo</option>
+    									</select>
+    								</label>
+    							</div>
+    						</div>
+    						<div class="row">
+    							<div class="large-6 columns">
+    								<label>Choose Your Favorite</label>
+    								<input type="radio" name="pokemon" value="Red" id="pokemonRed">
+    								<label for="pokemonRed">Red</label>
+    								<input type="radio" name="pokemon" value="Blue" id="pokemonBlue">
+    								<label for="pokemonBlue">Blue</label>
+    							</div>
+    							<div class="large-6 columns">
+    								<label>Check these out</label>
+    								<input id="checkbox1" type="checkbox">
+    								<label for="checkbox1">Checkbox 1</label>
+    								<input id="checkbox2" type="checkbox">
+    								<label for="checkbox2">Checkbox 2</label>
+    							</div>
+    						</div>
+    						<div class="row">
+    							<div class="large-12 columns">
+    								<label>Textarea Label<textarea placeholder="small-12.columns">
+    								</textarea>
+    							</label>
+    						</div>
+    					</div>
+    					<div class="row collapse">
+    						<div class="small-3 large-2 columns">
+    							<span class="prefix">http://</span>
+    						</div>
+    						<div class="small-9 large-10 columns">
+    							<input type="text" placeholder="Enter your URL...">
+    						</div>
+    					</div>
+    					<div class="row">
+    						<div class="large-6 columns">
+    							<div class="row collapse">
+    								<div class="small-10 columns">
+    									<input type="text" placeholder="Hex Value">
+    								</div>
+    								<div class="small-2 columns">
+    									<a href="#" class="button postfix">Go</a>
+    								</div>
+    							</div>
+    						</div>
+    						<div class="large-6 columns">
+    							<div class="row collapse">
+    								<div class="small-9 columns">
+    									<input type="text" placeholder="Value">
+    								</div>
+    								<div class="small-3 columns">
+    									<span class="postfix radius">Label</span>
+    								</div>
+    							</div>
+    						</div>
+    					</div>
+    					<div class="row">
+    						<div class="large-6 columns">
+    							<label class="error">Error<input type="text" class="error" />
+    							</label>
+    							<small class="error">Invalid entry</small>
+    						</div>
+    						<div class="large-6 columns error">
+    							<label>Another Error<input type="text" />
+    							</label>
+    							<small class="error">Invalid entry</small>
+    						</div>
+    					</div>
+    					<textarea class="error" placeholder="Message..."> </textarea>
+    					<small class="error">Invalid entry</small>
+    					<div class="range-slider" data-slider>
+    						<span class="range-slider-handle">
+    						</span>
+    						<span class="range-slider-active-segment">
+    						</span>
+    						<input type="hidden">
+    					</div>
+    				</fieldset>
+    			</form>		
+    		</div>
+    	</div>
+    	<a class="close-reveal-modal">&#215;</a>
+    </div>
 
     </body>
 </html>
