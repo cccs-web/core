@@ -11402,3 +11402,19 @@ dl.tabs dd {
     padding: 0 3rem;
   }
 }
+/* line 1, ../../scss/_breadcrumbs.scss */
+.breadcrumbs {
+  width: 100%;
+  margin: 2rem 0 1rem;
+  padding: 0;
+  background: none;
+  border-color: transparent;
+}
+/* line 10, ../../scss/_breadcrumbs.scss */
+.breadcrumbs:hover li:not(.unavailable):not(.current) a {
+  color: #5171e6;
+}
+/* line 17, ../../scss/_breadcrumbs.scss */
+.breadcrumbs li a {
+  color: #838db4;
+}

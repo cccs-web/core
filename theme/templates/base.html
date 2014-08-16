@@ -83,16 +83,6 @@
 			        </form>
 		        </aside>
 
-		        <section id="breadcrumbs" class="row">
-		        	<div class="small-12 columns">
-		                <ul class="breadcrumbs">
-		                    {% spaceless %}
-		                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-		                    {% endspaceless %}
-		                </ul>		        		
-		        	</div>
-		        </section>
-
 		        <section id="alerts" class="row">
 		        	<div class="small-12 columns">
 		                {% nevercache %}
@@ -106,7 +96,22 @@
 		                    {% endfor %}
 		                </div>
 		                {% endif %}
-		                {% endnevercache %}		        		
+		                {% endnevercache %}
+	
+			        	<div data-alert="" class="alert-box warning">
+							This is a warning alert that is created as an example.
+							<a href="#" class="close">×</a>
+						</div>
+		        	</div>
+		        </section>
+
+		        <section id="breadcrumbs" class="row">
+		        	<div class="small-12 columns">
+		                <ul class="breadcrumbs">
+		                    {% spaceless %}
+		                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+		                    {% endspaceless %}
+		                </ul>		        		
 		        	</div>
 		        </section>
 
