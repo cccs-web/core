@@ -4,7 +4,7 @@
 		width: 100%;
 		padding-bottom: $topbar-height;
 		border-bottom: 1px solid $greyd;
-		@include shadow(0,2rem,3rem,4px,rgba($bl,.05),false);
+		@include shadow(0,2rem,3rem,4px,rgba($bl,.03),false);
 		@include single-transition(all, .5s, ease-in-out);
 
 		&.scrolling {
