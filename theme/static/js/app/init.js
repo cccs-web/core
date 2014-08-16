@@ -56,6 +56,7 @@ requirejs.config({
         // Application
         , 'app' :                       'app/app'
         , 'browser-detect' :            'app/utils/browser-detect'
+        , 'dom' :                       'app/utils/dom'
 
     }
 

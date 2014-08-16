@@ -21,6 +21,7 @@ require([
     // , 'jVelocity'
     // , 'velocityUI'
     , 'jCookie'
+    , 'dom'
 
     ], function ($, Modernizr, FastClick) {
 

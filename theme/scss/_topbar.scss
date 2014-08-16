@@ -119,6 +119,12 @@
 							color: $greyc;
 						}
 					}
+
+					dd { 
+						[type="radio"] {
+							display: none;
+						}
+					}
 				}
 
 				.srcel {
@@ -150,7 +156,9 @@
 			> ul {
 				> li {
 					&:last-child {
-						padding-right: 1rem;
+						a {
+							padding-right: 2rem;
+						}
 					}
 				}
 			}

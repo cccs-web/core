@@ -11360,10 +11360,14 @@ dl.tabs dd {
   color: #cccccc;
 }
 /* line 124, ../../scss/_topbar.scss */
+#topbar .search ul li dl dd [type="radio"] {
+  display: none;
+}
+/* line 130, ../../scss/_topbar.scss */
 #topbar .search ul li .srcel {
   margin: .15rem 0 0;
 }
-/* line 127, ../../scss/_topbar.scss */
+/* line 133, ../../scss/_topbar.scss */
 #topbar .search ul li .srcel.input-text {
   border: 0;
   margin: .15rem 0 0;
@@ -11376,7 +11380,7 @@ dl.tabs dd {
   -o-transition: all 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
 }
-/* line 135, ../../scss/_topbar.scss */
+/* line 141, ../../scss/_topbar.scss */
 #topbar .search ul li .srcel.input-text:focus {
   color: #444444;
   background: white;
@@ -11388,12 +11392,12 @@ dl.tabs dd {
 }
 
 @media only screen and (min-width: 40.063em) {
-  /* line 152, ../../scss/_topbar.scss */
-  .top-bar .top-bar-section > ul > li:last-child {
-    padding-right: 1rem;
+  /* line 159, ../../scss/_topbar.scss */
+  .top-bar .top-bar-section > ul > li:last-child a {
+    padding-right: 2rem;
   }
 
-  /* line 160, ../../scss/_topbar.scss */
+  /* line 168, ../../scss/_topbar.scss */
   .search {
     padding: 0 3rem;
   }
