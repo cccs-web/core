@@ -160,6 +160,25 @@
 							padding-right: 2rem;
 						}
 					}
+
+					.dropdown {
+						li { 
+							width: 15rem;
+
+							&:not(.has-form):hover {
+								a {
+									color: $greyc;
+									background: $grey4;
+								}
+							}
+
+							a {
+								width: inherit;
+								white-space: normal;
+								padding: .75rem .5rem !important;
+							}
+						}
+					}
 				}
 			}
 		}

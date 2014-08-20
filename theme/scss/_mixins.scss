@@ -25,6 +25,22 @@
 }
 
 
+// hyphens
+@mixin hyphens($hyphens) {
+    -webkit-hyphens: hyphens;
+    -moz-hyphens: hyphens;
+    hyphens: hyphens;
+}
+
+
+// word breaking
+@mixin word-break($word-break) {
+    -ms-word-break: $word-break;
+    word-break: $word-break;
+}
+
+
+
 // Shadow
 $bs-h-offset: 1px !default;
 $bs-v-offset: 2px !default;
