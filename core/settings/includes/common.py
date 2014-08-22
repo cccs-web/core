@@ -161,7 +161,8 @@ INSTALLED_APPS = (
     "mezzanine_pagedown",
     "mezzanine_slides",
     "modeltranslation",
-    "south")
+    "south",
+    "require")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -207,6 +208,11 @@ MIDDLEWARE_CLASSES = (
 PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
 PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
+
+STATICFILES_STORAGE = (
+    "require.storage.OptimizedStaticFilesStorage",
+    # "require.storage.OptimizedCachedStaticFilesStorage"
+)
 #########################
 # OPTIONAL APPLICATIONS #
 #########################
