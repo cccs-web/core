@@ -27,6 +27,45 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
         context = super(CVDetailView, self).get_context_data(**kwargs)
         context['can_update'] = self.can_update(self.request)
         context['use_right_col'] = "No"
+
+        def join_with_and(lst):
+            if lst[2:]:
+                return '{0}, and {1}'.format(', '.join(lst[:-1]), lst[-1])
+            elif lst[1:]:
+                return ' and '.join(lst)
+            elif lst:
+                return lst[0]
+            else:
+                return ''
+
+        cv = context['object']
+        projects = [cvproject.project for cvproject in cm.CVProject.objects.filter(cv=cv)]
+
+        # Create sets of the project related categories and countries
+        context['countries'] = {str(country.name) for project in projects for country in project.countries.all()}
+
+        for context_name, attname, parent_attname in (
+                ('themes', 'cccs_subthemes', 'theme'),
+                ('sectors', 'cccs_subsectors', 'sector')):
+            context[context_name] = {str(getattr(elt, parent_attname).name)
+                                     for project in projects
+                                     for elt in getattr(project, attname).all()}
+
+        # sort them and turn them into comma delimited strings
+        for context_name in ('countries', 'themes', 'sectors'):
+            context[context_name] = list(context[context_name])
+            context[context_name].sort()
+            context[context_name] = join_with_and(context[context_name])
+
+
+
+        # areas_attnames = ('cccs_subthemes', 'cccs_subsectors',)
+        # for attname in areas_attnames:
+        #     context[attname] = [str(elt)
+        #                         for project in projects
+        #                         for elt in getattr(project, attname).all()]
+        #     context[attname] = join_with_and(context[attname])
+
         return context
 
 
