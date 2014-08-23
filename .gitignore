@@ -6,9 +6,9 @@ gunicorn_logs/
 *.db
 .DS_Store
 .coverage
-local_settings.py
 static_collected/
 interchange/
 scss/
 .sass-cache/
 media/
+scratch.py

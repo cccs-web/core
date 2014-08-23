@@ -1,13 +1,35 @@
 {% extends 'base.html' %}
 {% block main %}
-    <h1>CV for {{ object.user.first_name }} {{ object.user.last_name }}</h1>
-    <p>More work to do here by editing cvs/templates/cvs/cv_detail.html...</p>
+    <h1>CV for {{ cv.user.first_name }} {{ cv.user.last_name }}</h1>
     {% if can_update %}
-        <a href="{% url "cv-update" slug=object.slug %}" class="btn btn-sm btn-default">
-            <span class="glyphicon glyphicon-edit"></span>Edit
-        </a>
+        <p>
+            <a href="{% url "cv-update" slug=cv.slug %}" class="btn btn-sm btn-default">
+                <span class="glyphicon glyphicon-edit"></span>Edit
+            </a>
+        </p>
     {% endif %}
-    <h2>Education</h2>
+
+    {{ cv.description }}
+
+    <h2>Areas of Specialization</h2>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <tr>
+            <th>Thematic Issues</th>
+            <td>{{ themes }}</td>
+        </tr>
+        <tr>
+            <th>Sectors</th>
+            <td>{{ sectors }}</td>
+        </tr>
+        <tr>
+            <th>Countries</th>
+            <td>{{ countries }}</td>
+        </tr>
+    </table>
+
+    <h2>Educational Background</h2>
+    {% if cv.cveducation_set.first %}
+    <h3>Academic Degrees</h3>
     <table class="table table-striped table-bordered table-hover table-condensed">
         <thead>
         <tr>
@@ -19,7 +41,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for cveducation in object.cveducation_set.all %}
+        {% for cveducation in cv.cveducation_set.all %}
             <tr>
                 <td>{{ cveducation.institution }}</td>
                 <td>{{ cveducation.subject }}</td>
@@ -30,7 +52,10 @@
         {% endfor %}
         </tbody>
     </table>
-    <h2>Training</h2>
+    {% endif %}
+
+    {% if cv.cvtraining_set.first %}
+    <h3>Specialised Training</h3>
     <table class="table table-striped table-bordered table-hover table-condensed">
         <thead>
         <tr>
@@ -41,7 +66,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for cvtraining in object.cvtraining_set.all %}
+        {% for cvtraining in cv.cvtraining_set.all %}
             <tr>
                 <td>{{ cvtraining.institution }}</td>
                 <td>{{ cvtraining.subject }}</td>
@@ -51,7 +76,10 @@
         {% endfor %}
         </tbody>
     </table>
-    <h2>Professional Membership</h2>
+    {% endif %}
+
+    {% if cv.cvmembership_set.first %}
+    <h2>Membership in Professional Societies</h2>
     <table class="table table-striped table-bordered table-hover table-condensed">
         <thead>
         <tr>
@@ -62,7 +90,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for cvmembership in object.cvmembership_set.all %}
+        {% for cvmembership in cv.cvmembership_set.all %}
             <tr>
                 <td>{{ cvmembership.organization }}</td>
                 <td>{{ cvmembership.role }}</td>
@@ -72,6 +100,72 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
+
+    <h2>Project Experience</h2>
+    <div class="panel-group" id="project_accordion">
+        {% for cvproject in cv.cvproject_set.all %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a class="panel-toggle" data-toggle="collapse" data-parent="#project_accordion" href="#prj{{ cvproject.id }}">
+                            <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;{{ cvproject.project.name }}
+                        </a>
+                        &nbsp;(<a href="{% url 'project-detail' slug=cvproject.project.slug %}">visit project</a>)
+                    </h3>
+                </div>
+                <div id="prj{{ cvproject.id }}" class="panel-body collapse">
+                    <div class="panel-inner">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tbody>
+                            <tr>
+                                <th>Position:</th>
+                                <td>{{ cvproject.position }}</td>
+                            </tr>
+                            <tr>
+                                <th>Months Worked:</th>
+                                <td>{{ cvproject.person_months }}</td>
+                            </tr>
+                            <tr>
+                                <th>Activities:</th>
+                                <td>{{ cvproject.activities }}</td>
+                            </tr>
+                            <tr>
+                                <th>References:</th>
+                                <td>{{ cvproject.references }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if cv.cvemployment_set.first %}
+    <h2>Employment Experience</h2>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+        <tr>
+            <th>Employer</th>
+            <th>Dates Employed</th>
+            <th>Months Worked</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cvemployment in cv.cvemployment_set.all %}
+            <tr>
+                <td>{{ cvemployment.employer }}</td>
+                <td>{{ cvemployment.from_date }} - {{ cvemployment.to_date }}</td>
+                <td>{{ cvemployment.months }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+
+    {% if cv.cvlanguage_set.first %}
     <h2>Languages</h2>
     <table class="table table-striped table-bordered table-hover table-condensed">
         <thead>
@@ -83,7 +177,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for cvlanguage in object.cvlanguage_set.all %}
+        {% for cvlanguage in cv.cvlanguage_set.all %}
             <tr>
                 <td>{{ cvlanguage.language }}</td>
                 <td>{{ cvlanguage.reading }}</td>
@@ -93,31 +187,6 @@
         {% endfor %}
         </tbody>
     </table>
-    <h2>Projects</h2>
-    <table class="table table-striped table-bordered table-hover table-condensed">
-        <thead>
-        <tr>
-            <td>Project</td>
-            <td>Position</td>
-            <td>Months Worked</td>
-            <td>Activities</td>
-            <td>References</td>
-        </tr>
-        </thead>
-        <tbody>
-        {% for cvproject in object.cvproject_set.all %}
-            <tr>
-                <td>
-                    <a href="{% url 'project-detail' slug=cvproject.project.slug %}">
-                        {{ cvproject.project.name }}
-                    </a>
-                </td>
-                <td>{{ cvproject.position }}</td>
-                <td>{{ cvproject.person_months }}</td>
-                <td>{{ cvproject.activities }}</td>
-                <td>{{ cvproject.references }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% endif %}
+
 {% endblock main %}
