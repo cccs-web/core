@@ -161,8 +161,7 @@ INSTALLED_APPS = (
     "mezzanine_pagedown",
     "mezzanine_slides",
     "modeltranslation",
-    "south",
-    "require")
+    "south")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
