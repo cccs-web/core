@@ -209,10 +209,6 @@ PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
 PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
 
-STATICFILES_STORAGE = (
-    "require.storage.OptimizedStaticFilesStorage",
-    # "require.storage.OptimizedCachedStaticFilesStorage"
-)
 #########################
 # OPTIONAL APPLICATIONS #
 #########################
