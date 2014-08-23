@@ -39,6 +39,8 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
                 return ''
 
         cv = context['object']
+        context['cv'] = cv  # for convenience
+
         projects = [cvproject.project for cvproject in cm.CVProject.objects.filter(cv=cv)]
 
         # Create sets of the project related categories and countries
@@ -56,15 +58,6 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
             context[context_name] = list(context[context_name])
             context[context_name].sort()
             context[context_name] = join_with_and(context[context_name])
-
-
-
-        # areas_attnames = ('cccs_subthemes', 'cccs_subsectors',)
-        # for attname in areas_attnames:
-        #     context[attname] = [str(elt)
-        #                         for project in projects
-        #                         for elt in getattr(project, attname).all()]
-        #     context[attname] = join_with_and(context[attname])
 
         return context
 
