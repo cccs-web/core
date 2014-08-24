@@ -58,7 +58,20 @@ class Country(HasProjectsMixin, UniqueNamed):
         return u"{0} ({1})".format(self.name, self.iso)
 
 
-class CCCSTheme(HasProjectsMixin, UniqueNamed):
+class UniqueNamedWithAbbreviation(UniqueNamed):
+
+    class Meta:
+        abstract = True
+
+    @property
+    def abbreviation(self):
+        try:
+            return self.name[0:self.name.index(":")]
+        except ValueError:
+            return ''.join([word[0] for word in self.name.split()])
+
+
+class CCCSTheme(HasProjectsMixin, UniqueNamedWithAbbreviation):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'CCCS Theme'
@@ -80,10 +93,10 @@ class CCCSSubTheme(HasProjectsMixin, CCCSModel):
         unique_together = ('theme', 'name')
 
     def __unicode__(self):
-        return u"{0}/{1}".format(self.theme.name, self.name)
+        return u"{0}/{1}".format(self.theme.abbreviation, self.name)
 
 
-class CCCSSector(HasProjectsMixin, UniqueNamed):
+class CCCSSector(HasProjectsMixin, UniqueNamedWithAbbreviation):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'CCCS Sector'
@@ -105,14 +118,14 @@ class CCCSSubSector(HasProjectsMixin, CCCSModel):
         unique_together = ('sector', 'name')
 
     def __unicode__(self):
-        return u"{0}/{1}".format(self.sector.name, self.name)
+        return u"{0}/{1}".format(self.sector.abbreviation, self.name)
 
     @property
     def projects(self):
         return Project.objects.filter(cccs_subsectors=self)
 
 
-class IFCTheme(HasProjectsMixin, UniqueNamed):
+class IFCTheme(HasProjectsMixin, UniqueNamedWithAbbreviation):
 
     class Meta(UniqueNamed.Meta):
         verbose_name = 'IFC Theme'
@@ -134,7 +147,7 @@ class IFCSubTheme(HasProjectsMixin, CCCSModel):
         unique_together = ('theme', 'name')
 
     def __unicode__(self):
-        return u"{0}/{1}".format(self.theme.name, self.name)
+        return u"{0}/{1}".format(self.theme.abbreviation, self.name)
 
 
 class IFCSector(HasProjectsMixin, UniqueNamed):
