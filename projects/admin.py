@@ -93,7 +93,7 @@ class CCCSSubThemeInline(admin.TabularInline):
 
 
 class CCCSThemeAdmin(HasProjectsAdmin):
-    list_display = ['name', 'project_count']
+    list_display = ['name', 'abbreviation', 'project_count']
     inlines = [
         CCCSSubThemeInline]
 
@@ -114,7 +114,7 @@ class CCCSSubSectorInline(admin.TabularInline):
 
 
 class CCCSSectorAdmin(HasProjectsAdmin):
-    list_display = ['name', 'project_count']
+    list_display = ['name', 'abbreviation', 'project_count']
     inlines = [
         CCCSSubSectorInline]
 
@@ -127,7 +127,7 @@ class IFCSubThemeInline(admin.TabularInline):
 
 
 class IFCThemeAdmin(HasProjectsAdmin):
-    list_display = ['name', 'project_count']
+    list_display = ['name', 'abbreviation', 'project_count']
     inlines = [
         IFCSubThemeInline]
 
