@@ -223,6 +223,9 @@ RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
 RICHTEXT_FILTERS = ['mezzanine_pagedown.filters.extra']
 RICHTEXT_FILTER_LEVEL = 3
 
+
+FILEBROWSER_DIRECTORY = ''
+
 ####################
 # DYNAMIC SETTINGS #
 ####################
