@@ -143,6 +143,7 @@ class CVTraining(CVLearning):
     class Meta:
         verbose_name = "Training"
         verbose_name_plural = "Training"
+        ordering = ['-from_date']
 
 
 class CVEducation(CVLearning):
@@ -151,6 +152,7 @@ class CVEducation(CVLearning):
     class Meta:
         verbose_name = "Education"
         verbose_name_plural = "Education"
+        ordering = ['-from_date']
 
 
 class CVMembership(CVDateRangeSet):
@@ -160,6 +162,7 @@ class CVMembership(CVDateRangeSet):
     class Meta:
         verbose_name = "Membership"
         verbose_name_plural = "Memberships"
+        ordering = ['-from_date']
 
 
 LANGUAGE_ABILITY_CHOICES = ((5, "Native (equiv)"),
@@ -190,6 +193,7 @@ class CVEmployment(CVDateRangeSet):
     class Meta:
         verbose_name = "Employment"
         verbose_name_plural = "Employment"
+        ordering = ['-from_date']
 
 
 class CVPublication(CVSet):
@@ -203,3 +207,4 @@ class CVPublication(CVSet):
     class Meta:
         verbose_name = "Publication"
         verbose_name_plural = "Publications"
+        ordering = ['-publication_date', 'title']
