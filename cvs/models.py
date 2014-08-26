@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 
 from projects.models import Country, UniqueNamed
 
-from mezzanine.core.models import Displayable
+from mezzanine.core.models import Displayable, RichText
+from mezzanine.core.fields import RichTextField
 
 
 class Language(UniqueNamed):
@@ -18,7 +19,7 @@ class AssociateRole(UniqueNamed):
     pass
 
 
-class CV(Displayable):
+class CV(RichText, Displayable):
     user = models.OneToOneField(User, related_name="cv")
     middle_names = models.CharField(max_length=128, null=True, blank=True)
     alternate_names = models.CharField(max_length=128, null=True, blank=True)
@@ -116,8 +117,8 @@ class CVProject(CVSet):
     project = models.ForeignKey('projects.Project')
     position = models.CharField(max_length=256, null=True, blank=True)
     person_months = models.CharField(max_length=64, null=True, blank=True)
-    activities = models.TextField(max_length=4096, null=True, blank=True)
-    references = models.TextField(max_length=512, null=True, blank=True)
+    activities = RichTextField(null=True, blank=True)
+    references = RichTextField(null=True, blank=True)
     from_date = models.DateField(help_text="Date started working on project",
                                  null=True, blank=True)
     to_date = models.DateField(help_text="Date finished working on project",
@@ -128,6 +129,10 @@ class CVProject(CVSet):
         verbose_name_plural = "CV Projects"
         unique_together = ('cv', 'project')
         ordering = ('-to_date',)
+
+    def __unicode__(self):
+        return u'{0}: {1}'.format(self.project.name, self.position)
+
 
 
 class CVLearning(CVDateRangeSet):
@@ -187,13 +192,16 @@ class CVEmployment(CVDateRangeSet):
     employer = models.CharField(max_length=256)
     location = models.CharField(max_length=256, null=True, blank=True)
     position = models.CharField(max_length=256, null=True, blank=True)
-    accomplishments = models.TextField(max_length=8192, null=True, blank=True)
+    accomplishments = RichTextField(null=True, blank=True)
     references = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
         verbose_name = "Employment"
         verbose_name_plural = "Employment"
         ordering = ['-from_date']
+
+    def __unicode__(self):
+        return u'{0}: {1}'.format(self.employer, self.position)
 
 
 class CVPublication(CVSet):

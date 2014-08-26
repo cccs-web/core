@@ -5,7 +5,7 @@ import cvs.models as cm
 admin.site.register(cm.AssociateRole, admin.ModelAdmin)
 
 
-class CVProjectInline(admin.TabularInline):
+class CVProjectInline(admin.StackedInline):
     model = cm.CVProject
     extra = 1
 
@@ -30,7 +30,7 @@ class CVLanguageInline(admin.TabularInline):
     extra = 1
 
 
-class CVEmploymentInline(admin.TabularInline):
+class CVEmploymentInline(admin.StackedInline):
     model = cm.CVEmployment
     extra = 1
 
