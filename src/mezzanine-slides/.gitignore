@@ -1,0 +1,5 @@
+*.pyc
+/dist/
+/mezzanine_slides.egg-info/
+/MANIFEST
+.idea/

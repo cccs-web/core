@@ -207,6 +207,7 @@ MIDDLEWARE_CLASSES = (
 PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
 PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
+
 #########################
 # OPTIONAL APPLICATIONS #
 #########################

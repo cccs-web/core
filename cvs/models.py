@@ -1,3 +1,6 @@
+from calendar import monthrange
+from datetime import datetime, timedelta
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -86,6 +89,27 @@ class CVDateRangeSet(CVSet):
 
     class Meta:
         abstract = True
+
+    @property
+    def months(self):
+        """
+        Return the integer number of months (rounded up) in the date range
+        """
+        if self.from_date is None:
+            return 0
+
+        delta = 0
+        to_date = datetime.now().date() if self.to_date is None else self.to_date
+
+        # Go through the months to allow for num days in each month
+        while True:
+            mdays = monthrange(self.from_date.year, self.from_date.month)[1]
+            self.from_date += timedelta(days=mdays)
+            if self.from_date <= to_date:
+                delta += 1
+            else:
+                break
+        return delta
 
 
 class CVProject(CVSet):

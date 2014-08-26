@@ -25,6 +25,7 @@
 
         <link href="{% static "css/app.css" %}" rel="stylesheet" type="text/css" />
         <script data-main="{% static "js/app/init" %}" src="{% static "js/libs/require.js" %}" type="text/javascript"></script>
+
         {% block extra_head %}{% endblock %}
     </head>
 
@@ -43,7 +44,7 @@
 		        			<li class="name">
 		        				<h1><a href="/"><img id="cccs-logo" src="{% static "imgs/cccs.svg" %}" title="Cross-Cultural Consulting Services" /></a></h1>
 		        			</li>
-		        			<li class="hide-for-medium-down">
+		        			<li class="hide-for-small">
 		        				<a href="/"><img id="cccs-text" src="{% static "imgs/cccs_text.svg" %}" /></a>
 		        			</li>
 		        		</ul>		        		
@@ -56,48 +57,31 @@
 		        	<nav class="search">
 	                    {% search_form "all" %}
 		        	</nav>
-
 		        </header>
 
 		        <aside class="right-off-canvas-menu">
-		        	<ul class="off-canvas-list">
-		        		<li><label>Internationalisation</label></li>
-		        		<li><a href="#">Romanian</a></li>
-		        		<li><a href="#">English</a></li>
-		        		<li><a href="#">Russian</a></li>
-		        		<li><a href="#">French</a></li>
-		        		<li><a href="#">Spanish</a></li>
-		        		
-		        		<li><label>Internationalisation</label></li>
-		        		<li>
-		        			<div class="panel panel-default">
-		        				<form action="{% url 'set_language' %}" method="post">
-		        					{% csrf_token %}
-		        					<input name="next" type="hidden" value="{{ redirect_to }}" />
-		        					<select name="language">
-		        						{% get_language_info_list for LANGUAGES as languages %}
-		        						{% for language in languages %}
-		        						<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-		        							{{ language.name_local }} ({{ language.code }})
-		        						</option>
-		        						{% endfor %}
-		        					</select>
-		        					<input type="submit" value="Go" />
-		        				</form>
-		        			</div>		        				        			
-		        		</li>
-		        	</ul>
+    				<form action="{% url 'set_language' %}" method="post">
+    					{% csrf_token %}
+    					<input name="next" type="hidden" value="{{ redirect_to }}" />
+			        	<ul class="off-canvas-list">
+								<!-- 
+				        		<select name="language">
+			        				<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+			        					{{ language.name_local }} ({{ language.code }})
+			        				</option>
+			        			</select>
+			        			<input type="submit" value="Go" />
+			        			 -->
+			        		<li><label>Internationalisation</label></li>
+			        		{% get_language_info_list for LANGUAGES as languages %}
+			        		{% for language in languages %}
+			        		<li>
+			        			 <a href="#">{{ language.name_local }} ({{ language.code }})</a>
+			        		</li>
+			        		{% endfor %}
+			        	</ul>
+			        </form>
 		        </aside>
-
-		        <section id="breadcrumbs" class="row">
-		        	<div class="small-12 columns">
-		                <ul class="breadcrumbs">
-		                    {% spaceless %}
-		                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-		                    {% endspaceless %}
-		                </ul>		        		
-		        	</div>
-		        </section>
 
 		        <section id="alerts" class="row">
 		        	<div class="small-12 columns">
@@ -112,22 +96,40 @@
 		                    {% endfor %}
 		                </div>
 		                {% endif %}
-		                {% endnevercache %}		        		
+		                {% endnevercache %}
+	
+			        	<div data-alert="" class="alert-box warning">
+							This is a warning alert that is created as an example.
+							<a href="#" class="close">×</a>
+						</div>
 		        	</div>
 		        </section>
 
-		        <section id="content" data-role="content" class="row">
+                {% url 'home' as home_url %}
+                {% if request.get_full_path != home_url %}
+		        <section id="breadcrumbs" class="row">
 		        	<div class="small-12 columns">
-	                    {% if settings.SITE_TITLE %}
-                        {{ settings.SITE_TITLE }}
-                        {% endif %}
-                        {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
-                    </div>
-
-		        	<div class="small-12 columns">
-		                <!-- <h1>{% block title %}{% endblock %}</h1> -->
+		                <ul class="breadcrumbs">
+		                    {% spaceless %}
+		                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+		                    {% endspaceless %}
+		                </ul>		        		
 		        	</div>
-		        		
+		        </section>
+                {% endif %}
+		        <section id="content" data-role="content" class="row">
+                    <!-- 
+    		        	<div class="small-12 columns">
+    	                    {% if settings.SITE_TITLE %}
+                            {{ settings.SITE_TITLE }}
+                            {% endif %}
+                            {% if settings.SITE_TAGLINE %}<p class="navbar-text show-for-large">{{ settings.SITE_TAGLINE }}</p>{% endif %}
+                        </div>
+
+    		        	<div class="small-12 columns">
+    		                <h1>{% block title %}{% endblock %}</h1>
+    		        	</div>
+    		         -->		
 		        	<div class="small-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} columns">
 		        		{% block main %}{% endblock %}
 		        	</div>

@@ -3,7 +3,7 @@ if (typeof DEBUG === 'undefined') DEBUG = true;
 
 // RequireJS config object -- Desktop devices
 requirejs.config({
-    baseUrl : 'static/js'
+    baseUrl : '/static/js'
 
     , paths : {
         // jQuery
