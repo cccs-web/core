@@ -35,6 +35,18 @@ require(['modernizr'],
         
         BrowserDetect.init();
 
-        if (DEBUG) console.log(BrowserDetect.browser+" -v "+BrowserDetect.version);
+        // We checkout if client is Explorer < 9 and give it some polyfills if so
+        if (BrowserDetect.browser === "Explorer" && BrowserDetect.version < 9 ) require(['html5shiv','respond','selectivizr','css3pie']);
+
+        // We checkout if client isn't capable of rendering svg
+        if (!Modernizr.svg) require(['svg']);
+
+        // We checkout if client isn't capable of rendering rem units
+        if (!Modernizr.rem) require(['rem']);
+
+        // We checkout if client isn't capable of rendering CSS3 tranform, box-shadow, gradients, opacity and RGBA/HSL/HSLA colours 
+        if ((!Modernizr.csstransforms) || (!Modernizr.rgba) || (!Modernizr.cssgradients) || (!Modernizr.opacity) || (!Modernizr.boxshadow)) {
+            require(['event_helpers','css_query','sylvester','css_sandpaper']);
+        }
     }
 );

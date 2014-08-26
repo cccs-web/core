@@ -52,11 +52,19 @@ requirejs.config({
         , 'selectivizr' :               ['http://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min','libs/selectivizr']
         , 'respond' :                   ['http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond','libs/respond']
         , 'css3pie' :                   ['http://cdnjs.cloudflare.com/ajax/libs/css3pie/2.0beta1/PIE_IE678','libs/css3pie']
+        , 'svg' :                       ['','libs/svg']
+        , 'rem' :                       ['','libs/rem']
+        , 'dom_shim' :                  ['','libs/DOM-shim']
+        , 'event_helpers' :             ['','libs/EventHelpers']
+        , 'css_query' :                 ['','libs/cssQuery-p']
+        , 'sylvester' :                 ['','libs/sylvester']
+        , 'css_sandpaper' :             ['','libs/cssSandpaper']
 
         // Application
         , 'app' :                       'app/app'
-        , 'browser-detect' :            'app/utils/browser-detect'
-        , 'dom' :                       'app/utils/dom'
+        , 'browser_check' :             'app/utils/browser_check'
+        , 'dom_manipulation' :          'app/utils/dom_manipulation'
+        , 'rgba' :                      'app/utils/ie-rgba'
 
     }
 
@@ -76,8 +84,20 @@ requirejs.config({
         // Placeholder
         , 'placeholder' :               { exports: 'Placeholders'}
 
-        // HTML5 polyfills - IE8 fixes
+        // HTML5 polyfills
         , 'yepnope' :                   { deps : ['modernizr'] }
+        , 'html5shiv' :                 { deps : ['modernizr'] }
+        , 'nwmatcher' :                 { deps : ['modernizr'] }
+        , 'selectivizr' :               { deps : ['modernizr'] }
+        , 'respond' :                   { deps : ['modernizr'] }
+        , 'css3pie' :                   { deps : ['modernizr'] }
+        , 'svg' :                       { deps : ['modernizr'] }
+        , 'rem' :                       { deps : ['modernizr'] }
+        , 'dom_shim' :                  { deps : ['modernizr'] }
+        , 'event_helpers' :             { deps : ['modernizr'] }
+        , 'css_query' :                 { deps : ['modernizr'] }
+        , 'sylvester' :                 { deps : ['modernizr'] }
+        , 'css_sandpaper' :             { deps : ['modernizr'] }
 
         // Underscore (lodash)
         , 'underscore' :                { exports: '_' }
@@ -118,5 +138,5 @@ requirejs.config({
     , waitSeconds : 300
     
     // prevents caching during development
-    // , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
+    , urlArgs : 'ver=1.0-' + ((new Date()).getTime())
 });

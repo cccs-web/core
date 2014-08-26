@@ -1,6 +1,7 @@
 require([
     'jquery'
-    , 'modernizr'
+    , 'browser_check'
+    , 'dom_shim'
     , 'fastclick'
     , 'foundation.abide'
     , 'foundation.accordion'
@@ -21,7 +22,7 @@ require([
     // , 'jVelocity'
     // , 'velocityUI'
     , 'jCookie'
-    , 'dom'
+    , 'dom_manipulation'
 
     ], function ($, Modernizr, FastClick) {
 
