@@ -20,7 +20,7 @@ VIRTUALENV = "cccs"
 # DEPLOY SETTINGS #
 ###################
 
-GUNICORN_BIND = "127.0.0.1:8000"
+GUNICORN_BIND = "127.0.0.1:9482"
 PROCESS_USER = "cristi"
 PROCESS_NAME = "cristi_cccs"
 SITE_TITLE = "Cristi's CCCS"
