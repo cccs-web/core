@@ -7,4 +7,4 @@ source /home/cristi/.virtualenvs/cccs/bin/postactivate
 
 cd /home/cristi/cccs
 
-exec gunicorn -c /home/cristi/cccs_web/deploy/gunicorn.conf.py core.wsgi:application
+exec gunicorn -c /home/cristi/cccs/deploy/gunicorn.conf.py core.wsgi:application
