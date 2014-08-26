@@ -26651,27 +26651,31 @@ dl.tabs dd {
 }
 
 @media only screen and (min-width: 40.063em) {
-  /* line 159, ../../scss/_topbar.scss */
+  /* line 155, ../../scss/_topbar.scss */
+  .top-bar .top-bar-section {
+    float: right;
+  }
+  /* line 161, ../../scss/_topbar.scss */
   .top-bar .top-bar-section > ul > li:last-child a {
     padding-right: 2rem;
   }
-  /* line 165, ../../scss/_topbar.scss */
+  /* line 167, ../../scss/_topbar.scss */
   .top-bar .top-bar-section > ul > li .dropdown li {
     width: 15rem;
   }
-  /* line 169, ../../scss/_topbar.scss */
+  /* line 171, ../../scss/_topbar.scss */
   .top-bar .top-bar-section > ul > li .dropdown li:not(.has-form):hover a {
     color: #ccc;
     background: #444;
   }
-  /* line 175, ../../scss/_topbar.scss */
+  /* line 177, ../../scss/_topbar.scss */
   .top-bar .top-bar-section > ul > li .dropdown li a {
     width: inherit;
     white-space: normal;
     padding: .75rem .5rem !important;
   }
 
-  /* line 187, ../../scss/_topbar.scss */
+  /* line 189, ../../scss/_topbar.scss */
   .search {
     padding: 0 3rem;
   }

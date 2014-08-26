@@ -13,7 +13,7 @@ Thematic Experience
                             {{ super_name }}&nbsp;&nbsp;&nbsp;<strong>({{ super_info.count }} project{{ super_info.count|pluralize }})</strong>
                         </a></h4>
                     </div>
-                    <div id="acc{{ super_info.id }}" class="panel-body collapse">
+                    <div id="acc{{ super_info.id }}" class="panel-body collapse2">
                         <div class="panel-inner">
 
                             <!-- Here we insert another nested accordion -->
@@ -53,3 +53,27 @@ Thematic Experience
 
 {% endblock main %}
 {% endwith %}
+<!-- 
+
+
+    <dl class="accordion" data-accordion="myAccordionGroup">
+      <dd class="accordion-navigation">
+        <a href="#panel1c">Accordion 1</a>
+        <div id="panel1c" class="content">
+          Panel 1. Lorem ipsum dolor
+        </div>
+      </dd>
+      <dd class="accordion-navigation">
+        <a href="#panel2c">Accordion 2</a>
+        <div id="panel2c" class="content">
+          Panel 2. Lorem ipsum dolor
+        </div>
+      </dd>
+      <dd class="accordion-navigation">
+        <a href="#panel3c">Accordion 3</a>
+        <div id="panel3c" class="content">
+          Panel 3. Lorem ipsum dolor
+        </div>
+      </dd>
+    </dl>
+ -->

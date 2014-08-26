@@ -153,6 +153,8 @@
 @media #{$medium-up} {
 	.top-bar {
 		.top-bar-section {
+			float: right;
+			
 			> ul {
 				> li {
 					&:last-child {
