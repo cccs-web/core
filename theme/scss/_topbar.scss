@@ -4,8 +4,7 @@
 		width: 100%;
 		padding-bottom: $topbar-height;
 		border-bottom: 1px solid $greyd;
-		// @include shadow(0,2rem,3rem,4px,rgba($bl,.03),false);
-		@include double-shadow(0,2rem,3rem,4px,rgba($bl,.03), 0,-.5rem,1.5rem,0,$wh);
+		@include shadow(0,2rem,3rem,4px,rgba($bl,.03),false);
 		@include single-transition(all, .5s, ease-in-out);
 
 		&.scrolling {
@@ -142,11 +141,21 @@
 							display: inline-block;
 							margin: 0;
 							padding: .25rem .75rem;
+							color: $grey4;
+							@include single-transition(all, .25s, ease-in-out);
+
+							&:hover {
+								color: $grey3;
+							}
 						}
 
 						&.active {
 							@include radius(.5rem);
 							background: rgba($warning-color,.25);
+
+							label {
+								color: $grey2;
+							}
 						}
 					}
 				}
