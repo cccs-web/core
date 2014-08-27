@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mkdown_filters %}
 {% block main %}
     <h1>CV for {{ cv.user.first_name }} {{ cv.user.last_name }}</h1>
     {% if can_update %}
@@ -9,7 +10,7 @@
         </p>
     {% endif %}
 
-    {{ cv.content }}
+    {{ cv.content|mkdown }}
 
     <h2>Areas of Specialization</h2>
     <table class="table table-striped table-bordered table-hover table-condensed">
@@ -128,11 +129,11 @@
                             </tr>
                             <tr>
                                 <th>Activities:</th>
-                                <td>{{ cvproject.activities }}</td>
+                                <td>{{ cvproject.activities|mkdown }}</td>
                             </tr>
                             <tr>
                                 <th>References:</th>
-                                <td>{{ cvproject.references }}</td>
+                                <td>{{ cvproject.references|mkdown }}</td>
                             </tr>
                             </tbody>
                         </table>

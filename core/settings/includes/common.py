@@ -152,6 +152,7 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "mezzanine_pagedown",
     "mezzanine_slides",
+    "mkdown",
     "modeltranslation",
     "south")
 
