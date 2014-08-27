@@ -228,7 +228,7 @@ SEARCH_MODEL_CHOICES = (
     'projects.Project')
 
 # mezzanine-pagedown
-RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
+RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PlainWidget'
 RICHTEXT_FILTERS = ['mezzanine_pagedown.filters.extra']
 RICHTEXT_FILTER_LEVEL = 3
 

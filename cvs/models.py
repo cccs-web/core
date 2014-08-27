@@ -123,6 +123,13 @@ class CVProject(CVSet):
                                  null=True, blank=True)
     to_date = models.DateField(help_text="Date finished working on project",
                                null=True, blank=True)
+    service_on_site = models.BooleanField(default=False)
+    service_off_site = models.BooleanField(default=False)
+    service_remote = models.BooleanField(default=False)
+    client_end = models.CharField(max_length=128, null=True, blank=True)
+    client_contract = models.CharField(max_length=128, null=True, blank=True)
+    client_beneficiary = models.CharField(max_length=128, null=True, blank=True)
+    contract = models.CharField(max_length=64, null=True, blank=True)
 
     class Meta:
         verbose_name = "CV Project"
