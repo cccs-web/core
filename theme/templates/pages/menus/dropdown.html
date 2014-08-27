@@ -3,7 +3,7 @@
 {% if page_branch_in_menu %}
 
 {% if branch_level == 0 %}
-<ul class="">
+<ul class="main_navigation_menu">
     {% for page in page_branch %}
     {% if not has_home and page.is_primary and forloop.first %}
     <li{% if on_home %} class="active"{% endif %} id="dropdown-menu-home">

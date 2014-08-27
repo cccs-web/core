@@ -36,7 +36,7 @@ require(['modernizr', 'jquery'],
             }
         });
 
-        // check input radio values in the search form
+        // check input radio status in the search form
         $('#search_form input').on('change', function() {
 	        if ( $('input[name="type"]:checked').length > 0 ) {
 		       $(this).closest('dl').find('dd').removeClass('active');
