@@ -8,6 +8,7 @@ requirejs.config({
     , paths : {
         // jQuery
         'jquery':                       ['http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery', 'libs/jquery']
+        , 'jqueryui':                   ['http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min','libs/jquery-ui']
 		, 'jCookie':                    ['http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min', 'libs/jquery.cookie']
 		, 'jEvtMove':                   ['libs/jquery.event.move']
         , 'jEvtSwipe':                  ['libs/jquery.event.swipe']
@@ -72,6 +73,9 @@ requirejs.config({
 
         // Modernizr
         'modernizr' :                   { exports: 'Modernizr'}
+
+        // jQueryUI
+        , 'jqueryui' :                  { deps: ['jquery'] }
 
         // jQuery Cookie
         , 'jCookie' :                   { deps: ['jquery'] }

@@ -1,5 +1,6 @@
 require([
     'jquery'
+    , 'jqueryui'
     , 'browser_check'
     // , 'dom_shim'
     , 'fastclick'
