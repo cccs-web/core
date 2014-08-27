@@ -93,19 +93,14 @@
 		                {% if messages %}
 		                <div class="messages">
 		                    {% for message in messages %}
-		                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-		                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		                    <div class="alert-box {{ message.tags }}">
 		                        {{ message }}
+                                <a href="#" class="close">&times;</a>
 		                    </div>
 		                    {% endfor %}
 		                </div>
 		                {% endif %}
 		                {% endnevercache %}
-	
-			        	<div data-alert="" class="alert-box warning">
-							This is a warning alert that is created as an example.
-							<a href="#" class="close">×</a>
-						</div>
 		        	</div>
 		        </section>
 
