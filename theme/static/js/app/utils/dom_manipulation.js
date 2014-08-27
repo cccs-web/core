@@ -56,7 +56,9 @@ require(['modernizr', 'jquery'],
         // }, 2000);
 
 
-        // Search form
-        
+        // Lang chooser
+        $('[id^="lang-"]').on('click',function() {
+            $(this).closest("form").submit();
+        });
     }
 );
