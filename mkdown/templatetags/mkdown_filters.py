@@ -12,4 +12,6 @@ register = template.Library()
 
 @register.filter()
 def mkdown(content):
+    if content is None:
+        return None
     return mark_safe(filters.extra(content))
