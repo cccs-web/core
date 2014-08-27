@@ -4,7 +4,8 @@
 		width: 100%;
 		padding-bottom: $topbar-height;
 		border-bottom: 1px solid $greyd;
-		@include shadow(0,2rem,3rem,4px,rgba($bl,.03),false);
+		// @include shadow(0,2rem,3rem,4px,rgba($bl,.03),false);
+		@include double-shadow(0,2rem,3rem,4px,rgba($bl,.03), 0,-.5rem,1.5rem,0,$wh);
 		@include single-transition(all, .5s, ease-in-out);
 
 		&.scrolling {
@@ -104,6 +105,8 @@
 		min-height: 2.5rem;
 		display: none;
 		background: $greye;
+		@include shadow(0,2rem,1rem,4px,rgba($greye,.93),false);
+		position: relative;
 
 		ul {
 			li {
@@ -112,17 +115,31 @@
 				float: left;
 
 				dl {
-					margin: .25rem 2rem 0 0; 
+					margin: .25rem 1.5rem 0 0; 
+
+					* {
+						font-size: 80%;
+					}
 
 					dt {
+						margin: 0 .5rem .25rem .25rem;
+
 						em {
-							color: $greyc;
+							color: $grey9;
 						}
 					}
 
 					dd { 
+						margin: 0 0 0 .25rem;
+						padding: 0 0 0 .25rem;
+
 						[type="radio"] {
 							display: none;
+						}
+
+						&.active {
+							@include radius(.5rem);
+							background: rgba($warning-color,.25);
 						}
 					}
 				}
