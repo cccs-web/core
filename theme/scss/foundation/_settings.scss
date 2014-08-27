@@ -30,7 +30,7 @@ $base-line-height: 150%;
 // We use this to control whether or not CSS classes come through in the gem files.
 $include-html-classes: true;
 $include-print-styles: false;
-$include-html-global-classes: $include-html-classes;
+// $include-html-global-classes: $include-html-classes;
 
 // Grid
 
@@ -1341,3 +1341,11 @@ $range-slider-handle-bg-hover-color: scale-color($primary-color, $lightness: -12
 $range-slider-handle-cursor: pointer;
 
 $range-slider-disabled-opacity: 1 !default;
+
+
+// 
+// Include Global component once
+// 
+
+@import "components/global";
+

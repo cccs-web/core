@@ -45,20 +45,20 @@ requirejs.config({
         , 'foundation.tooltip':         ['http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.0/js/foundation/foundation.tooltip.min','libs/foundation/foundation.tooltip']
         , 'foundation.topbar':          ['http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.0/js/foundation/foundation.topbar.min','libs/foundation/foundation.topbar']
 
-        // HTML5 polyfills for getting IE7 and IE8 work with Foundation5
+        // HTML5 polyfills
         , 'yepnope' :                   ['http://cdnjs.cloudflare.com/ajax/libs/yepnope/1.5.4/yepnope.min','libs/yepnope']
         , 'html5shiv' :                 ['http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min','libs/html5shiv']
         , 'nwmatcher' :                 ['http://cdnjs.cloudflare.com/ajax/libs/nwmatcher/1.2.5/nwmatcher.min','libs/nwmatcher']
         , 'selectivizr' :               ['http://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min','libs/selectivizr']
         , 'respond' :                   ['http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond','libs/respond']
         , 'css3pie' :                   ['http://cdnjs.cloudflare.com/ajax/libs/css3pie/2.0beta1/PIE_IE678','libs/css3pie']
-        , 'svg' :                       ['','libs/svg']
-        , 'rem' :                       ['','libs/rem']
-        , 'dom_shim' :                  ['','libs/DOM-shim']
-        , 'event_helpers' :             ['','libs/EventHelpers']
-        , 'css_query' :                 ['','libs/cssQuery-p']
-        , 'sylvester' :                 ['','libs/sylvester']
-        , 'css_sandpaper' :             ['','libs/cssSandpaper']
+        , 'svg' :                       ['libs/svg']
+        , 'rem' :                       ['libs/rem']
+        , 'dom_shim' :                  ['libs/DOM-shim']
+        , 'event_helpers' :             ['libs/EventHelpers']
+        , 'css_query' :                 ['libs/cssQuery-p']
+        , 'sylvester' :                 ['libs/sylvester']
+        , 'css_sandpaper' :             ['libs/cssSandpaper']
 
         // Application
         , 'app' :                       'app/app'
