@@ -185,7 +185,7 @@ class CVMembership(CVDateRangeSet):
 
 
 LANGUAGE_ABILITY_CHOICES = ((5, "Native (equiv)"),
-                            (4, "Fluent"),
+                            (4, "Professional"),
                             (3, "Working"),
                             (2, "Limited"),
                             (1, "Elementary"))
