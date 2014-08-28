@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse
 
 from mezzanine.core.models import Displayable
 
+from taggit.managers import TaggableManager
+
 
 class CCCSModel(models.Model):
     class Meta:
@@ -183,6 +185,7 @@ class Project(Displayable):
                                            verbose_name='IFC Performance Standard (by Sub-Theme)')
     ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True,
                                          verbose_name='IFC Sector(s)')
+    tags = TaggableManager()
 
     class Meta:
         ordering = ('title',)
