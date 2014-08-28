@@ -15,6 +15,7 @@ admin.autodiscover()
 
 urlpatterns = i18n_patterns(
     "",
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     ("^admin/", include(admin.site.urls)))
 
 # Serve static media during development so things look right

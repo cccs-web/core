@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse
 
 from mezzanine.core.models import Displayable
 
+from taggit.managers import TaggableManager
+
 
 class CCCSModel(models.Model):
     class Meta:
@@ -170,15 +172,22 @@ class Project(Displayable):
                                  null=True, blank=True)
     to_date = models.DateField(help_text="Date project ended",
                                null=True, blank=True)
-    loan_or_grant = models.CharField(max_length=32, null=True, blank=True)
+    loan_or_grant = models.CharField('Loan or Grant No.', max_length=32, null=True, blank=True)
     features = models.TextField(max_length=2048, null=True, blank=True)
-    countries = models.ManyToManyField(Country, related_name='projects')
+    countries = models.ManyToManyField(Country, related_name='projects', verbose_name="Country / Countries")
     region = models.CharField(max_length=128, null=True, blank=True)
     locality = models.CharField(max_length=128, null=True, blank=True)
-    cccs_subthemes = models.ManyToManyField(CCCSSubTheme, related_name='projects', null=True, blank=True)
-    cccs_subsectors = models.ManyToManyField(CCCSSubSector, related_name='projects', null=True, blank=True)
-    ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects', null=True, blank=True)
-    ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True)
+    cccs_subthemes = models.ManyToManyField(CCCSSubTheme, related_name='projects', null=True, blank=True,
+                                            verbose_name='CCCS Sub-Theme(s)')
+    cccs_subsectors = models.ManyToManyField(CCCSSubSector, related_name='projects', null=True, blank=True,
+                                             verbose_name='CCCS Sub-Sector(s)')
+    ifc_subthemes = models.ManyToManyField(IFCSubTheme, related_name='projects', null=True, blank=True,
+                                           verbose_name='IFC Performance Standard (by Sub-Theme)')
+    ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True,
+                                         verbose_name='IFC Sector(s)')
+    tags = TaggableManager()
+    owner = models.CharField('Project Owner/Operator', max_length=128, null=True, blank=True)
+    sponsor = models.CharField('Project Financer/Sponsor', max_length=128, null=True, blank=True)
 
     class Meta:
         ordering = ('title',)
@@ -197,3 +206,6 @@ class Project(Displayable):
 
     def get_absolute_url(self):
         return reverse("project-detail", args=(self.slug,))
+
+# Override inherited verbose names
+Project._meta.get_field('short_url').verbose_name = 'Short URL'

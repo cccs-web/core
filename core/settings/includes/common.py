@@ -160,8 +160,11 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "mezzanine_pagedown",
     "mezzanine_slides",
+    "mkdown",
     "modeltranslation",
-    "south")
+    "south",
+    "django.contrib.admindocs",
+    "taggit")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -234,6 +237,40 @@ RICHTEXT_FILTER_LEVEL = 3
 
 
 FILEBROWSER_DIRECTORY = ''
+
+ADMIN_MENU_ORDER = (
+    ("Content",
+     ("cvs.CV",
+      "projects.Project",
+      "pages.Page",
+      "blog.BlogPost",
+      "generic.ThreadedComment",
+      ("Media Library", "fb_browse"),)),
+    ("Lookup Tables",
+     (("CCCS Roles", "cvs.AssociateRole"),
+      "projects.Country",
+      "taggit.Tag")),
+    ("Project Categorization",
+     ("projects.CCCSSector",
+      "projects.CCCSSubSector",
+      "projects.CCCSSubTheme",
+      "projects.CCCSTheme",
+      "projects.IFCSector",
+      ("IFC PS SubThemes", "projects.IFCSubTheme"),
+      ("IFC Performance Standards", "projects.IFCTheme"))),
+    ("CCCS Map",
+     ("cccsmap.Village",)),
+    ("Site",
+     ("auth.User",
+      "auth.Group",
+      "sites.Site",
+      "redirects.Redirect",
+      "conf.Setting")))
+
+DASHBOARD_TAGS = (
+    ("mezzanine_tags.app_list",),
+    ("comment_tags.recent_comments",),
+    ("mezzanine_tags.recent_actions",))
 
 ####################
 # DYNAMIC SETTINGS #

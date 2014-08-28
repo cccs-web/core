@@ -76,6 +76,11 @@ class CV(RichText, Displayable):
                                      self.middle_names,
                                      self.user.last_name) if n])
 
+# Override inherited verbose names
+CV._meta.get_field('content').verbose_name = 'Biographical Profile'
+CV._meta.get_field('description').verbose_name = 'HTML Page Description'
+CV._meta.get_field('short_url').verbose_name = 'Short URL'
+
 
 class CVSet(models.Model):
     cv = models.ForeignKey(CV)
@@ -126,20 +131,19 @@ class CVProject(CVSet):
     service_on_site = models.BooleanField(default=False)
     service_off_site = models.BooleanField(default=False)
     service_remote = models.BooleanField(default=False)
-    client_end = models.CharField(max_length=128, null=True, blank=True)
-    client_contract = models.CharField(max_length=128, null=True, blank=True)
-    client_beneficiary = models.CharField(max_length=128, null=True, blank=True)
-    contract = models.CharField(max_length=64, null=True, blank=True)
+    client_end = models.CharField('Sponsor / End Client', max_length=128, null=True, blank=True)
+    client_contract = models.CharField('Contracted Through / Direct Client', max_length=128, null=True, blank=True)
+    client_beneficiary = models.CharField('Beneficiary Client', max_length=128, null=True, blank=True)
+    contract = models.CharField('Contract No.', max_length=64, null=True, blank=True)
 
     class Meta:
-        verbose_name = "CV Project"
-        verbose_name_plural = "CV Projects"
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
         unique_together = ('cv', 'project')
         ordering = ('-to_date',)
 
     def __unicode__(self):
         return u'{0}: {1}'.format(self.project.name, self.position)
-
 
 
 class CVLearning(CVDateRangeSet):
@@ -160,11 +164,14 @@ class CVTraining(CVLearning):
 
 class CVEducation(CVLearning):
     qualification = models.CharField(max_length=64, null=True, blank=True)
+    minors = models.CharField('Minor(s)', max_length=256, null=True, blank=True)
 
     class Meta:
         verbose_name = "Education"
         verbose_name_plural = "Education"
         ordering = ['-from_date']
+
+CVEducation._meta.get_field('subject').verbose_name = 'Major(s)/Primary Discipline(s)'
 
 
 class CVMembership(CVDateRangeSet):
@@ -172,8 +179,8 @@ class CVMembership(CVDateRangeSet):
     role = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
-        verbose_name = "Membership"
-        verbose_name_plural = "Memberships"
+        verbose_name = "Professional Membership"
+        verbose_name_plural = "Professional Membership"
         ordering = ['-from_date']
 
 

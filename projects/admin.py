@@ -36,6 +36,41 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ('title', 'region')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
     inlines = (CVProjectInline,)
+    fieldsets = ((None, {'fields': ('title_en',
+                                    'title_fr',
+                                    'title_ru',
+                                    'owner',
+                                    'sponsor',
+                                    'from_date',
+                                    'to_date',
+                                    'loan_or_grant',
+                                    'features_en',
+                                    'features_fr',
+                                    'features_ru')}),
+                 ('Location', {'classes': ('collapse-closed',),
+                               'fields': ('countries',
+                                          'region_en',
+                                          'region_fr',
+                                          'region_ru',
+                                          'locality_en',
+                                          'locality_fr',
+                                          'locality_ru')}),
+                 ('Categorization', {'classes': ('collapse-closed',),
+                                     'fields': ('cccs_subthemes',
+                                     'cccs_subsectors',
+                                     'ifc_subthemes',
+                                     'ifc_sectors',
+                                     'tags')}),
+                 ('Metadata', {'classes': ('collapse-closed',),
+                               'fields': ('_meta_title',
+                                          'slug',
+                                          'short_url',
+                                          'description',
+                                          'gen_description',
+                                          'keywords',
+                                          'status',
+                                          'publish_date',
+                                          'expiry_date')}))
 
     def name(self, instance):
         return getattr(instance, 'name')
