@@ -154,7 +154,8 @@ INSTALLED_APPS = (
     "mezzanine_slides",
     "mkdown",
     "modeltranslation",
-    "south")
+    "south",
+    "django.contrib.admindocs")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
