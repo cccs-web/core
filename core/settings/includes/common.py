@@ -227,6 +227,39 @@ RICHTEXT_FILTER_LEVEL = 3
 
 FILEBROWSER_DIRECTORY = ''
 
+ADMIN_MENU_ORDER = (
+    ("Content",
+     ("cvs.CV",
+      "projects.Project",
+      "pages.Page",
+      "blog.BlogPost",
+      "generic.ThreadedComment",
+      ("Media Library", "fb_browse"),)),
+    ("Lookup Tables",
+     ("cvs.AssociateRole",
+      "projects.Country")),
+    ("Project Categorization",
+     ("projects.CCCSSector",
+      "projects.CCCSSubSector",
+      "projects.CCCSSubTheme",
+      "projects.CCCSTheme",
+      "projects.IFCSector",
+      "projects.IFCSubTheme",
+      "projects.IFCTheme")),
+    ("CCCS Map",
+     ("cccsmap.Village",)),
+    ("Site",
+     ("auth.User",
+      "auth.Group",
+      "sites.Site",
+      "redirects.Redirect",
+      "conf.Setting")))
+
+DASHBOARD_TAGS = (
+    ("mezzanine_tags.app_list",),
+    ("comment_tags.recent_comments",),
+    ("mezzanine_tags.recent_actions",))
+
 ####################
 # DYNAMIC SETTINGS #
 ####################
