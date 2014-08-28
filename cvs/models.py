@@ -141,7 +141,6 @@ class CVProject(CVSet):
         return u'{0}: {1}'.format(self.project.name, self.position)
 
 
-
 class CVLearning(CVDateRangeSet):
     institution = models.CharField(max_length=128, null=True, blank=True)
     subject = models.CharField(max_length=256)
