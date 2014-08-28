@@ -35,9 +35,9 @@
         <thead>
         <tr>
             <td>Institution</td>
-            <td>Degree</td>
             <td>Major(s)/Primary Discipline(s)</td>
             {# <td>Minor(s)</td> #}
+            <td>Degree</td>
             <td>From Date</td>
             <td>To Date</td>
         </tr>
@@ -46,9 +46,9 @@
         {% for cveducation in cv.cveducation_set.all %}
             <tr>
                 <td>{{ cveducation.institution }}</td>
-                <td>{{ cveducation.qualification }}</td>
                 <td>{{ cveducation.subject }}</td>
                 {# <td>{{ cveducation.minors }}</td>  #}
+                <td>{{ cveducation.qualification }}</td>
                 <td>{{ cveducation.from_date|date:"b Y"|title }}</td>
                 <td>{{ cveducation.to_date|date:"b Y"|title }}</td>
             </tr>
