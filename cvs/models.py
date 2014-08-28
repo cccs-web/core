@@ -76,6 +76,10 @@ class CV(RichText, Displayable):
                                      self.middle_names,
                                      self.user.last_name) if n])
 
+# Override inherited verbose names
+CV._meta.get_field('content').verbose_name = 'Biographical Profile'
+CV._meta.get_field('description').verbose_name = 'HTML Page Description'
+
 
 class CVSet(models.Model):
     cv = models.ForeignKey(CV)
@@ -126,14 +130,14 @@ class CVProject(CVSet):
     service_on_site = models.BooleanField(default=False)
     service_off_site = models.BooleanField(default=False)
     service_remote = models.BooleanField(default=False)
-    client_end = models.CharField(max_length=128, null=True, blank=True)
-    client_contract = models.CharField(max_length=128, null=True, blank=True)
-    client_beneficiary = models.CharField(max_length=128, null=True, blank=True)
-    contract = models.CharField(max_length=64, null=True, blank=True)
+    client_end = models.CharField('Sponsor / End Client', max_length=128, null=True, blank=True)
+    client_contract = models.CharField('Contracted Through / Direct Client', max_length=128, null=True, blank=True)
+    client_beneficiary = models.CharField('Beneficiary Client', max_length=128, null=True, blank=True)
+    contract = models.CharField('Contract No.', max_length=64, null=True, blank=True)
 
     class Meta:
-        verbose_name = "CV Project"
-        verbose_name_plural = "CV Projects"
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
         unique_together = ('cv', 'project')
         ordering = ('-to_date',)
 
@@ -171,8 +175,8 @@ class CVMembership(CVDateRangeSet):
     role = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
-        verbose_name = "Membership"
-        verbose_name_plural = "Memberships"
+        verbose_name = "Professional Membership"
+        verbose_name_plural = "Professional Membership"
         ordering = ['-from_date']
 
 
