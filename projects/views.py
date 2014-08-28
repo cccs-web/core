@@ -43,7 +43,7 @@ class ProjectCCCSThemeListView(ListView):
 
 class ProjectIFCThemeListView(ProjectCCCSThemeListView):
     categorization_fieldname = 'ifc_subthemes'
-    categorization_label = 'IFC Theme'
+    categorization_label = 'IFC Performance Standard'
 
 
 class ProjectCCCSSectorListView(ProjectCCCSThemeListView):
