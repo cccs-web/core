@@ -8,6 +8,15 @@ admin.site.register(cm.AssociateRole, admin.ModelAdmin)
 class CVProjectInline(admin.StackedInline):
     model = cm.CVProject
     extra = 1
+    fields = ('from_date',
+              'to_date',
+              'position',
+              'activities',
+              'references',
+              'client_beneficiary',
+              'client_contract',
+              'client_end',
+              'contract')
 
 
 class CVEducationInline(admin.TabularInline):
