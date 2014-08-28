@@ -79,6 +79,7 @@ class CV(RichText, Displayable):
 # Override inherited verbose names
 CV._meta.get_field('content').verbose_name = 'Biographical Profile'
 CV._meta.get_field('description').verbose_name = 'HTML Page Description'
+CV._meta.get_field('short_url').verbose_name = 'Short URL'
 
 
 class CVSet(models.Model):
