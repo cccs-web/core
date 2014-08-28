@@ -179,8 +179,8 @@ class CVMembership(CVDateRangeSet):
     role = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
-        verbose_name = "Professional Membership"
-        verbose_name_plural = "Professional Membership"
+        verbose_name = "Professional Membership(s)"
+        verbose_name_plural = "Professional Memberships"
         ordering = ['-from_date']
 
 
