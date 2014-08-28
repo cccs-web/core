@@ -186,6 +186,8 @@ class Project(Displayable):
     ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True,
                                          verbose_name='IFC Sector(s)')
     tags = TaggableManager()
+    owner = models.CharField('Project Owner/Operator', max_length=128, null=True, blank=True)
+    sponsor = models.CharField('Project Financer/Sponsor', max_length=128, null=True, blank=True)
 
     class Meta:
         ordering = ('title',)
