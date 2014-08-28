@@ -161,9 +161,9 @@
                 <td>{{ cvemployment.employer }}</td>
                 <td>{{ cvemployment.position }}</td>
                 <td>
-                    {{ cvemployment.from_date|date:"b Y" }} -
+                    {{ cvemployment.from_date|date:"b Y"|title }} -
                     {% if cvemployment.to_date %}
-                        {{ cvemployment.to_date|date:"b Y" }}
+                        {{ cvemployment.to_date|date:"b Y"|title }}
                     {% else %}
                         present{% endif %}
                 </td>
