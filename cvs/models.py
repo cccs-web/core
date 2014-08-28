@@ -164,11 +164,14 @@ class CVTraining(CVLearning):
 
 class CVEducation(CVLearning):
     qualification = models.CharField(max_length=64, null=True, blank=True)
+    minors = models.CharField('Minor(s)', max_length=256, null=True, blank=True)
 
     class Meta:
         verbose_name = "Education"
         verbose_name_plural = "Education"
         ordering = ['-from_date']
+
+CVEducation._meta.get_field('subject').verbose_name = 'Major(s)/Primary Discipline(s)'
 
 
 class CVMembership(CVDateRangeSet):
