@@ -47,8 +47,8 @@
                 <td>{{ cveducation.institution }}</td>
                 <td>{{ cveducation.subject }}</td>
                 <td>{{ cveducation.qualification }}</td>
-                <td>{{ cveducation.from_date|date:"b Y" }}</td>
-                <td>{{ cveducation.to_date|date:"b Y" }}</td>
+                <td>{{ cveducation.from_date|date:"b Y"|title }}</td>
+                <td>{{ cveducation.to_date|date:"b Y"|title }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -71,8 +71,8 @@
             <tr>
                 <td>{{ cvtraining.institution }}</td>
                 <td>{{ cvtraining.subject }}</td>
-                <td>{{ cvtraining.from_date|date:"b Y" }}</td>
-                <td>{{ cvtraining.to_date|date:"b Y" }}</td>
+                <td>{{ cvtraining.from_date|date:"b Y"|title }}</td>
+                <td>{{ cvtraining.to_date|date:"b Y"|title }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -95,8 +95,8 @@
             <tr>
                 <td>{{ cvmembership.organization }}</td>
                 <td>{{ cvmembership.role }}</td>
-                <td>{{ cvmembership.from_date|date:"b Y" }}</td>
-                <td>{{ cvmembership.to_date|date:"b Y" }}</td>
+                <td>{{ cvmembership.from_date|date:"b Y"|title }}</td>
+                <td>{{ cvmembership.to_date|date:"b Y"|title }}</td>
             </tr>
         {% endfor %}
         </tbody>
