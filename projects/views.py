@@ -107,6 +107,15 @@ class ProjectIFCSectorListView(ProjectCountryListView):
     categorization_label = 'IFC Sector'
 
 
+class ProjectCCCSProjectListView(ListView):
+    model = pm.Project
+    template_name = "projects/cccs_project_list.html"
+
+    def get_queryset(self):
+        qs = super(ProjectCCCSProjectListView, self).get_queryset()
+        return qs.filter(tags__name__in=['cccs'])
+
+
 def categorize_projects(projects, categorization_fieldname):
     """
     Organise the projects using a single categorization layer

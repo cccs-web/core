@@ -6,6 +6,8 @@ import projects.views as views
 
 urlpatterns = patterns(
     '',
+    url(r'^cccs/$',
+        views.ProjectCCCSProjectListView.as_view(), name='project-list-cccs-tag'),
     url(r'^bycccstheme/$',
         views.ProjectCCCSThemeListView.as_view(), name='project-list-cccs-theme'),
     url(r'^bycccssector/$',
