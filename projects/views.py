@@ -113,7 +113,7 @@ class ProjectCCCSProjectListView(ListView):
 
     def get_queryset(self):
         qs = super(ProjectCCCSProjectListView, self).get_queryset()
-        return qs.filter(tags__name__in=['cccs'])
+        return qs.filter(tags__name__in=['CCCS'])
 
 
 def categorize_projects(projects, categorization_fieldname):
