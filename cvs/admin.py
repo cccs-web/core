@@ -22,6 +22,12 @@ class CVProjectInline(admin.StackedInline):
 class CVEducationInline(admin.TabularInline):
     model = cm.CVEducation
     extra = 1
+    fields = ('from_date',
+              'to_date',
+              'institution',
+              'qualification',
+              'subject',
+              'minors',)
 
 
 class CVTrainingInline(admin.TabularInline):
@@ -61,14 +67,18 @@ class CVAdmin(admin.ModelAdmin):
 
     def first_name(self, obj):
         return obj.first_name
+
     first_name.admin_order_field = 'user__first_name'
 
     def last_name(self, obj):
         return obj.last_name
+
     last_name.admin_order_field = 'user__last_name'
 
     def email(self, obj):
         return obj.email
+
     email.admin_order_field = 'user__email'
+
 
 admin.site.register(cm.CV, CVAdmin)
