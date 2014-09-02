@@ -5,7 +5,6 @@
 		padding-bottom: $topbar-height;
 		border-bottom: 1px solid $greyd;
 		@include shadow(0,2rem,3rem,4px,rgba($bl,.03),false);
-		@include single-transition(all, .5s, ease-in-out);
 
 		&.scrolling {
 			@include shadow(0,.2rem,.2rem,.2rem,rgba($bl,.1),false);
@@ -58,7 +57,6 @@
 
 						.dropdown {
 							@include shadow(0,.2rem,.2rem,0,rgba($bl,.1),false);
-							@include single-transition(all, .25s, ease-in-out);
 
 							li {
 								&.has-dropdown {
