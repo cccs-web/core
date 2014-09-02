@@ -20,11 +20,21 @@ class CountryAdmin(HasProjectsAdmin):
 admin.site.register(pm.Country, CountryAdmin)
 
 
-class CVProjectInline(admin.TabularInline):
+class CVProjectInline(admin.StackedInline):
     extra = 1
     model = cm.CVProject
     exclude = ('cv',)
     readonly_fields = ('cv_link',)
+    fields = ('from_date',
+              'to_date',
+              'position',
+              'activities',
+              'references',
+              'client_beneficiary',
+              'client_contract',
+              'client_end',
+              'contract',
+              'cv_link')
 
     def cv_link(self, instance):
         return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.cv.admin_url, name=instance.cv.title))

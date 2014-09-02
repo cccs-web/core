@@ -43,7 +43,7 @@ class ProjectCCCSThemeListView(ListView):
 
 class ProjectIFCThemeListView(ProjectCCCSThemeListView):
     categorization_fieldname = 'ifc_subthemes'
-    categorization_label = 'IFC Theme'
+    categorization_label = 'IFC Performance Standard'
 
 
 class ProjectCCCSSectorListView(ProjectCCCSThemeListView):
@@ -113,7 +113,7 @@ class ProjectCCCSProjectListView(ListView):
 
     def get_queryset(self):
         qs = super(ProjectCCCSProjectListView, self).get_queryset()
-        return qs.filter(tags__name__in=['cccs'])
+        return qs.filter(tags__name__in=['CCCS'])
 
 
 def categorize_projects(projects, categorization_fieldname):

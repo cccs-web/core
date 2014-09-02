@@ -179,13 +179,13 @@ class CVMembership(CVDateRangeSet):
     role = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
-        verbose_name = "Professional Membership"
-        verbose_name_plural = "Professional Membership"
+        verbose_name = "Professional Membership(s)"
+        verbose_name_plural = "Professional Memberships"
         ordering = ['-from_date']
 
 
 LANGUAGE_ABILITY_CHOICES = ((5, "Native (equiv)"),
-                            (4, "Fluent"),
+                            (4, "Professional"),
                             (3, "Working"),
                             (2, "Limited"),
                             (1, "Elementary"))

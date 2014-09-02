@@ -16,7 +16,7 @@ urlpatterns = patterns(
         views.ProjectCCCSSubSectorListView.as_view(), name='project-list-cccs-subsector'),
     url(r'^cccs_sector_experience/$',
         views.ProjectCCCSSectorExperienceView.as_view(), name='project-experience-cccs-sector'),
-    url(r'^byifctheme/$',
+    url(r'^byifcperformancestandard/$',
         views.ProjectIFCThemeListView.as_view(), name='project-list-ifc-theme'),
     url(r'^bycountry/$',
         views.ProjectCountryListView.as_view(), name='project-list-country'),
