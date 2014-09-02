@@ -20,8 +20,8 @@ require([
     , 'foundation.tab'
     , 'foundation.tooltip'
     , 'foundation.topbar'
-    // , 'jVelocity'
-    // , 'velocityUI'
+    , 'jVelocity'
+    , 'velocityUI'
     , 'jCookie'
     , 'dom_manipulation'
 
