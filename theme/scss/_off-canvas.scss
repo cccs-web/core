@@ -3,8 +3,16 @@
 		.right-off-canvas-menu {
 			.off-canvas-list {
 				li {
-					a {
+					&:first-child {
 						font-size: .75rem;
+						padding: .5rem 1rem;
+						color: rgba($wh,.25);
+					}
+
+					label {
+						&:hover {
+							background: rgba($bl,.25);
+						}
 					}
 				}
 			}

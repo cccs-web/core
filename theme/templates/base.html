@@ -34,7 +34,6 @@
     		<div class="inner-wrap">
 
 		        <header id="topbar" class="sticky">
-
 		        	<nav class="top-bar" data-topbar>
 		        		<ul class="title-area">
 		        			<li class="toggle-topbar">
@@ -63,12 +62,13 @@
     					{% csrf_token %}
     					<input name="next" type="hidden" value="{{ redirect_to }}" />
 			        	<ul class="off-canvas-list lang-chooser">
-			        		<li><label>Internationalisation</label></li>
+			        		<li>Choose your language</li>
 			        		{% get_language_info_list for LANGUAGES as languages %}
 			        		{% for language in languages %}
-			        		<li>
-                                <input type="radio" name="lang" value="{{ language.code }}" id="lang-{{ language.code }}">
-                                <label for="lang-{{ language.code }}">{{ language.name_local|capfirst }}</label>
+			        		<li>                             
+                                <label for="lang-{{ language.code }}">{{ language.name_local|capfirst }}
+                                    <input class="hidden" type="radio" name="lang" value="{{ language.code }}" id="lang-{{ language.code }}">
+                                </label>
 			        		</li>
 			        		{% endfor %}
 			        	</ul>
