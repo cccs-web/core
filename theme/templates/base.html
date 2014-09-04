@@ -58,7 +58,7 @@
 		        </header>
 
 		        <aside class="right-off-canvas-menu">
-    				<form action="{% url 'set_language' %}" method="post">
+    				<form id="lang-chooser" action="{% url 'set_language' %}" method="post">
     					{% csrf_token %}
     					<input name="next" type="hidden" value="{{ redirect_to }}" />
 			        	<ul class="off-canvas-list lang-chooser">
@@ -67,7 +67,7 @@
 			        		{% for language in languages %}
 			        		<li>                             
                                 <label for="lang-{{ language.code }}">{{ language.name_local|capfirst }}
-                                    <input class="hidden" type="radio" name="lang" value="{{ language.code }}" id="lang-{{ language.code }}">
+                                    <input class="hidden" type="radio" name="lang" value="{{ language.code }}" id="lang-{{ language.code }}" {% if language.code == LANGUAGE_CODE %} checked="checked"{% endif %} />
                                 </label>
 			        		</li>
 			        		{% endfor %}

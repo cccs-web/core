@@ -57,8 +57,8 @@ require(['modernizr', 'jquery'],
 
 
         // Lang chooser
-        $('[id^="lang-"]').on('click',function() {
-            $(this).closest("form").submit();
+        $('[id^="lang-"]').click(function() {
+            $("#lang-chooser").submit();
         });
     }
 );

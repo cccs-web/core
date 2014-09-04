@@ -12,8 +12,8 @@ requirejs.config({
 		, 'jCookie':                    ['http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min', 'libs/jquery.cookie']
 		, 'jEvtMove':                   ['libs/jquery.event.move']
         , 'jEvtSwipe':                  ['libs/jquery.event.swipe']
-        , 'jVelocity':                  ['libs/jquery.velocity']
-        , 'velocityUI':                 ['app/utils/velocity.fx']
+        , 'jVelocity':                  ['http://cdnjs.cloudflare.com/ajax/libs/velocity/0.11.9/jquery.velocity.min','libs/jquery.velocity']
+        , 'velocityUI':                 ['http://cdnjs.cloudflare.com/ajax/libs/velocity/0.11.9/velocity.ui.min','app/utils/velocity.fx']
 
         // Backbone - Marionette specific libs            
         , 'underscore':                 ['http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min', 'libs/lodash']
