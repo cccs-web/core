@@ -2,7 +2,7 @@ require([
     'jquery'
     , 'jqueryui'
     , 'browser_check'
-    // , 'dom_shim'
+    , 'dom_shim'
     , 'fastclick'
     , 'foundation.abide'
     , 'foundation.accordion'

@@ -103,6 +103,9 @@ requirejs.config({
         , 'sylvester' :                 { deps : ['modernizr'] }
         , 'css_sandpaper' :             { deps : ['modernizr'] }
 
+        , 'jVelocity' :                 { deps : ['jquery'] }
+        , 'velocityUI' :                { deps : ['jVelocity'] }
+
         // Underscore (lodash)
         , 'underscore' :                { exports: '_' }
         
