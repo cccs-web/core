@@ -145,5 +145,7 @@ require([
             if (DEBUG) console.info("opened thumbnail with src ", $('img', event.target).attr('src'));
             $('.clearing-thumbs').css('width','auto');
         });
+
+        // $('.rslides').responsiveSlides();
     }
 );

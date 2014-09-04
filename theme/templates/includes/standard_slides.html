@@ -1,0 +1,15 @@
+{% load mezzanine_tags %}
+
+{% if page.slide_set.all %}
+  <ul data-orbit>
+    {% for image in page.slide_set.all %}
+      <li>
+        <img src="{{ MEDIA_URL }}{% thumbnail image.file 940 300 %}" alt="{{ image.description }}"/>
+        {% if image.caption %}
+        <div class="orbit-caption">{{ image.caption|safe }}</div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
