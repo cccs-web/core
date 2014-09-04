@@ -904,7 +904,7 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #008cba;
+  color: rgba(103, 140, 189, 1);
   text-decoration: none;
 }
 a:hover,
@@ -3879,7 +3879,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 @media (min-width: 768px) {
   .navbar > .container .navbar-brand,
   .navbar > .container-fluid .navbar-brand {
-    margin-left: -15px;
+    margin-left: 0px;
   }
 }
 .navbar-toggle {
@@ -4083,18 +4083,18 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-color: #222222;
 }
 .navbar-default .navbar-brand {
-  color: #ffffff;
+  color: #EDE8D5;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-  color: #ffffff;
+  color: rgba(237, 232, 213, 1);
   background-color: transparent;
 }
 .navbar-default .navbar-text {
-  color: #ffffff;
+  color: rgba(237, 232, 213, 1);
 }
 .navbar-default .navbar-nav > li > a {
-  color: #ffffff;
+  color: rgba(237, 232, 213, 1);
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
@@ -4640,9 +4640,9 @@ a.thumbnail.active {
   color: #e6e6e6;
 }
 .alert-info {
-  background-color: #5bc0de;
+  background-color: rgba(210, 212, 200, 0.71);
   border-color: #3db5d8;
-  color: #ffffff;
+  color: #292E3C;
 }
 .alert-info hr {
   border-top-color: #2aabd2;
@@ -6176,7 +6176,7 @@ button.close {
 .navbar {
   border: none;
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 600;
 }
 .navbar .navbar-toggle:hover .icon-bar {
   background-color: #b3b3b3;
@@ -6476,4 +6476,3 @@ label,
 .modal .close {
   color: #222222;
 }
-
