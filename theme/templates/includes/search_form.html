@@ -1,0 +1,34 @@
+{% load mezzanine_tags i18n future %}
+<form action="{% url "search" %}" class="search-form" id="search_form" role="search">
+    <ul class="right">
+        {% if search_model_choices %}
+        <li>
+            {% if search_model_choices|length == 1 %}
+            <input type="hidden" name="type" value="{{ search_model_choices.0.1 }}">
+            {% else %}
+            <dl class="sub-nav type-src">
+                <dt>
+                    <em>Search in</em>
+                </dt>
+                <dd class="active">
+                    <input type="radio" name="type" value="" id="type_everything">
+                    <label for="type_everything">{% trans "Everything" %}</label>
+                </dd>
+                {% for verbose_name, model in search_model_choices %}
+                <dd>
+                <input type="radio" name="type" value="{{ model }}" id="{{ model }}">
+                <label for="{{ model }}">{{ verbose_name }}</label>
+                </dd>   
+                {% endfor %}
+            </dl>
+            {% endif %}
+        </li>
+        {% endif %}
+        <li>
+            <input class="srcel input-text" placeholder="{% trans "Search" %}" type="text" name="q" value="{{ request.REQUEST.q }}">
+        </li>
+        <li>
+            <input type="submit" class="srcel button tiny" value="{% trans "Go" %}">
+        </li>
+    </ul>
+</form>
