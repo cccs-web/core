@@ -73,7 +73,6 @@ class CV(RichText, Displayable):
 
     def _build_title(self):
         return '-'.join([n for n in (self.user.first_name,
-                                     self.middle_names,
                                      self.user.last_name) if n])
 
 # Override inherited verbose names
