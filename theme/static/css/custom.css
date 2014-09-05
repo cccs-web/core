@@ -56,4 +56,7 @@ navbar-toggle {
     border: 1px solid transparent;
     border-radius: 0px;
 }
-
+.caption {
+    position: absolute;
+    font-size: 14px !important;
+}
