@@ -1,3 +1,16 @@
+.navbar {
+    position: relative;
+    min-height: 65px;
+    margin-bottom: 21px;
+    border: 1px solid transparent;
+}
+.navbar-brand {
+    float: left;
+    padding: 0px 15px;
+    font-size: 19px;
+    line-height: 21px;
+    height: 45px;
+}
 .navbar-default .navbar-brand {
     color: rgba(210, 205, 184, 1);
 }
