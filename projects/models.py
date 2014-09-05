@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
-from mezzanine.core.models import Displayable
+from mezzanine.core.models import RichText, Displayable
 
 from taggit.managers import TaggableManager
 
@@ -165,7 +165,7 @@ class IFCSector(HasProjectsMixin, UniqueNamed):
         verbose_name_plural = 'IFC Sectors'
 
 
-class Project(Displayable):
+class Project(RichText, Displayable):
     date_range = models.CharField(help_text="Deprecate and copy values into from_date/to_date",
                                   max_length=128, null=True, blank=True)
     from_date = models.DateField(help_text="Date project started",
