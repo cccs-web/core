@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
-from mezzanine.core.models import RichText, Displayable
+from mezzanine.core.models import RichText, Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 
 from taggit.managers import TaggableManager
 

@@ -37,7 +37,8 @@ class ProjectCCCSThemeListView(ListView):
         context['use_right_col'] = "No"  # a bit hacky but it will do for now
         context['categorization'] = categorize_projects2(context['object_list'],
                                                          self.categorization_fieldname,
-                                                         self.categorization_parent_fieldname)
+                                                         self.categorization_parent_fieldname,
+                                                         not self.request.user.is_staff)
         return context
 
 
@@ -60,7 +61,10 @@ class ProjectCCCSSubSectorListView(ListView):
         context = super(ProjectCCCSSubSectorListView, self).get_context_data(**kwargs)
         sub = pm.CCCSSubSector.objects.get(pk=int(self.kwargs['pk']))
         context['sub'] = sub
-        context['projects'] = pm.Project.objects.filter(cccs_subsectors=sub)
+        projects = pm.Project.objects.filter(cccs_subsectors=sub)
+        if not self.request.user.is_staff:
+            projects = projects.filter(status=pm.CONTENT_STATUS_PUBLISHED)
+        context['projects'] = projects
         return context
 
 
@@ -98,7 +102,8 @@ class ProjectCountryListView(ListView):
         context['categorization_name'] = self.categorization_label
         context['use_right_col'] = "No"  # a bit hacky but it will do for now
         context['categorization'] = categorize_projects(context['object_list'],
-                                                        self.categorization_fieldname)
+                                                        self.categorization_fieldname,
+                                                        not self.request.user.is_staff)
         return context
 
 
@@ -113,15 +118,19 @@ class ProjectCCCSProjectListView(ListView):
 
     def get_queryset(self):
         qs = super(ProjectCCCSProjectListView, self).get_queryset()
+        if not self.request.user.is_staff:
+            qs = qs.filter(status=pm.CONTENT_STATUS_PUBLISHED)
         return qs.filter(tags__name__in=['CCCS'])
 
 
-def categorize_projects(projects, categorization_fieldname):
+def categorize_projects(projects, categorization_fieldname, published_only):
     """
     Organise the projects using a single categorization layer
     """
     categorization = dict()
     for project in projects:
+        if published_only and project.status == pm.CONTENT_STATUS_DRAFT:
+            continue
         categories = getattr(project, categorization_fieldname).all()
         for category in categories:
             category_name = category.name
@@ -133,12 +142,14 @@ def categorize_projects(projects, categorization_fieldname):
     return OrderedDict(((k, categorization[k]) for k in sorted(categorization.keys())))
 
 
-def categorize_projects2(projects, categorization_fieldname, categorization_parent_fieldname):
+def categorize_projects2(projects, categorization_fieldname, categorization_parent_fieldname, published_only):
     """
     Organise the projects so that they are nested in the sub categorizations
     """
     categorization = dict()
     for project in projects:
+        if published_only and project.status == pm.CONTENT_STATUS_DRAFT:
+            continue
         sub_categorizations = getattr(project, categorization_fieldname).all()
 
         for sub in sub_categorizations:

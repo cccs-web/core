@@ -13,6 +13,12 @@ import cvs.models as cm
 class CVListView(ListView):
     model = cm.CV
 
+    def get_queryset(self):
+        queryset = super(CVListView, self).get_queryset()
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(status=cm.CONTENT_STATUS_PUBLISHED)
+        return queryset
+
 
 class CVDetailMixin(object):
     model = cm.CV
