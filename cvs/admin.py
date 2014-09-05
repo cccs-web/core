@@ -17,6 +17,7 @@ class CVProjectInline(admin.StackedInline):
               'client_contract',
               'client_end',
               'contract')
+    ordering = ['to_date']
 
 
 class CVEducationInline(admin.TabularInline):
@@ -28,16 +29,19 @@ class CVEducationInline(admin.TabularInline):
               'qualification',
               'subject',
               'minors',)
+    ordering = ['to_date']
 
 
 class CVTrainingInline(admin.TabularInline):
     model = cm.CVTraining
     extra = 1
+    ordering = ['to_date']
 
 
 class CVMembershipInline(admin.TabularInline):
     model = cm.CVMembership
     extra = 1
+    ordering = ['to_date']
 
 
 class CVLanguageInline(admin.TabularInline):
@@ -48,11 +52,13 @@ class CVLanguageInline(admin.TabularInline):
 class CVEmploymentInline(admin.StackedInline):
     model = cm.CVEmployment
     extra = 1
+    ordering = ['to_date']
 
 
 class CVPublicationInline(admin.TabularInline):
     model = cm.CVPublication
     extra = 1
+    ordering = ['publication_date']
 
 
 class CVAdmin(admin.ModelAdmin):

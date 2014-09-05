@@ -17,6 +17,6 @@ translator.register(pm.CCCSTheme, UniqueNamedTranslationOptions)
 
 
 class ProjectTranslationOptions(TranslationOptions):
-    fields = ('title', 'features', 'region', 'locality')
+    fields = ('title', 'content', 'features', 'region', 'locality')
 
 translator.register(pm.Project, ProjectTranslationOptions)
