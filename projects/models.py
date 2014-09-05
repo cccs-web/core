@@ -185,7 +185,7 @@ class Project(Displayable):
                                            verbose_name='IFC Performance Standard (by Sub-Theme)')
     ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True,
                                          verbose_name='IFC Sector(s)')
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     owner = models.CharField('Project Owner/Operator', max_length=128, null=True, blank=True)
     sponsor = models.CharField('Project Financer/Sponsor', max_length=128, null=True, blank=True)
 
