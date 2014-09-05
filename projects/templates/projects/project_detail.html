@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block main %}
-    <h1>{{ object.name }}</h1>
+    <h1>{{ project.name }}</h1>
     {% if can_update %}
         <p>
             <a href="{% url "cv-update" slug=cv.slug %}" class="btn btn-sm btn-default">
@@ -8,7 +8,7 @@
             </a>
         </p>
     {% endif %}
-    <p>More work to do here by editing projects/templates/projects/project_detail.html...</p>
+    {{ project.content }}
 
     <h2>Summary Profile</h2>
     {{ project.features }}
