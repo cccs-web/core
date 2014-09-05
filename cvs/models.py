@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 from projects.models import Country, UniqueNamed
 
-from mezzanine.core.models import Displayable, RichText
+from mezzanine.core.models import Displayable, RichText, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from mezzanine.core.fields import RichTextField
 
 
@@ -73,10 +73,9 @@ class CV(RichText, Displayable):
 
     def _build_title(self):
         return '-'.join([n for n in (self.user.first_name,
-                                     self.middle_names,
                                      self.user.last_name) if n])
 
-# Override inherited verbose names
+# Override inherited verbose names (this is not good but it is what is wanted)
 CV._meta.get_field('content').verbose_name = 'Biographical Profile'
 CV._meta.get_field('description').verbose_name = 'HTML Page Description'
 CV._meta.get_field('short_url').verbose_name = 'Short URL'

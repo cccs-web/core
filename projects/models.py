@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
-from mezzanine.core.models import Displayable
+from mezzanine.core.models import RichText, Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 
 from taggit.managers import TaggableManager
 
@@ -165,7 +165,7 @@ class IFCSector(HasProjectsMixin, UniqueNamed):
         verbose_name_plural = 'IFC Sectors'
 
 
-class Project(Displayable):
+class Project(RichText, Displayable):
     date_range = models.CharField(help_text="Deprecate and copy values into from_date/to_date",
                                   max_length=128, null=True, blank=True)
     from_date = models.DateField(help_text="Date project started",
@@ -185,7 +185,7 @@ class Project(Displayable):
                                            verbose_name='IFC Performance Standard (by Sub-Theme)')
     ifc_sectors = models.ManyToManyField(IFCSector, related_name='projects', null=True, blank=True,
                                          verbose_name='IFC Sector(s)')
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     owner = models.CharField('Project Owner/Operator', max_length=128, null=True, blank=True)
     sponsor = models.CharField('Project Financer/Sponsor', max_length=128, null=True, blank=True)
 

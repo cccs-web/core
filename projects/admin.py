@@ -49,6 +49,10 @@ class ProjectAdmin(admin.ModelAdmin):
     fieldsets = ((None, {'fields': ('title_en',
                                     'title_fr',
                                     'title_ru',
+                                    'status',
+                                    'content_en',
+                                    'content_fr',
+                                    'content_ru',
                                     'owner',
                                     'sponsor',
                                     'from_date',
@@ -78,7 +82,6 @@ class ProjectAdmin(admin.ModelAdmin):
                                           'description',
                                           'gen_description',
                                           'keywords',
-                                          'status',
                                           'publish_date',
                                           'expiry_date')}))
 
