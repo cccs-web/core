@@ -70,6 +70,33 @@ class CVAdmin(admin.ModelAdmin):
                CVLanguageInline,
                CVEmploymentInline,
                CVPublicationInline]
+    fieldsets = ((None, {'fields': ('user',
+                                    'status',
+                                    'middle_names',
+                                    'alternate_names',
+                                    'content',
+                                    'telephone',
+                                    ('citizenship',
+                                     'birth_country'),
+                                    ('dob',
+                                     'gender'),
+                                    ('marital_status',
+                                     'associate_role'))}),
+                 ('Address', {'classes': ('collapse-closed',),
+                              'fields': ('street',
+                                         'city',
+                                         'state',
+                                         'zip',
+                                         'country')}),
+                 ('Metadata', {'classes': ('collapse-closed',),
+                               'fields': ('_meta_title',
+                                          'slug',
+                                          'short_url',
+                                          'description',
+                                          'gen_description',
+                                          'keywords',
+                                          'publish_date',
+                                          'expiry_date')}))
 
     def first_name(self, obj):
         return obj.first_name
