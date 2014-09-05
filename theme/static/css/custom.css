@@ -10,6 +10,9 @@ body {
 ul, ol {
     padding-left: 36px;
 }
+img {
+    vertical-align: top;
+}
 footer {
     background-color: #2B3356;
     border-top: 1px solid #E7E7E7;
