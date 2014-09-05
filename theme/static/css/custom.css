@@ -1,5 +1,14 @@
+.navbar-default .navbar-brand {
+    color: rgba(210, 205, 184, 1);
+}
+.navbar-default .navbar-nav > li > a {
+    color: rgba(210, 205, 184, 1);
+}
 body {
     line-height: 135%;
+}
+a {
+    color: rgba(156, 148, 115, 1);
 }
 ul, ol {
     padding-left: 36px;
