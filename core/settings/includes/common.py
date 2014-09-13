@@ -156,7 +156,8 @@ INSTALLED_APPS = (
     "modeltranslation",
     "south",
     "django.contrib.admindocs",
-    "taggit")
+    "taggit",
+    "gitadmin")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -260,7 +261,7 @@ ADMIN_MENU_ORDER = (
 
 DASHBOARD_TAGS = (
     ("mezzanine_tags.app_list",),
-    ("comment_tags.recent_comments",),
+    ("gitadmin_tags.git_dashboard",),
     ("mezzanine_tags.recent_actions",))
 
 ####################
