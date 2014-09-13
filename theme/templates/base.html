@@ -18,6 +18,7 @@
     {% compress css %}
         <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
         <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
+        <link rel="stylesheet" href="{% static "css/custom.css" %}">
         {% if LANGUAGE_BIDI %}
             <link rel="stylesheet" href="{% static "css/rtl.css" %}">
         {% endif %}
@@ -62,7 +63,7 @@
             </button>
             {% if settings.SITE_TITLE %}
                 <a class="navbar-brand" href="/">
-                    <img src="/media/uploads/site/cccs_gradient.png" alt="cccs logo" height="30px"/>
+                    <img src="/media/uploads/site/cccs_gradient.png" alt="CCCS :" height="46px"/>
                     {{ settings.SITE_TITLE }}</a>
             {% endif %}
             {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
@@ -88,14 +89,17 @@
             </div>
         {% endif %}
     {% endnevercache %}
-
-    <h1>{% block title %}{% endblock %}</h1>
-
+<!--
+<p>&nbsp;</p>
+<br />
+-->
     <ul class="breadcrumb">
         {% spaceless %}
             {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
         {% endspaceless %}
     </ul>
+
+    <h1>{% block title %}{% endblock %}</h1>
 </div>
 
 <div class="container">
@@ -139,7 +143,7 @@
 <footer>
     <div class="container">
         {% page_menu "pages/menus/footer.html" %}
-
+<!---
         <div class="row">
             <p class="site-info text-center">
                 {% trans "Powered by" %}
@@ -155,6 +159,7 @@
                 {% endifinstalled %}
             </p>
         </div>
+-->
     </div>
 </footer>
 
