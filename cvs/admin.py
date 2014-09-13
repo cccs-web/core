@@ -2,7 +2,11 @@ from django.contrib import admin
 
 import cvs.models as cm
 
-admin.site.register(cm.AssociateRole, admin.ModelAdmin)
+
+class AssociateRoleAdmin(admin.ModelAdmin):
+    fields = ('name_en', 'name_fr', 'name_ru')
+
+admin.site.register(cm.AssociateRole, AssociateRoleAdmin)
 
 
 class CVProjectInline(admin.StackedInline):
