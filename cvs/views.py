@@ -3,7 +3,7 @@ from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.forms.models import inlineformset_factory, modelform_factory
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, Http404
 
 from projects.views import CCCSDetailView
 
@@ -66,6 +66,11 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
             context[context_name] = join_with_and(context[context_name])
 
         return context
+
+    def get_object(self, queryset=None):
+        object = super(CVDetailView, self).get_object(queryset)
+        if not self.request.user.is_staff and object.status != cm.CONTENT_STATUS_PUBLISHED:
+            raise Http404
 
 
 CVProjectFormSet = inlineformset_factory(cm.CV, cm.CVProject)
