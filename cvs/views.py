@@ -68,9 +68,10 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
         return context
 
     def get_object(self, queryset=None):
-        object = super(CVDetailView, self).get_object(queryset)
-        if not self.request.user.is_staff and object.status != cm.CONTENT_STATUS_PUBLISHED:
+        obj = super(CVDetailView, self).get_object(queryset)
+        if not self.request.user.is_staff and obj.status != cm.CONTENT_STATUS_PUBLISHED:
             raise Http404
+        return obj
 
 
 CVProjectFormSet = inlineformset_factory(cm.CV, cm.CVProject)
