@@ -12,7 +12,8 @@ admin.site.register(cm.AssociateRole, AssociateRoleAdmin)
 class CVProjectInline(admin.StackedInline):
     model = cm.CVProject
     extra = 1
-    fields = ('from_date',
+    fields = ('project',
+              'from_date',
               'to_date',
               'position',
               'activities',
