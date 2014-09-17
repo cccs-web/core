@@ -36,7 +36,7 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
 
         def join_with_and(lst):
             if lst[2:]:
-                return '{0}, and {1}'.format(', '.join(lst[:-1]), lst[-1])
+                return u'{0}, and {1}'.format(', '.join(lst[:-1]), lst[-1])
             elif lst[1:]:
                 return ' and '.join(lst)
             elif lst:
@@ -55,7 +55,7 @@ class CVDetailView(CVDetailMixin, CCCSDetailView):
         for context_name, attname, parent_attname in (
                 ('themes', 'cccs_subthemes', 'theme'),
                 ('sectors', 'cccs_subsectors', 'sector')):
-            context[context_name] = {str(getattr(elt, parent_attname).name)
+            context[context_name] = {getattr(elt, parent_attname).name
                                      for project in projects
                                      for elt in getattr(project, attname).all()}
 
