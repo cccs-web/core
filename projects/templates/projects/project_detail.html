@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mkdown_filters %}
 {% block main %}
     <h1>{{ project.name }}</h1>
     {% if can_update %}
@@ -64,7 +65,7 @@
                     </a>
                 </td>
                 <td>{{ cvproject.position }}</td>
-                <td>{{ cvproject.activities }}</td>
+                <td>{{ cvproject.activities|mkdown }}</td>
             </tr>
         {% endfor %}
         </tbody>
