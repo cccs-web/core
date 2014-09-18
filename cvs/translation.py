@@ -8,7 +8,7 @@ from projects.translation import UniqueNamedTranslationOptions
 import cvs.models as cm
 
 
-translator.register(cm.AssociateRole, UniqueNamedTranslationOptions)
+translator.register(cm.CCCSRole, UniqueNamedTranslationOptions)
 translator.register(cm.Language, UniqueNamedTranslationOptions)
 
 

@@ -3,10 +3,10 @@ from django.contrib import admin
 import cvs.models as cm
 
 
-class AssociateRoleAdmin(admin.ModelAdmin):
+class CCCSRoleAdmin(admin.ModelAdmin):
     fields = ('name_en', 'name_fr', 'name_ru')
 
-admin.site.register(cm.AssociateRole, AssociateRoleAdmin)
+admin.site.register(cm.CCCSRole, CCCSRoleAdmin)
 
 
 class CVProjectInline(admin.StackedInline):
@@ -88,7 +88,7 @@ class CVAdmin(admin.ModelAdmin):
                                     ('dob',
                                      'gender'),
                                     ('marital_status',
-                                     'associate_role'))}),
+                                     'cccs_role'))}),
                  ('Address', {'classes': ('collapse-closed',),
                               'fields': ('street',
                                          'city',

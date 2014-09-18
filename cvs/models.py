@@ -15,7 +15,7 @@ class Language(UniqueNamed):
     pass
 
 
-class AssociateRole(UniqueNamed):
+class CCCSRole(UniqueNamed):
     pass
 
 
@@ -37,7 +37,7 @@ class CV(RichText, Displayable):
                                                              ('S', 'Single'),
                                                              ('D', 'Divorced'),
                                                              ('W', 'Widowed')), null=True, blank=True)
-    associate_role = models.ForeignKey(AssociateRole, verbose_name='CCCS Role', null=True, blank=True)
+    cccs_role = models.ForeignKey(CCCSRole, verbose_name='CCCS Role', null=True, blank=True)
 
     class Meta:
         verbose_name = "CV"

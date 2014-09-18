@@ -239,7 +239,7 @@ ADMIN_MENU_ORDER = (
       "generic.ThreadedComment",
       ("Media Library", "fb_browse"),)),
     ("Lookup Tables",
-     (("CCCS Roles", "cvs.AssociateRole"),
+     (('CCCS Role', "cvs.CCCSRole"),
       "projects.Country",
       "taggit.Tag")),
     ("Project Categorization",
