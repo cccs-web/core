@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block main %}
     <h1>Updating CV for {{ object.user.first_name }} {{ object.user.last_name }}</h1>
-    <h2>Bio data</h2>
+    <h2>Bio-data</h2>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
