@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load mkdown_filters %}
+{% load mkdown_filters projects_tags %}
 {% block main %}
     <h1>{{ project.name }}</h1>
     {% if can_update %}
@@ -38,7 +38,7 @@
         </tr>
         <tr>
             <th width="30%">Country</th>
-            <td>{{ project.countries }}</td>
+            <td>{{ project.countries.all|join }}</td>
         </tr>
         <tr>
             <th width="30%">Locality</th>
