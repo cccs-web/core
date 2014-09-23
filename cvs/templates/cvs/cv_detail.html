@@ -11,74 +11,82 @@
     {% endif %}
 
     {{ cv.content|mkdown }}
-
-    <h2>Areas of Specialization</h2>
-    <table class="table table-striped table-bordered table-hover table-condensed">
-        <tr>
-            <th>Thematic Issues</th>
-            <td>{{ themes }}</td>
-        </tr>
-        <tr>
-            <th>Sectors</th>
-            <td>{{ sectors }}</td>
-        </tr>
-        <tr>
-            <th>Countries</th>
-            <td>{{ countries }}</td>
-        </tr>
-    </table>
-
-    <h2>Educational Background</h2>
-    {% if cv.cveducation_set.first %}
-    <h3>Academic Degrees</h3>
-    <table class="table table-striped table-bordered table-hover table-condensed">
-        <thead>
-        <tr>
-            <td>Institution</td>
-            <td>Major(s)/Primary Discipline(s)</td>
-            {# <td>Minor(s)</td> #}
-            <td>Degree</td>
-            <td>From Date</td>
-            <td>To Date</td>
-        </tr>
-        </thead>
-        <tbody>
-        {% for cveducation in cv.cveducation_set.all %}
-            <tr>
-                <td>{{ cveducation.institution }}</td>
-                <td>{{ cveducation.subject }}</td>
-                {# <td>{{ cveducation.minors }}</td>  #}
-                <td>{{ cveducation.qualification }}</td>
-                <td>{{ cveducation.from_date|date:"b Y"|title }}</td>
-                <td>{{ cveducation.to_date|date:"b Y"|title }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% if themes or sectors or countries %}
+        <h2>Areas of Specialization</h2>
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            {% if themes %}
+                <tr>
+                    <th>Thematic Issues</th>
+                    <td>{{ themes }}</td>
+                </tr>
+            {% endif %}
+            {% if sectors %}
+                <tr>
+                    <th>Sectors</th>
+                    <td>{{ sectors }}</td>
+                </tr>
+            {% endif %}
+            {% if countries %}
+                <tr>
+                    <th>Countries</th>
+                    <td>{{ countries }}</td>
+                </tr>
+            {% endif %}
+        </table>
     {% endif %}
+    {% if cv.cveducation_set.first or cv.cvtrainig_set.first %}
+        <h2>Educational Background</h2>
+        {% if cv.cveducation_set.first %}
+            <h3>Academic Degrees</h3>
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <td>Institution</td>
+                    <td>Major(s)/Primary Discipline(s)</td>
+                    {# <td>Minor(s)</td> #}
+                    <td>Degree</td>
+                    <td>From Date</td>
+                    <td>To Date</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cveducation in cv.cveducation_set.all %}
+                    <tr>
+                        <td>{{ cveducation.institution }}</td>
+                        <td>{{ cveducation.subject }}</td>
+                        {# <td>{{ cveducation.minors }}</td>  #}
+                        <td>{{ cveducation.qualification }}</td>
+                        <td>{{ cveducation.from_date|date:"b Y"|title }}</td>
+                        <td>{{ cveducation.to_date|date:"b Y"|title }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
 
-    {% if cv.cvtraining_set.first %}
-    <h3>Specialised Training</h3>
-    <table class="table table-striped table-bordered table-hover table-condensed">
-        <thead>
-        <tr>
-            <td>Institution</td>
-            <td>Subject</td>
-            <td>From</td>
-            <td>To</td>
-        </tr>
-        </thead>
-        <tbody>
-        {% for cvtraining in cv.cvtraining_set.all %}
-            <tr>
-                <td>{{ cvtraining.institution }}</td>
-                <td>{{ cvtraining.subject }}</td>
-                <td>{{ cvtraining.from_date|date:"b Y"|title }}</td>
-                <td>{{ cvtraining.to_date|date:"b Y"|title }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        {% if cv.cvtraining_set.first %}
+            <h3>Specialised Training</h3>
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <td>Institution</td>
+                    <td>Subject</td>
+                    <td>From</td>
+                    <td>To</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cvtraining in cv.cvtraining_set.all %}
+                    <tr>
+                        <td>{{ cvtraining.institution }}</td>
+                        <td>{{ cvtraining.subject }}</td>
+                        <td>{{ cvtraining.from_date|date:"b Y"|title }}</td>
+                        <td>{{ cvtraining.to_date|date:"b Y"|title }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     {% endif %}
 
     {% if cv.cvmembership_set.first %}
