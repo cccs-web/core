@@ -1,0 +1,25 @@
+<h2>Employment Experience</h2>
+<table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+        <th width="40%">Employer</th>
+        <th width="40%">Position</th>
+        <th width="20%">Dates Employed</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for cvemployment in cv.cvemployment_set.all %}
+        <tr>
+            <td>{{ cvemployment.employer }}</td>
+            <td>{{ cvemployment.position }}</td>
+            <td>
+                {{ cvemployment.from_date|date:"b Y"|title }} -
+                {% if cvemployment.to_date %}
+                    {{ cvemployment.to_date|date:"b Y"|title }}
+                {% else %}
+                    present{% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

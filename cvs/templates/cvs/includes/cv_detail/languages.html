@@ -1,0 +1,21 @@
+<h2>Languages</h2>
+<table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+        <td>Language</td>
+        <td>Reading</td>
+        <td>Writing</td>
+        <td>Speaking</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for cvlanguage in cv.cvlanguage_set.all %}
+        <tr>
+            <td>{{ cvlanguage.language }}</td>
+            <td>{{ cvlanguage.reading }}</td>
+            <td>{{ cvlanguage.writing }}</td>
+            <td>{{ cvlanguage.speaking }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

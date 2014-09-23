@@ -1,0 +1,21 @@
+<h2>Areas of Specialization</h2>
+<table class="table table-striped table-bordered table-hover table-condensed">
+    {% if themes %}
+        <tr>
+            <th>Thematic Issues</th>
+            <td>{{ themes }}</td>
+        </tr>
+    {% endif %}
+    {% if sectors %}
+        <tr>
+            <th>Sectors</th>
+            <td>{{ sectors }}</td>
+        </tr>
+    {% endif %}
+    {% if countries %}
+        <tr>
+            <th>Countries</th>
+            <td>{{ countries }}</td>
+        </tr>
+    {% endif %}
+</table>

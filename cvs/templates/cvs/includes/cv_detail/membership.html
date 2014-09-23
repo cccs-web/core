@@ -1,0 +1,21 @@
+<h2>Membership in Professional Societies</h2>
+<table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+        <td>Organisation</td>
+        <td>Role</td>
+        <td>From</td>
+        <td>To</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for cvmembership in cv.cvmembership_set.all %}
+        <tr>
+            <td>{{ cvmembership.organization }}</td>
+            <td>{{ cvmembership.role }}</td>
+            <td>{{ cvmembership.from_date|date:"b Y"|title }}</td>
+            <td>{{ cvmembership.to_date|date:"b Y"|title }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

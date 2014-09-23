@@ -1,0 +1,21 @@
+<h3>Specialised Training</h3>
+<table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+        <td>Institution</td>
+        <td>Subject</td>
+        <td>From</td>
+        <td>To</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for cvtraining in cv.cvtraining_set.all %}
+        <tr>
+            <td>{{ cvtraining.institution }}</td>
+            <td>{{ cvtraining.subject }}</td>
+            <td>{{ cvtraining.from_date|date:"b Y"|title }}</td>
+            <td>{{ cvtraining.to_date|date:"b Y"|title }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

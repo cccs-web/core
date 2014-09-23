@@ -1,0 +1,39 @@
+<h2>Project Experience</h2>
+<div class="panel-group" id="project_accordion">
+    {% for cvproject in cv.cvproject_set.all %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a class="panel-toggle" data-toggle="collapse" data-parent="#project_accordion" href="#prj{{ cvproject.id }}">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;{{ cvproject.project.name }}
+                    </a>
+                    &nbsp;(<a href="{% url 'project-detail' slug=cvproject.project.slug %}">visit project</a>)
+                </h3>
+            </div>
+            <div id="prj{{ cvproject.id }}" class="panel-body collapse">
+                <div class="panel-inner">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tbody>
+                        <tr>
+                            <th>Position:</th>
+                            <td>{{ cvproject.position }}</td>
+                        </tr>
+                        <tr>
+                            <th>Person Months:</th>
+                            <td>{{ cvproject.person_months }}</td>
+                        </tr>
+                        <tr>
+                            <th>Activities:</th>
+                            <td>{{ cvproject.activities|mkdown }}</td>
+                        </tr>
+                        <tr>
+                            <th>References:</th>
+                            <td>{{ cvproject.references|mkdown }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
