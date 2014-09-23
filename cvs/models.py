@@ -16,7 +16,9 @@ class Language(UniqueNamed):
 
 
 class CCCSRole(UniqueNamed):
-    pass
+    class Meta:
+        verbose_name = 'CCCS Role'
+        verbose_name_plural = 'CCCS Roles'
 
 
 class CV(RichText, Displayable):
