@@ -8,9 +8,21 @@ class DocumentAdmin(admin.ModelAdmin):
     list_filter = ['tags']
     fieldsets = ((None, {'fields': ('title',
                                     'source_file',
-                                    'creator',
+                                    'author',
+                                    'editor',
                                     'tags',
-                                    'content')}),
+                                    'content',
+                                    'year',
+                                    'chapter',
+                                    'journal',
+                                    'volume',
+                                    'issue',
+                                    'pages',
+                                    'series',
+                                    'language',
+                                    'publisher',
+                                    'institution',
+                                    'address')}),
                  ('Metadata', {'classes': ('collapse-closed',),
                                'fields': ('_meta_title',
                                           'slug',
@@ -22,3 +34,4 @@ class DocumentAdmin(admin.ModelAdmin):
                                           'expiry_date')}))
 
 admin.site.register(dm.Document, DocumentAdmin)
+admin.site.register(dm.BibTexEntryType, admin.ModelAdmin)
