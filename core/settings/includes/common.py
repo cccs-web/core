@@ -151,7 +151,7 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     "mezzanine_pagedown",
-    "mezzanine_slides",
+    #"mezzanine_slides",
     "mkdown",
     "modeltranslation",
     "south",

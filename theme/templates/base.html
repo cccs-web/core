@@ -16,31 +16,20 @@
     {% endifinstalled %}
 
     {% compress css %}
-        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
         <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
-        <link rel="stylesheet" href="{% static "css/custom.css" %}">
+        <link rel="stylesheet" href="{% static "flatlab/css/bootstrap.min.css" %}">
+        <link rel="stylesheet" href="{% static "flatlab/css/bootstrap-reset.css" %}">
+        <link rel="stylesheet" href="{% static "flatlab/assets/font-awesome/css/font-awesome.css" %}">
+        <link rel="stylesheet" href="{% static "flatlab/css/style.css" %}">
+        <link rel="stylesheet" href="{% static "flatlab/css/style-responsive.css" %}">
         {% if LANGUAGE_BIDI %}
             <link rel="stylesheet" href="{% static "css/rtl.css" %}">
         {% endif %}
-        {% ifinstalled cartridge.shop %}
-            <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
-            {% if LANGUAGE_BIDI %}
-                <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
-            {% endif %}
-        {% endifinstalled %}
-        <link rel="stylesheet" href="{% static "responsiveslides/responsiveslides.css" %}"/>
+        {% comment %}<link rel="stylesheet" href="{% static "responsiveslides/responsiveslides.css" %}"/>{% endcomment %}
         {% block extra_css %}
-            <link rel="stylesheet" href="{% static "css/custom.css" %}">
         {% endblock %}
     {% endcompress %}
 
-    {% compress js %}
-        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
-        <script src="{% static "js/bootstrap.js" %}"></script>
-        <script src="{% static "js/bootstrap-extras.js" %}"></script>
-        <script src="{% static "responsiveslides/responsiveslides.js" %}"></script>
-        {% block extra_js %}{% endblock %}
-    {% endcompress %}
 
     <!--[if lt IE 9]>
 <script src="{% static "js/html5shiv.js" %}"></script>
@@ -51,117 +40,250 @@
 </head>
 
 <body id="{% block body_id %}body{% endblock %}">
+{% editable_loader %}
+  <section id="container" class="">
+      <!--header start-->
+      <header class="header white-bg">
+          <div class="sidebar-toggle-box">
+              <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
+          </div>
+          <!--logo start-->
+          <a href="/" class="logo" >
+              <img src="/media/uploads/site/cccs_gradient.png" alt="CCCS :" height="30px"/>
+              {{ settings.SITE_TITLE }}
+          </a>
+          <!--logo end-->
+          <div class="top-nav ">
+              <ul class="nav pull-right top-menu">
+                  <!-- user login dropdown start-->
+                  <li class="dropdown">
+                      <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                          <i class="fa fa-search"></i>
+                          <b class="caret"></b>
+                      </a>
+                      <div class="dropdown-menu extended">
+                          <div class="log-arrow-up"></div>
+                          {% search_form "all" %}
+                      </div>
+                  </li>
+                  <li class="dropdown">
+                      <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                          <span class="username">{{ request.user.username }}</span>
+                          <b class="caret"></b>
+                      </a>
+                      <div class="dropdown-menu extended">
+                          <div class="log-arrow-up"></div>
+                          {% include "accounts/includes/user_panel.html" %}
+                      </div>
+                  </li>
 
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">{% trans "Toggle Navigation" %}</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            {% if settings.SITE_TITLE %}
-                <a class="navbar-brand" href="/">
-                    <img src="/media/uploads/site/cccs_gradient.png" alt="CCCS :" height="46px"/>
-                    {{ settings.SITE_TITLE }}</a>
-            {% endif %}
-            {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
-        </div>
-        <div class="navbar-collapse collapse">
-            {% search_form "all" %}
-            {% page_menu "pages/menus/dropdown.html" %}
-        </div>
-    </div>
-</div>
+                  <!-- user login dropdown end -->
+              </ul>
+          </div>
+      </header>
+      <!--header end-->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              {% comment %}
+              Even though the menu is now on the left, it has been
+              given the same name for compatibility with existing pages
+              {% endcomment %}
+              {% page_menu "pages/menus/dropdown.html" %}
+          </div>
+      </aside>
+      <!--sidebar end-->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper site-min-height">
+              <!-- page start-->
+              {% nevercache %}
+                  {% if messages %}
+                      <div class="messages">
+                          {% for message in messages %}
+                              <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+                                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                  {{ message }}
+                              </div>
+                          {% endfor %}
+                      </div>
+                  {% endif %}
+              {% endnevercache %}
+              <h1>{% block title %}{% endblock %}</h1>
+              {% block main %}{% endblock %}
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
 
-<div class="container">
+      <!-- Right Slidebar start -->
+      <div class="sb-slidebar sb-right sb-style-overlay">
+          <h5 class="side-title">Online Customers</h5>
+          <ul class="quick-chat-list">
+              <li class="online">
+                  <div class="media">
+                      <a href="#" class="pull-left media-thumb">
+                          <img alt="" src="img/chat-avatar2.jpg" class="media-object">
+                      </a>
+                      <div class="media-body">
+                          <strong>John Doe</strong>
+                          <small>Dream Land, AU</small>
+                      </div>
+                  </div><!-- media -->
+              </li>
+              <li class="online">
+                  <div class="media">
+                      <a href="#" class="pull-left media-thumb">
+                          <img alt="" src="img/chat-avatar.jpg" class="media-object">
+                      </a>
+                      <div class="media-body">
+                          <div class="media-status">
+                              <span class=" badge bg-important">3</span>
+                          </div>
+                          <strong>Jonathan Smith</strong>
+                          <small>United States</small>
+                      </div>
+                  </div><!-- media -->
+              </li>
 
-    {% nevercache %}
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endnevercache %}
-<!--
-<p>&nbsp;</p>
-<br />
--->
-    <ul class="breadcrumb">
-        {% spaceless %}
-            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-        {% endspaceless %}
-    </ul>
+              <li class="online">
+                  <div class="media">
+                      <a href="#" class="pull-left media-thumb">
+                          <img alt="" src="img/pro-ac-1.png" class="media-object">
+                      </a>
+                      <div class="media-body">
+                          <div class="media-status">
+                              <span class=" badge bg-success">5</span>
+                          </div>
+                          <strong>Jane Doe</strong>
+                          <small>ABC, USA</small>
+                      </div>
+                  </div><!-- media -->
+              </li>
+              <li class="online">
+                  <div class="media">
+                      <a href="#" class="pull-left media-thumb">
+                          <img alt="" src="img/avatar1.jpg" class="media-object">
+                      </a>
+                      <div class="media-body">
+                          <strong>Anjelina Joli</strong>
+                          <small>Fockland, UK</small>
+                      </div>
+                  </div><!-- media -->
+              </li>
+              <li class="online">
+                  <div class="media">
+                      <a href="#" class="pull-left media-thumb">
+                          <img alt="" src="img/mail-avatar.jpg" class="media-object">
+                      </a>
+                      <div class="media-body">
+                          <div class="media-status">
+                              <span class=" badge bg-warning">7</span>
+                          </div>
+                          <strong>Mr Tasi</strong>
+                          <small>Dream Land, USA</small>
+                      </div>
+                  </div><!-- media -->
+              </li>
+          </ul>
+          <h5 class="side-title"> pending Task</h5>
+          <ul class="p-task tasks-bar">
+              <li>
+                  <a href="#">
+                      <div class="task-info">
+                          <div class="desc">Dashboard v1.3</div>
+                          <div class="percent">40%</div>
+                      </div>
+                      <div class="progress progress-striped">
+                          <div style="width: 40%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-success">
+                              <span class="sr-only">40% Complete (success)</span>
+                          </div>
+                      </div>
+                  </a>
+              </li>
+              <li>
+                  <a href="#">
+                      <div class="task-info">
+                          <div class="desc">Database Update</div>
+                          <div class="percent">60%</div>
+                      </div>
+                      <div class="progress progress-striped">
+                          <div style="width: 60%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="progress-bar progress-bar-warning">
+                              <span class="sr-only">60% Complete (warning)</span>
+                          </div>
+                      </div>
+                  </a>
+              </li>
+              <li>
+                  <a href="#">
+                      <div class="task-info">
+                          <div class="desc">Iphone Development</div>
+                          <div class="percent">87%</div>
+                      </div>
+                      <div class="progress progress-striped">
+                          <div style="width: 87%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
+                              <span class="sr-only">87% Complete</span>
+                          </div>
+                      </div>
+                  </a>
+              </li>
+              <li>
+                  <a href="#">
+                      <div class="task-info">
+                          <div class="desc">Mobile App</div>
+                          <div class="percent">33%</div>
+                      </div>
+                      <div class="progress progress-striped">
+                          <div style="width: 33%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="80" role="progressbar" class="progress-bar progress-bar-danger">
+                              <span class="sr-only">33% Complete (danger)</span>
+                          </div>
+                      </div>
+                  </a>
+              </li>
+              <li>
+                  <a href="#">
+                      <div class="task-info">
+                          <div class="desc">Dashboard v1.3</div>
+                          <div class="percent">45%</div>
+                      </div>
+                      <div class="progress progress-striped active">
+                          <div style="width: 45%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="45" role="progressbar" class="progress-bar">
+                              <span class="sr-only">45% Complete</span>
+                          </div>
+                      </div>
 
-    <h1>{% block title %}{% endblock %}</h1>
-</div>
+                  </a>
+              </li>
+              <li class="external">
+                  <a href="#">See All Tasks</a>
+              </li>
+          </ul>
+      </div>
+      <!-- Right Slidebar end -->
 
-<div class="container">
-    <div class="row">
-        {% include "includes/standard_slides.html" %}
-        <br>
-        <div class="col-md-{% if "Yes" == use_right_col|default:"Yes" %}9{% else %}12{% endif %} left">
-            {% block main %}{% endblock %}
-        </div>
-        {% if "Yes" == use_right_col|default:"Yes" %}
-            <div class="col-md-3 right">
-                <div class="panel panel-default">
-                    <form action="{% url 'set_language' %}" method="post">
-                        {% csrf_token %}
-                        <input name="next" type="hidden" value="{{ redirect_to }}" />
-                        <select name="language">
-                            {% get_language_info_list for LANGUAGES as languages %}
-                            {% for language in languages %}
-                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-                                    {{ language.name_local|capfirst }} ({{ language.code }})
-                                </option>
-                            {% endfor %}
-                        </select>
-                        <input type="submit" value="Go" />
-                    </form>
-                </div>
-                <div class="panel panel-default">
-                    {% nevercache %}
-                        {% include "accounts/includes/user_panel.html" %}
-                    {% endnevercache %}
-                    <div class="panel-body">
-                        {% block right_panel %}
-                        {% endblock %}
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-    </div>
-</div>
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2013 <i class="fa fa-magnify"></i> FlatLab by VectorLab.
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
 
-<footer>
-    <div class="container">
-        {% page_menu "pages/menus/footer.html" %}
-<!---
-        <div class="row">
-            <p class="site-info text-center">
-                {% trans "Powered by" %}
-                <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %},
-                <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
-                {% trans "and" %}
-                <a href="http://www.djangoproject.com">Django</a>
-                <span class="separator">|</span>
-                {% trans "Theme by" %} <a target="_blank" href="http://getbootstrap.com">Bootstrap</a>
-                {% ifinstalled mezzanine.mobile %}
-                    <span class="separator">|</span>
-                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
-                {% endifinstalled %}
-            </p>
-        </div>
--->
-    </div>
-</footer>
-
+    {% compress js %}
+        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}" type="text/javascript"></script>
+        <script src="{% static "flatlab/js/bootstrap.js" %}" type="text/javascript"></script>
+        <script src="{% static "js/bootstrap-extras.js" %}" type="text/javascript"></script>
+        <script src="{% static "flatlab/js/jquery.dcjqaccordion.2.7.js" %}" type="text/javascript"></script>
+        <script src="{% static "flatlab/js/jquery.scrollTo.min.js" %}" type="text/javascript"></script>
+        <script src="{% static "flatlab/js/slidebars.min.js" %}" type="text/javascript"></script>
+        <script src="{% static "flatlab/js/jquery.nicescroll.js" %}" type="text/javascript"></script>
+        <script src="{% static "flatlab/js/common-scripts.js" %}" type="text/javascript"></script>
+        {% comment %}<script src="{% static "responsiveslides/responsiveslides.js" %}" type="text/javascript"></script>{% endcomment %}
+        {% block extra_js %}{% endblock %}
+    {% endcompress %}
 </body>
 </html>
