@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 
 from mezzanine.core.models import Displayable, RichText
 from taggit.managers import TaggableManager
@@ -7,11 +8,15 @@ import projects.models as pm
 
 
 class BibTexEntryType(pm.UniqueNamed):
-    pass
+    class Meta:
+        verbose_name = 'BIBTEX Entry Type'
+        verbose_name_plural = 'BIBTEX Entry Types'
 
 
 class CCCSEntryType(pm.UniqueNamed):
-    pass
+    class Meta:
+        verbose_name = 'CCCS Entry Type'
+        verbose_name_plural = 'CCCS Entry Types'
 
 
 class Document(RichText, Displayable):
@@ -35,6 +40,16 @@ class Document(RichText, Displayable):
     countries = models.ManyToManyField(pm.Country, related_name='documents', verbose_name="Country / Countries")
     tags = TaggableManager(blank=True)
 
-    search_fields = ("content", "title")
+    search_fields = ("content", "title", "tag_string")
+
+    class Meta:
+        ordering = ('title',)
+
+    def get_absolute_url(self):
+        return reverse("document-detail", args=(self.slug,))
+
+    @property
+    def tag_string(self):
+        return ', '.join([tag.name for tag in self.tags.all()])
 
 Document._meta.get_field('content').verbose_name = 'Description of content'
