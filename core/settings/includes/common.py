@@ -157,6 +157,7 @@ INSTALLED_APPS = (
     "south",
     "django.contrib.admindocs",
     "taggit",
+    "documents",
     "gitadmin")
 
 # List of processors used by RequestContext to populate the context.
@@ -235,6 +236,7 @@ ADMIN_MENU_ORDER = (
     ("Content",
      ("cvs.CV",
       "projects.Project",
+      "documents.Document",
       "pages.Page",
       "blog.BlogPost",
       "generic.ThreadedComment",
