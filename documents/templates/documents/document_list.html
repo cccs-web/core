@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block main %}
+    <ul>
+        {% for document in document_list %}
+            <li>
+                <a href="{% url 'document-detail' slug=document.slug %}">
+                    {{ document.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock main %}
