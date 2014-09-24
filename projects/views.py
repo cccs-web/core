@@ -2,20 +2,11 @@ from collections import OrderedDict
 
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.core import serializers
 
 import projects.models as pm
 
 
-class CCCSDetailView(DetailView):
-
-    def get_context_data(self, **kwargs):
-        context = super(CCCSDetailView, self).get_context_data(**kwargs)
-        context['serialized'] = serializers.serialize('python', [self.get_object()])[0]
-        return context
-
-
-class ProjectDetailView(CCCSDetailView):
+class ProjectDetailView(DetailView):
     model = pm.Project
 
     def get_context_data(self, **kwargs):
