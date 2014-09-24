@@ -221,7 +221,8 @@ SEARCH_MODEL_CHOICES = (
     'pages.Page',
     'blog.BlogPost',
     'cvs.CV',
-    'projects.Project')
+    'projects.Project',
+    'documents.Document')
 
 # mezzanine-pagedown
 #RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PlainWidget'

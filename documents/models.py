@@ -40,7 +40,7 @@ class Document(RichText, Displayable):
     countries = models.ManyToManyField(pm.Country, related_name='documents', verbose_name="Country / Countries")
     tags = TaggableManager(blank=True)
 
-    search_fields = ("content", "title", "tag_string")
+    search_fields = ("content", "title", "tags__name")
 
     class Meta:
         ordering = ('title',)
