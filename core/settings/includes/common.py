@@ -157,6 +157,7 @@ INSTALLED_APPS = (
     "south",
     "django.contrib.admindocs",
     "taggit",
+    "documents",
     "gitadmin")
 
 # List of processors used by RequestContext to populate the context.
@@ -220,7 +221,8 @@ SEARCH_MODEL_CHOICES = (
     'pages.Page',
     'blog.BlogPost',
     'cvs.CV',
-    'projects.Project')
+    'projects.Project',
+    'documents.Document')
 
 # mezzanine-pagedown
 #RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PlainWidget'
@@ -235,12 +237,15 @@ ADMIN_MENU_ORDER = (
     ("Content",
      ("cvs.CV",
       "projects.Project",
+      "documents.Document",
       "pages.Page",
       "blog.BlogPost",
       "generic.ThreadedComment",
       ("Media Library", "fb_browse"),)),
     ("Lookup Tables",
-     (('CCCS Role', "cvs.CCCSRole"),
+     ('documents.BibTexEntryType',
+      'documents.CCCSEntryType',
+      ('CCCS Role', "cvs.CCCSRole"),
       "projects.Country",
       "taggit.Tag")),
     ("Project Categorization",

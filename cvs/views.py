@@ -4,8 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.forms.models import inlineformset_factory, modelform_factory
 from django.http.response import HttpResponseRedirect, Http404
-
-from projects.views import CCCSDetailView
+from django.views.generic.detail import DetailView
 
 import cvs.models as cm
 
@@ -27,7 +26,7 @@ class CVDetailMixin(object):
         return (request.user == self.get_object().user) or request.user.is_staff
 
 
-class CVDetailView(CVDetailMixin, CCCSDetailView):
+class CVDetailView(CVDetailMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CVDetailView, self).get_context_data(**kwargs)

@@ -14,7 +14,7 @@
     {% if themes or sectors or countries %}
         {% include 'cvs/includes/cv_detail/specialization.html' %}
     {% endif %}
-    {% if cv.cveducation_set.first or cv.cvtrainig_set.first %}
+    {% if cv.cveducation_set.first or cv.cvtraining_set.first %}
         <h2>Educational Background</h2>
         {% if cv.cveducation_set.first %}
             {% include 'cvs/includes/cv_detail/education.html' %}
