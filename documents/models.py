@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from mezzanine.core.models import Displayable, RichText, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from taggit.managers import TaggableManager
 
+from storages.backends.s3boto import S3BotoStorage
+
 import projects.models as pm
 
 
@@ -20,7 +22,7 @@ class CCCSEntryType(pm.UniqueNamed):
 
 
 class Document(RichText, Displayable):
-    source_file = models.FileField(upload_to='documents/%Y/%m/%d')
+    source_file = models.FileField(upload_to='documents/%Y/%m/%d', storage=S3BotoStorage())
     author = models.CharField(max_length=256, null=True, blank=True)
     editor = models.CharField(max_length=256, null=True, blank=True)
     year = models.IntegerField(null=True, blank=True)
