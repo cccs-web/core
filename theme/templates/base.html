@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="{% static "flatlab/assets/font-awesome/css/font-awesome.css" %}">
         <link rel="stylesheet" href="{% static "flatlab/css/style.css" %}">
         <link rel="stylesheet" href="{% static "flatlab/css/style-responsive.css" %}">
+        <link rel="stylesheet" href="{% static "css/custom.css" %}">
         {% if LANGUAGE_BIDI %}
             <link rel="stylesheet" href="{% static "css/rtl.css" %}">
         {% endif %}
@@ -36,11 +37,12 @@
 <script src="{% static "js/respond.min.js" %}"></script>
 <![endif]-->
 
-    {% block extra_head %}{% endblock %}
+    {% block extra_head %}
+        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}" type="text/javascript"></script>
+    {% endblock %}
 </head>
 
 <body id="{% block body_id %}body{% endblock %}">
-{% editable_loader %}
   <section id="container" class="">
       <!--header start-->
       <header class="header white-bg">
@@ -129,7 +131,7 @@
   </section>
 
     {% compress js %}
-        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}" type="text/javascript"></script>
+        {% editable_loader %}
         <script src="{% static "flatlab/js/bootstrap.js" %}" type="text/javascript"></script>
         <script src="{% static "js/bootstrap-extras.js" %}" type="text/javascript"></script>
         <script src="{% static "flatlab/js/jquery.dcjqaccordion.2.7.js" %}" type="text/javascript"></script>
