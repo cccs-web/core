@@ -12,6 +12,7 @@ DATABASES = {
         "HOST": "",
         "PORT": ""}}
 
+AWS_STORAGE_BUCKET_NAME = "cccs-docs"
 
 ###################
 # DEPLOY SETTINGS #
