@@ -30,7 +30,8 @@ class DocumentAdmin(admin.ModelAdmin):
                                     'language',
                                     'publisher',
                                     'institution',
-                                    'address')}),
+                                    'address',
+                                    'categories')}),
                  ('Metadata', {'classes': ('collapse-closed',),
                                'fields': ('_meta_title',
                                           'slug',
@@ -40,6 +41,7 @@ class DocumentAdmin(admin.ModelAdmin):
                                           'keywords',
                                           'publish_date',
                                           'expiry_date')}))
+    filter_horizontal = ('categories',)
 
 admin.site.register(dm.Document, DocumentAdmin)
 admin.site.register(dm.BibTexEntryType, admin.ModelAdmin)
