@@ -1,6 +1,14 @@
 from django.contrib import admin
 
+from categories.admin import CategoryBaseAdmin
+
 import documents.models as dm
+
+
+class DocumentCategoryAdmin(CategoryBaseAdmin):
+    pass
+
+admin.site.register(dm.DocumentCategory, DocumentCategoryAdmin)
 
 
 class DocumentAdmin(admin.ModelAdmin):
