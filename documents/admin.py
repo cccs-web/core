@@ -1,6 +1,14 @@
 from django.contrib import admin
 
+from categories.admin import CategoryBaseAdmin
+
 import documents.models as dm
+
+
+class DocumentCategoryAdmin(CategoryBaseAdmin):
+    pass
+
+admin.site.register(dm.DocumentCategory, DocumentCategoryAdmin)
 
 
 class DocumentAdmin(admin.ModelAdmin):
@@ -22,7 +30,8 @@ class DocumentAdmin(admin.ModelAdmin):
                                     'language',
                                     'publisher',
                                     'institution',
-                                    'address')}),
+                                    'address',
+                                    'categories')}),
                  ('Metadata', {'classes': ('collapse-closed',),
                                'fields': ('_meta_title',
                                           'slug',
@@ -32,6 +41,7 @@ class DocumentAdmin(admin.ModelAdmin):
                                           'keywords',
                                           'publish_date',
                                           'expiry_date')}))
+    filter_horizontal = ('categories',)
 
 admin.site.register(dm.Document, DocumentAdmin)
 admin.site.register(dm.BibTexEntryType, admin.ModelAdmin)

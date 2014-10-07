@@ -7,6 +7,12 @@ from taggit.managers import TaggableManager
 from storages.backends.s3boto import S3BotoStorage
 
 import projects.models as pm
+from categories.models import CategoryBase
+
+
+class DocumentCategory(CategoryBase):
+    class Meta:
+        verbose_name_plural = 'document categories'
 
 
 class BibTexEntryType(pm.UniqueNamed):
@@ -41,6 +47,7 @@ class Document(RichText, Displayable):
     cccs_entry_type = models.ForeignKey(CCCSEntryType, null=True, blank=True)
     countries = models.ManyToManyField(pm.Country, related_name='documents', verbose_name="Country / Countries")
     tags = TaggableManager(blank=True)
+    categories = models.ManyToManyField(DocumentCategory, related_name='documents')
 
     search_fields = ("content", "title", "tags__name")
 

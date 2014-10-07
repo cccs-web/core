@@ -159,7 +159,8 @@ INSTALLED_APPS = (
     "taggit",
     "documents",
     "gitadmin",
-    "storages")
+    "storages",
+    "categories.editor")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
