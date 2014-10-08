@@ -16,6 +16,7 @@ class DocumentAdmin(admin.ModelAdmin):
     list_filter = ['tags']
     fieldsets = ((None, {'fields': ('title',
                                     'source_file',
+                                    'original_source_filename',
                                     'author',
                                     'editor',
                                     'tags',
@@ -42,6 +43,11 @@ class DocumentAdmin(admin.ModelAdmin):
                                           'publish_date',
                                           'expiry_date')}))
     filter_horizontal = ('categories',)
+
+    def save_model(self, request, obj, form, change):
+        obj.original_source_filename = request.FILES['source_file'].name
+        super(DocumentAdmin, self).save_model(request, obj, form, change)
+
 
 admin.site.register(dm.Document, DocumentAdmin)
 admin.site.register(dm.BibTexEntryType, admin.ModelAdmin)

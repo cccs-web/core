@@ -29,6 +29,7 @@ class CCCSEntryType(pm.UniqueNamed):
 
 class Document(RichText, Displayable):
     source_file = models.FileField(upload_to='documents/%Y/%m/%d', storage=S3BotoStorage())
+    original_source_filename = models.CharField(max_length=256, null=True, blank=True)
     author = models.CharField(max_length=256, null=True, blank=True)
     editor = models.CharField(max_length=256, null=True, blank=True)
     year = models.IntegerField(null=True, blank=True)
