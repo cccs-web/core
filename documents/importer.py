@@ -40,24 +40,27 @@ def import_files():
                                    original_source_filename=key.name,
                                    title=os.path.splitext(os.path.basename(key.name))[0])
             document.save()  # save here so m2m relations are possible
-            categories = os.path.split(key.name)[0].split(os.path.sep)
-            if categories:
-                verify_categories(categories)
-                document.categories.add(dm.DocumentCategory.objects.get(name=categories[-1]))
+            category_names = os.path.split(key.name)[0].split(os.path.sep)
+            if category_names:
+                categories = verify_categories(category_names)
+                document.categories.add(categories[-1])
 
 
 def verify_categories(category_names):
     """
     Create the category_names ancestral tree if it does not already exist
     :param category_names: list of category names with root at the top
-    :return:
+    :return: list of the actual categories corresponding to the names.
     """
     parent = None
+    result = list()
     for category_name in category_names:
         category, created = dm.DocumentCategory.objects.get_or_create(
             name=category_name,
             parent=parent)
         if created:
             category.save()
+        result.append(category)
         parent = category
+    return result
 
