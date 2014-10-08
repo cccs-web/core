@@ -37,7 +37,8 @@ def import_files():
     for key in storage.bucket.list():
         if not dm.Document.objects.filter(source_file=key.name):  # No existing metadata object
             document = dm.Document(source_file=key.name,
-                                   title=os.path.basename(key.name))
+                                   original_source_filename=key.name,
+                                   title=os.path.splitext(os.path.basename(key.name))[0])
             document.save()  # save here so m2m relations are possible
             categories = os.path.split(key.name)[0].split(os.path.sep)
             if categories:
