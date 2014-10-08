@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 
 from mezzanine.core.models import Displayable, RichText, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from taggit.managers import TaggableManager
@@ -7,12 +8,60 @@ from taggit.managers import TaggableManager
 from storages.backends.s3boto import S3BotoStorage
 
 import projects.models as pm
-from categories.models import CategoryBase
+from categories.base import (MPTTModel,
+                             TreeForeignKey,
+                             CategoryManager,
+                             TreeManager,
+                             slugify,
+                             SLUG_TRANSLITERATOR,
+                             force_unicode)
 
 
-class DocumentCategory(CategoryBase):
+class DocumentCategory(MPTTModel):
+    """
+    Largely a copy of categories.models.CategoryBase because we needed bigger fields.
+    Refactor with own django-categories/pull request if we have to do more with this :(
+    """
+    parent = TreeForeignKey('self',
+                            blank=True,
+                            null=True,
+                            related_name='children',
+                            verbose_name=_('parent'))
+    name = models.CharField(max_length=512, verbose_name=_('name'))
+    slug = models.SlugField(max_length=512, verbose_name=_('slug'))
+    active = models.BooleanField(default=True, verbose_name=_('active'))
+
+    objects = CategoryManager()
+    tree = TreeManager()
+
+    def save(self, *args, **kwargs):
+        """
+        While you can activate an item without activating its descendants,
+        It doesn't make sense that you can deactivate an item and have its
+        decendants remain active.
+        """
+        if not self.slug:
+            self.slug = slugify(SLUG_TRANSLITERATOR(self.name))[:50]
+
+        super(DocumentCategory, self).save(*args, **kwargs)
+
+        if not self.active:
+            for item in self.get_descendants():
+                if item.active != self.active:
+                    item.active = self.active
+                    item.save()
+
+    def __unicode__(self):
+        ancestors = self.get_ancestors()
+        return ' > '.join([force_unicode(i.name) for i in ancestors] + [self.name, ])
+
     class Meta:
+        unique_together = ('parent', 'name')
+        ordering = ('tree_id', 'lft')
         verbose_name_plural = 'document categories'
+
+    class MPTTMeta:
+        order_insertion_by = 'name'
 
 
 class BibTexEntryType(pm.UniqueNamed):
