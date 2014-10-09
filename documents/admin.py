@@ -47,11 +47,12 @@ class DocumentAdmin(admin.ModelAdmin):
                                           'expiry_date')}))
     filter_horizontal = ('categories', 'authors', 'editors')
 
-    def save_model(self, request, obj, form, change):
-        super(DocumentAdmin, self).save_model(request, obj, form, change)
-        filename = dm.FileName(name=request.FILES['source_file'].name)
-        filename.save()
-        obj.filenames.add(filename)
+    def save_model(self, request, document, form, change):
+        super(DocumentAdmin, self).save_model(request, document, form, change)
+        filename, created = dm.FileName.objects.get_or_create(name=request.FILES['source_file'].name)
+        if created:
+            filename.save()
+        document.filenames.add(filename)
 
 
 admin.site.register(dm.Document, DocumentAdmin)
