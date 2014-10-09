@@ -12,11 +12,9 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% if category.documents.all %}
-            <h3>Entries</h3>
-            {% for entry in category.documents.all %}
-                <p><a href="{{ entry.get_absolute_url }}">{{ entry.headline }}</a></p>
-            {% endfor %}
-        {% endif %}
     {% endfor %}
+    {% if document_list %}
+        <h1>Orphan documents</h1>
+        {% include 'documents/includes/document_list.html' %}
+    {% endif %}
 {% endblock main %}

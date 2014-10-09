@@ -11,7 +11,6 @@
             <a href="{% url 'document-category-root' %}">root</a>
         {% endif %}
     </p>
-    {% if category.description %}<p>{{ category.description }}</p>{% endif %}
     {% if category.children.count %}
         <h2>Subcategories</h2>
         <ul>
@@ -22,9 +21,7 @@
     {% endif %}
     <h2>Entries</h2>
     {% if category.documents.all %}
-        {% for document in category.documents.all %}
-            <p><a href="{{ document.get_absolute_url }}">{{ document.title }}</a></p>
-        {% endfor %}
+        {% include 'documents/includes/document_list.html' %}
     {% else %}
         <p><em>No entries for {{ category }}</em></p>
     {% endif %}

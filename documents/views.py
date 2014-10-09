@@ -16,25 +16,8 @@ class RootCategoriesView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(RootCategoriesView, self).get_context_data(**kwargs)
         context['categories'] = self.categories
+        context['document_list'] = dm.get_orphan_documents()
         return context
-
-
-class CategoryView(TemplateView):
-    template_name = 'documents/category.html'
-    categories = []
-
-    def get_context_data(self, **kwargs):
-        context = super(CategoryView, self).get_context_data(**kwargs)
-        context['category'] = self.categories[-1]
-        return context
-
-    def dispatch(self, request, *args, **kwargs):
-        try:
-            self.categories = dm.verify_categories(kwargs['category_names'].split('/'))
-        except dm.DocumentCategory.DoesNotExist:
-            raise Http404
-
-        return super(CategoryView, self).dispatch(request, *args, **kwargs)
 
 
 class DocumentListView(ListView):
@@ -46,6 +29,27 @@ class DocumentListView(ListView):
         if not self.request.user.is_staff:
             queryset = queryset.filter(status=dm.CONTENT_STATUS_PUBLISHED)
         return queryset
+
+
+class CategoryView(DocumentListView):
+    template_name = 'documents/category.html'
+    categories = []
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryView, self).get_context_data(**kwargs)
+        category = self.categories[-1]
+        context['category'] = category
+        context['document_list'] = context['document_list'].filter(categories__in=category)
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.categories = dm.verify_categories(kwargs['category_names'].split('/'))
+        except dm.DocumentCategory.DoesNotExist:
+            raise Http404
+
+        return super(CategoryView, self).dispatch(request, *args, **kwargs)
+
 
 
 class DocumentDetailView(DetailView):

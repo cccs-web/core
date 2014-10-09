@@ -204,3 +204,7 @@ def verify_categories(category_names, create_if_absent=False):
 
 def get_root_categories():
     return DocumentCategory.tree.root_nodes()
+
+
+def get_orphan_documents():
+    return Document.objects.filter(categories=None)

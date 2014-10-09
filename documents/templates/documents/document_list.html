@@ -1,25 +1,5 @@
 {% extends 'base.html' %}
 {% load mezzanine_tags %}
 {% block main %}
-    <table class="table table-striped table-responsive">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Year</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for document in document_list %}
-            <tr>
-                <td><a href="{% url 'document-detail' slug=document.slug %}">{{ document.title }}</a></td>
-                <td>{{ document.author }}</td>
-                <td>{{ document.year }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% if is_paginated %}
-        {% pagination_for document_list %}
-    {% endif %}
+    {% include 'documents/includes/document_list.html' %}
 {% endblock main %}
