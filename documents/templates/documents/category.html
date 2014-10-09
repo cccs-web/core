@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load mezzanine_tags %}
+{% block main %}
+    <h1>{{ category }}</h1>
+    <p>Go up to
+        {% if category.parent %}
+            <a href="{{ category.parent.get_absolute_url }}">
+                {{ category.parent }}
+            </a>
+        {% else %}
+            <a href="{% url 'document-category-root' %}">root</a>
+        {% endif %}
+    </p>
+    {% if category.description %}<p>{{ category.description }}</p>{% endif %}
+    {% if category.children.count %}
+        <h2>Subcategories</h2>
+        <ul>
+            {% for child in category.children.all %}
+                <li><a href="{{ child.get_absolute_url }}">{{ child }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>Entries</h2>
+    {% if category.documents.all %}
+        {% for document in category.documents.all %}
+            <p><a href="{{ document.get_absolute_url }}">{{ document.title }}</a></p>
+        {% endfor %}
+    {% else %}
+        <p><em>No entries for {{ category }}</em></p>
+    {% endif %}
+{% endblock main %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load mezzanine_tags %}
+{% block main %}
+    <h1>Root Categories</h1>
+    {% for category in categories %}
+        <h2><a href="{{ category.get_absolute_url }}">{{ category }}</a></h2>
+        {% if category.children.count %}
+            <h3>Subcategories</h3>
+            <ul>
+                {% for child in category.children.all %}
+                    <li><a href="{{ child.get_absolute_url }}">{{ child }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if category.documents.all %}
+            <h3>Entries</h3>
+            {% for entry in category.documents.all %}
+                <p><a href="{{ entry.get_absolute_url }}">{{ entry.headline }}</a></p>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endblock main %}

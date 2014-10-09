@@ -14,7 +14,7 @@ from categories.base import (MPTTModel,
                              CategoryManager,
                              TreeManager,
                              slugify,
-                             SLUG_TRANSLITERATOR,
+                             SLUG_TRANSLITERATOR,  # Showing incorrect because of PyCharm bug
                              force_unicode)
 
 
@@ -61,7 +61,7 @@ class DocumentCategory(MPTTModel):
 
     def __unicode__(self):
         ancestors = self.get_ancestors()
-        return ' > '.join([force_unicode(i.name) for i in ancestors] + [self.name, ])
+        return '/'.join([force_unicode(i.name) for i in ancestors] + [self.name, ])
 
     class Meta:
         unique_together = ('parent', 'name')
@@ -70,6 +70,18 @@ class DocumentCategory(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = 'name'
+
+    def get_absolute_url(self):
+        return reverse("document-category", args=('/'.join(self.category_names),))
+
+    @property
+    def category_names(self):
+        category_names = [self.slug]
+        parent = self.parent
+        while parent:
+            category_names.insert(0, parent.slug)
+            parent = parent.parent
+        return category_names
 
 
 class BibTexEntryType(pm.UniqueNamed):
@@ -127,4 +139,34 @@ class Document(RichText, Displayable):
         finally:
             self.source_file.close()
 
-Document._meta.get_field('content').verbose_name = 'Description of content'
+Document._meta.get_field('content').verbose_name = 'Abstract/Description of content'
+
+
+def verify_categories(category_names, create_if_absent=False):
+    """
+    Create the category_names ancestral tree if it does not already exist
+    :param category_names: list of category names with root at the top
+    :return: list of the actual categories corresponding to the names.
+    """
+    parent = None
+    result = list()
+    for category_name in category_names:
+        try:
+            category = DocumentCategory.objects.get(
+                name=category_name,
+                parent=parent)
+        except DocumentCategory.DoesNotExist:
+            if create_if_absent:
+                category = DocumentCategory(
+                    name=category_name,
+                    parent=parent)
+                category.save()
+            else:
+                raise
+        result.append(category)
+        parent = category
+    return result
+
+
+def get_root_categories():
+    return DocumentCategory.tree.root_nodes()

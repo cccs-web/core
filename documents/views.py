@@ -1,11 +1,40 @@
 import os
 
 from django.http.response import Http404, HttpResponse
+from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
 
 import documents.models as dm
+
+
+class RootCategoriesView(TemplateView):
+    template_name = 'documents/category_roots.html'
+    categories = dm.get_root_categories()
+
+    def get_context_data(self, **kwargs):
+        context = super(RootCategoriesView, self).get_context_data(**kwargs)
+        context['categories'] = self.categories
+        return context
+
+
+class CategoryView(TemplateView):
+    template_name = 'documents/category.html'
+    categories = []
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryView, self).get_context_data(**kwargs)
+        context['category'] = self.categories[-1]
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.categories = dm.verify_categories(kwargs['category_names'].split('/'))
+        except dm.DocumentCategory.DoesNotExist:
+            raise Http404
+
+        return super(CategoryView, self).dispatch(request, *args, **kwargs)
 
 
 class DocumentListView(ListView):
