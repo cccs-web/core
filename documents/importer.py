@@ -64,3 +64,12 @@ def verify_categories(category_names):
         parent = category
     return result
 
+
+def update_sha_values():
+    """
+    Go through all the documents and update their sha values
+    :return: None
+    """
+    for document in dm.Document.objects.all():
+        document.update_sha()
+        document.save()

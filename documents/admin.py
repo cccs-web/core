@@ -14,9 +14,11 @@ admin.site.register(dm.DocumentCategory, DocumentCategoryAdmin)
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ['title', 'created', 'updated']
     list_filter = ['tags']
+    readonly_fields = ['original_source_filename', 'sha']
     fieldsets = ((None, {'fields': ('title',
                                     'source_file',
                                     'original_source_filename',
+                                    'sha',
                                     'author',
                                     'editor',
                                     'tags',

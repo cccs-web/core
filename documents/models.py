@@ -1,3 +1,4 @@
+import hashlib
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
@@ -15,6 +16,13 @@ from categories.base import (MPTTModel,
                              slugify,
                              SLUG_TRANSLITERATOR,
                              force_unicode)
+
+
+def sha1(f):
+    sha = hashlib.sha1()
+    for line in f:
+        sha.update(line)
+    return sha.hexdigest()
 
 
 class DocumentCategory(MPTTModel):
@@ -79,6 +87,7 @@ class CCCSEntryType(pm.UniqueNamed):
 class Document(RichText, Displayable):
     source_file = models.FileField(max_length=512, upload_to='documents/%Y/%m/%d', storage=S3BotoStorage())
     original_source_filename = models.CharField(max_length=256, null=True, blank=True)
+    sha = models.CharField(max_length=40, null=True, blank=True)
     author = models.CharField(max_length=256, null=True, blank=True)
     editor = models.CharField(max_length=256, null=True, blank=True)
     year = models.IntegerField(null=True, blank=True)
@@ -110,5 +119,12 @@ class Document(RichText, Displayable):
     @property
     def tag_string(self):
         return ', '.join([tag.name for tag in self.tags.all()])
+
+    def update_sha(self):
+        self.source_file.open()
+        try:
+            self.sha = sha1(self.source_file)
+        finally:
+            self.source_file.close()
 
 Document._meta.get_field('content').verbose_name = 'Description of content'
