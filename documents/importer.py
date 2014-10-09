@@ -45,8 +45,9 @@ def import_files():
                 filename.save()
             document.filenames.add(filename)
 
-            category_names = os.path.split(key.name)[0].split(os.path.sep)
-            if category_names:
+            path = os.path.split(key.name)[0]
+            if path:
+                category_names = path.split(os.path.sep)
                 categories = dm.verify_categories(category_names, create_if_absent=True)
                 document.categories.add(categories[-1])
 
