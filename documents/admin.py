@@ -14,27 +14,28 @@ admin.site.register(dm.DocumentCategory, DocumentCategoryAdmin)
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ['title', 'created', 'updated']
     list_filter = ['tags']
-    readonly_fields = ['original_source_filename', 'sha']
+    readonly_fields = ['sha']
     fieldsets = ((None, {'fields': ('title',
                                     'source_file',
-                                    'original_source_filename',
                                     'sha',
-                                    'author',
-                                    'editor',
+                                    'authors',
+                                    'editors',
                                     'tags',
                                     'content',
-                                    'year',
-                                    'chapter',
-                                    'journal',
-                                    'volume',
-                                    'issue',
-                                    'pages',
-                                    'series',
-                                    'language',
-                                    'publisher',
-                                    'institution',
-                                    'address',
                                     'categories')}),
+                 ('BibTex', {'classes': ('collapse-closed',),
+                             'fields': ('year',
+                                        'chapter',
+                                        'journal',
+                                        'volume',
+                                        'issue',
+                                        'pages',
+                                        'series',
+                                        'language',
+                                        'publishing_agency',
+                                        'publishing_house',
+                                        'publisher_city',
+                                        'publisher_address')}),
                  ('Metadata', {'classes': ('collapse-closed',),
                                'fields': ('_meta_title',
                                           'slug',
@@ -44,11 +45,13 @@ class DocumentAdmin(admin.ModelAdmin):
                                           'keywords',
                                           'publish_date',
                                           'expiry_date')}))
-    filter_horizontal = ('categories',)
+    filter_horizontal = ('categories', 'authors', 'editors')
 
     def save_model(self, request, obj, form, change):
-        obj.original_source_filename = request.FILES['source_file'].name
         super(DocumentAdmin, self).save_model(request, obj, form, change)
+        filename = dm.FileName(name=request.FILES['source_file'].name)
+        filename.save()
+        obj.filenames.add(filename)
 
 
 admin.site.register(dm.Document, DocumentAdmin)

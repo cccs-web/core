@@ -96,13 +96,38 @@ class CCCSEntryType(pm.UniqueNamed):
         verbose_name_plural = 'CCCS Entry Types'
 
 
+class Url(pm.UniqueNamed):
+    class Meta:
+        verbose_name = "URL"
+        verbose_name_plural = "URLs"
+
+Url._meta.get_field('name').verbose_name = 'URL String'
+
+
+class FileName(pm.UniqueNamed):
+    pass
+
+
+class Author(pm.UniqueNamed):
+    class Meta:
+        verbose_name = 'Author(s)'
+        verbose_name_plural = 'Author(s)'
+
+
+class Editor(pm.UniqueNamed):
+    class Meta:
+        verbose_name = 'Editor(s)'
+        verbose_name_plural = 'Editor(s)'
+
+
 class Document(RichText, Displayable):
     source_file = models.FileField(max_length=512, upload_to='documents/%Y/%m/%d', storage=S3BotoStorage())
-    original_source_filename = models.CharField(max_length=256, null=True, blank=True)
     sha = models.CharField(max_length=40, null=True, blank=True)
-    author = models.CharField(max_length=256, null=True, blank=True)
-    editor = models.CharField(max_length=256, null=True, blank=True)
+    authors = models.ManyToManyField(Author, related_name='documents')
+    editors = models.ManyToManyField(Editor, related_name='documents')
     year = models.IntegerField(null=True, blank=True)
+    month = models.IntegerField(null=True, blank=True)
+    day = models.IntegerField(null=True, blank=True)
     chapter = models.CharField(max_length=256, null=True, blank=True)
     journal = models.CharField(max_length=256, null=True, blank=True)
     volume = models.CharField(max_length=256, null=True, blank=True)
@@ -110,15 +135,24 @@ class Document(RichText, Displayable):
     pages = models.CharField(max_length=256, null=True, blank=True)
     series = models.CharField(max_length=256, null=True, blank=True)
     language = models.CharField(max_length=256, null=True, blank=True)
-    publisher = models.CharField(max_length=256, null=True, blank=True)
-    institution = models.CharField(max_length=256, null=True, blank=True)
-    address = models.CharField(max_length=256, null=True, blank=True)
+    publishing_agency = models.CharField(max_length=256, null=True, blank=True)
+    publishing_house = models.CharField(max_length=256, null=True, blank=True)
+    publisher_city = models.CharField(max_length=256, null=True, blank=True)
+    publisher_address = models.CharField(max_length=256, null=True, blank=True)
     cccs_source_path = models.CharField(max_length=512, null=True, blank=True)
     bibtex_entry_type = models.ForeignKey(BibTexEntryType, null=True, blank=True)
     cccs_entry_type = models.ForeignKey(CCCSEntryType, null=True, blank=True)
     countries = models.ManyToManyField(pm.Country, related_name='documents', verbose_name="Country / Countries")
     tags = TaggableManager(blank=True)
     categories = models.ManyToManyField(DocumentCategory, related_name='documents')
+    url = models.ManyToManyField(Url, related_name='documents')
+    date_received = models.DateField(null=True, blank=True)
+    receiving_team_member = models.CharField(max_length=128, null=True, blank=True)
+    filenames = models.ManyToManyField(FileName, related_name='documents')
+    regions = models.CharField(verbose_name='Region(s)', max_length=128, null=True, blank=True)
+    document_id = models.CharField(verbose_name='Doc ID#/ISSN/ISBN', max_length=128, null=True, blank=True)
+    annotation = models.CharField(verbose_name='Bibliographic annotation', max_length=128, null=True, blank=True)
+    notes = models.TextField(verbose_name='Reviewer Notes', null=True, blank=True)
 
     search_fields = ("content", "title", "tags__name")
 
