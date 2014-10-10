@@ -20,7 +20,7 @@
         </ul>
     {% endif %}
     {% if document_list %}
-        <h2>{{ document_list.count }} Entries</h2>
+        <h2>{{ document_list.count }} Documents</h2>
         {% include 'documents/includes/document_list.html' %}
     {% else %}
         <p><em>No entries for {{ category }}</em></p>
