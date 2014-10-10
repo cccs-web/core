@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load mezzanine_tags %}
 {% block main %}
+    {% include 'documents/includes/foo.html' %}
     <h1>{{ category }}</h1>
     <p>Go up to
         {% if category.parent %}
@@ -19,8 +20,8 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <h2>Entries</h2>
-    {% if category.documents.all %}
+    {% if document_list %}
+        <h2>{{ document_list.count }} Entries</h2>
         {% include 'documents/includes/document_list.html' %}
     {% else %}
         <p><em>No entries for {{ category }}</em></p>
