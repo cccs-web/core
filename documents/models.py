@@ -72,16 +72,16 @@ class DocumentCategory(MPTTModel):
         order_insertion_by = 'name'
 
     def get_absolute_url(self):
-        return reverse("document-category", args=('/'.join(self.category_names),))
+        return reverse("document-category", args=('/'.join(self.category_slugs),))
 
     @property
-    def category_names(self):
-        category_names = [self.slug]
+    def category_slugs(self):
+        category_slugs = [self.slug]
         parent = self.parent
         while parent:
-            category_names.insert(0, parent.slug)
+            category_slugs.insert(0, parent.slug)
             parent = parent.parent
-        return category_names
+        return category_slugs
 
 
 class BibTexEntryType(pm.UniqueNamed):
@@ -174,6 +174,16 @@ class Document(RichText, Displayable):
             self.source_file.close()
 
 Document._meta.get_field('content').verbose_name = 'Abstract/Description of content'
+
+
+def categories_from_slugs(slugs):
+    parent = None
+    result = list()
+    for slug in slugs:
+        category = DocumentCategory.objects.get(slug=slug, parent=parent)
+        result.append(category)
+        parent = category
+    return result
 
 
 def verify_categories(category_names, create_if_absent=False):

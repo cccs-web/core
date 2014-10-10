@@ -35,21 +35,22 @@ class CategoryView(DocumentListView):
     template_name = 'documents/category.html'
     categories = []
 
+    def get_queryset(self):
+        qs = super(CategoryView, self).get_queryset()
+        return qs.filter(categories=self.categories[-1])
+
     def get_context_data(self, **kwargs):
         context = super(CategoryView, self).get_context_data(**kwargs)
-        category = self.categories[-1]
-        context['category'] = category
-        context['document_list'] = context['document_list'].filter(categories__in=category)
+        context['category'] = self.categories[-1]
         return context
 
     def dispatch(self, request, *args, **kwargs):
         try:
-            self.categories = dm.verify_categories(kwargs['category_names'].split('/'))
+            self.categories = dm.categories_from_slugs(kwargs['category_slugs'].split('/'))
         except dm.DocumentCategory.DoesNotExist:
             raise Http404
 
         return super(CategoryView, self).dispatch(request, *args, **kwargs)
-
 
 
 class DocumentDetailView(DetailView):
