@@ -9,5 +9,5 @@ urlpatterns = patterns(
     url(r'^list/$', views.DocumentListView.as_view(), name='document-list'),
     url(r'^category/$', views.RootCategoriesView.as_view(), name='document-category-root'),
     url(r'^category/(?P<category_slugs>[\w/-]+)/$', views.CategoryView.as_view(), name='document-category'),
-    url(r'^detail/(?P<slug>[-_\w]+)/$', views.DocumentDetailView.as_view(), name='document-detail'),
-    url(r'^download/(?P<slug>[-_\w]+)/$', views.download, name='document-download'))
+    url(r'^detail/(?P<slug>[\w_-]+)/$', views.DocumentDetailView.as_view(), name='document-detail'),
+    url(r'^download/(?P<slug>[\w_-]+)/$', views.download, name='document-download'))

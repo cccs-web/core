@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
-{% load mezzanine_tags %}
+{% load mezzanine_tags staticfiles %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "documents/css/tree.css" %}">
+{% endblock extra_css %}
+{% block extra_js %}
+    <script src="{% static "documents/js/tree.js" %}" type="text/javascript"></script>
+{% endblock extra_js %}
 {% block main %}
-    <h1>Root Categories</h1>
-    {% for category in categories %}
-        <h2><a href="{{ category.get_absolute_url }}">{{ category }}</a></h2>
-        {% if category.children.count %}
-            <h3>Subcategories</h3>
-            <ul>
-                {% for child in category.children.all %}
-                    <li><a href="{{ child.get_absolute_url }}">{{ child }}</a></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endfor %}
+    <h1>Document Categories</h1>
+    <div class="tree well">
+        <ul>
+            {% for category in categories %}
+                {%include 'documents/includes/category_subtree.html'%}
+            {% endfor %}
+        </ul>
+    </div>
     {% if document_list %}
         <h1>Orphan documents</h1>
         {% include 'documents/includes/document_list.html' %}

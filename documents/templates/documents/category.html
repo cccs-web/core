@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load mezzanine_tags %}
 {% block main %}
-    {% include 'documents/includes/foo.html' %}
     <h1>{{ category }}</h1>
     <p>Go up to
         {% if category.parent %}
