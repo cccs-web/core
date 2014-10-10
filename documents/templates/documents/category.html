@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% load mezzanine_tags %}
+{% extends 'documents/base_tree.html' %}
 {% block main %}
     <h1>{{ category }}</h1>
     <p>Go up to
@@ -13,11 +12,13 @@
     </p>
     {% if category.children.count %}
         <h2>Subcategories</h2>
-        <ul>
-            {% for child in category.children.all %}
-                <li><a href="{{ child.get_absolute_url }}">{{ child }}</a></li>
-            {% endfor %}
-        </ul>
+        <div class="tree well">
+            <ul>
+                {% for category in category.children.all %}
+                    {% include 'documents/includes/category_subtree.html' %}
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
     {% if document_list %}
         <h2>{{ document_list.count }} Documents</h2>

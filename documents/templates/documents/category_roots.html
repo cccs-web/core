@@ -1,17 +1,10 @@
-{% extends 'base.html' %}
-{% load mezzanine_tags staticfiles %}
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static "documents/css/tree.css" %}">
-{% endblock extra_css %}
-{% block extra_js %}
-    <script src="{% static "documents/js/tree.js" %}" type="text/javascript"></script>
-{% endblock extra_js %}
+{% extends 'documents/base_tree.html' %}
 {% block main %}
     <h1>Document Categories</h1>
     <div class="tree well">
         <ul>
             {% for category in categories %}
-                {%include 'documents/includes/category_subtree.html'%}
+                {% include 'documents/includes/category_subtree.html' %}
             {% endfor %}
         </ul>
     </div>
