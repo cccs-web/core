@@ -36,20 +36,22 @@ def import_files():
     storage = S3BotoStorage()
     for key in storage.bucket.list():
         if not dm.Document.objects.filter(source_file=key.name):  # No existing metadata object
-            document = dm.Document(source_file=key.name,
-                                   title=os.path.splitext(os.path.basename(key.name))[0])
-            document.save()  # save here so m2m relations are possible
+            title = os.path.splitext(os.path.basename(key.name))[0]
+            if title:  # ignore .xxx files
+                document = dm.Document(source_file=key.name,
+                                       title=title)
+                document.save()  # save here so m2m relations are possible
 
-            filename, created = dm.FileName.objects.get_or_create(name=key.name)
-            if created:
-                filename.save()
-            document.filenames.add(filename)
+                filename, created = dm.FileName.objects.get_or_create(name=key.name)
+                if created:
+                    filename.save()
+                document.filenames.add(filename)
 
-            path = os.path.split(key.name)[0]
-            if path:
-                category_names = path.split(os.path.sep)
-                categories = dm.verify_categories(category_names, create_if_absent=True)
-                document.categories.add(categories[-1])
+                path = os.path.split(key.name)[0]
+                if path:
+                    category_names = path.split(os.path.sep)
+                    categories = dm.verify_categories(category_names, create_if_absent=True)
+                    document.categories.add(categories[-1])
 
 
 def update_sha_values():
