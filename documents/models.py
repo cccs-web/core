@@ -167,11 +167,14 @@ class Document(RichText, Displayable):
         return ', '.join([tag.name for tag in self.tags.all()])
 
     def update_sha(self):
-        self.source_file.open()
         try:
-            self.sha = sha1(self.source_file)
-        finally:
-            self.source_file.close()
+            self.source_file.open()
+            try:
+                self.sha = sha1(self.source_file)
+            finally:
+                self.source_file.close()
+        except IOError:
+            self.sha = 'file missing'
 
 Document._meta.get_field('content').verbose_name = 'Abstract/Description of content'
 
