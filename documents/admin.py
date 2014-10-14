@@ -17,6 +17,7 @@ class DocumentAdmin(admin.ModelAdmin):
     readonly_fields = ['sha']
     fieldsets = ((None, {'fields': ('title',
                                     'source_file',
+                                    'filenames',
                                     'sha',
                                     'authors',
                                     'editors',
@@ -25,6 +26,8 @@ class DocumentAdmin(admin.ModelAdmin):
                                     'categories')}),
                  ('BibTex', {'classes': ('collapse-closed',),
                              'fields': ('year',
+                                        'month',
+                                        'day'
                                         'chapter',
                                         'journal',
                                         'volume',
