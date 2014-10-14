@@ -48,7 +48,7 @@ class DocumentAdmin(admin.ModelAdmin):
                                           'keywords',
                                           'publish_date',
                                           'expiry_date')}))
-    filter_horizontal = ('categories', 'authors', 'editors')
+    filter_horizontal = ('categories', 'authors', 'editors', 'filenames')
 
     def save_model(self, request, document, form, change):
         super(DocumentAdmin, self).save_model(request, document, form, change)
