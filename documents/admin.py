@@ -27,7 +27,7 @@ class DocumentAdmin(admin.ModelAdmin):
                  ('BibTex', {'classes': ('collapse-closed',),
                              'fields': ('year',
                                         'month',
-                                        'day'
+                                        'day',
                                         'chapter',
                                         'journal',
                                         'volume',
