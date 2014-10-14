@@ -20,8 +20,11 @@ from categories.base import (MPTTModel,
 
 def sha1(f):
     sha = hashlib.sha1()
-    for line in f:
-        sha.update(line)
+    while True:
+        chunk = f.read(4096)
+        if not chunk:
+            break
+        sha.update(chunk)
     return sha.hexdigest()
 
 
