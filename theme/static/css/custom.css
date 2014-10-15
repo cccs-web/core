@@ -1,3 +1,11 @@
 div.wmd-wrapper p {
     line-height: 1em !important;
 }
+
+.table-hover tbody tr:hover td {
+    background-color: #b0b5b9;
+}
+
+.table tbody tr.selected {
+    background-color: #b0b5b9;
+}
