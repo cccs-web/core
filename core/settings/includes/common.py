@@ -239,6 +239,7 @@ ADMIN_MENU_ORDER = (
     ("Content",
      ("cvs.CV",
       "projects.Project",
+      "projects.SubProject",
       "documents.Document",
       "pages.Page",
       "blog.BlogPost",

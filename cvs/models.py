@@ -121,6 +121,7 @@ class CVDateRangeSet(CVSet):
 
 class CVProject(CVSet):
     project = models.ForeignKey('projects.Project')
+    subproject = models.ForeignKey('projects.SubProject', verbose_name='Sub-Project / Tranche', null=True, blank=True)
     position = models.CharField(max_length=256, null=True, blank=True)
     person_months = models.CharField(max_length=64, null=True, blank=True)
     activities = RichTextField(null=True, blank=True)

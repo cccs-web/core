@@ -25,7 +25,8 @@ class CVProjectInline(admin.StackedInline):
     model = cm.CVProject
     exclude = ('cv',)
     readonly_fields = ('cv_link',)
-    fields = ('from_date',
+    fields = ('subproject',
+              'from_date',
               'to_date',
               'position',
               'activities',
@@ -40,12 +41,18 @@ class CVProjectInline(admin.StackedInline):
         return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.cv.admin_url, name=instance.cv.title))
 
 
+class SubProjectInline(admin.TabularInline):
+    extra = 1
+    model = pm.SubProject
+    fields = ('name',)
+
+
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
     search_fields = ('title', 'region')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
-    inlines = (CVProjectInline,)
+    inlines = (CVProjectInline, SubProjectInline)
     fieldsets = ((None, {'fields': ('title_en',
                                     'title_fr',
                                     'title_ru',
@@ -193,4 +200,12 @@ class IFCSectorAdmin(HasProjectsAdmin):
     list_display = ['name', 'project_count']
 
 admin.site.register(pm.IFCSector, IFCSectorAdmin)
+
+
+class SubProjectAdmin(admin.ModelAdmin):
+    list_display = ('project', 'name')
+    list_filter = ('project',)
+    search_fields = ('project__name', 'name')
+
+admin.site.register(pm.SubProject, SubProjectAdmin)
 

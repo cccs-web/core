@@ -209,3 +209,16 @@ class Project(RichText, Displayable):
 
 # Override inherited verbose names
 Project._meta.get_field('short_url').verbose_name = 'Short URL'
+
+
+class SubProject(models.Model):
+    project = models.ForeignKey(Project)
+    name = models.CharField(max_length=128)
+
+    class Meta:
+        unique_together = ('project', 'name')
+        verbose_name = 'Sub-project'
+        verbose_name_plural = 'Sub-projects'
+
+    def __unicode__(self):
+        return u'{0}'.format(self.name)

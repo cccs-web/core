@@ -44,6 +44,18 @@
             <th width="30%">Locality</th>
             <td>{{ project.locality }}</td>
         </tr>
+        {% if project.subproject_set.count %}
+        <tr>
+            <th width="30%">Sub-projects / tranches</th>
+            <td>
+                <ul>
+                    {% for sub_project in project.subproject_set.all %}
+                        <li>{{ sub_project.name }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endif %}
         </tbody>
     </table>
     <h2>CCCS Associate Role</h2>
@@ -51,6 +63,9 @@
         <thead>
         <tr>
             <th width="18%">Consultant</th>
+            {% if project.subproject_set.count %}
+                <th>Sub-project</th>
+            {% endif %}
             <th width="22%" >Position</th>
             <th>Activities</th>
         </tr>
@@ -63,6 +78,9 @@
                         {{ cvproject.cv.user.last_name }}, {{ cvproject.cv.user.first_name }}
                     </a>
                 </td>
+                {% if project.subproject_set.count %}
+                    <td>{{ cvproject.subproject.name }}</td>
+                {% endif %}
                 <td>{{ cvproject.position }}</td>
                 <td>{{ cvproject.activities|mkdown }}</td>
             </tr>
