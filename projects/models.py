@@ -217,3 +217,8 @@ class SubProject(models.Model):
 
     class Meta:
         unique_together = ('project', 'name')
+        verbose_name = 'Sub-project'
+        verbose_name_plural = 'Sub-projects'
+
+    def __unicode__(self):
+        return u'{0}'.format(self.name)

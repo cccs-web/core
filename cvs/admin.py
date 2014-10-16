@@ -13,6 +13,7 @@ class CVProjectInline(admin.StackedInline):
     model = cm.CVProject
     extra = 1
     fields = ('project',
+              'subproject',
               'from_date',
               'to_date',
               'position',

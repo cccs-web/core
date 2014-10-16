@@ -235,6 +235,7 @@ ADMIN_MENU_ORDER = (
     ("Content",
      ("cvs.CV",
       "projects.Project",
+      "projects.SubProject",
       "pages.Page",
       "blog.BlogPost",
       "generic.ThreadedComment",
