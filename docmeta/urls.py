@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
-import documents.views as views
+import docmeta.views as views
 
 urlpatterns = patterns(
     '',

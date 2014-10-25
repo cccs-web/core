@@ -157,7 +157,7 @@ INSTALLED_APPS = (
     "south",
     "django.contrib.admindocs",
     "taggit",
-    "documents",
+    "docmeta",
     "gitadmin",
     "storages",
     "categories.editor")
