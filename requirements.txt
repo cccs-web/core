@@ -24,3 +24,4 @@ docutils==0.12
 django-taggit==0.12.1
 boto==2.32.1
 django-categories==1.2.2
+-e git://github.com/cccs-web/docmeta.git#egg=docmeta
