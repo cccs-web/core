@@ -85,8 +85,6 @@ class ProjectAdmin(admin.ModelAdmin):
                  ('Metadata', {'classes': ('collapse-closed',),
                                'fields': ('slug',
                                           'short_url',
-                                          'description',
-                                          'gen_description',
                                           'keywords',
                                           'publish_date',
                                           'expiry_date')}))
