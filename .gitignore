@@ -11,5 +11,6 @@ interchange/
 scss/
 .sass-cache/
 media/
+media
 scratch.py
 src/
