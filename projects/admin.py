@@ -90,11 +90,8 @@ class ProjectAdmin(admin.ModelAdmin):
                                      'ifc_sectors',
                                      'tags')}),
                  ('Metadata', {'classes': ('collapse-closed',),
-                               'fields': ('_meta_title',
-                                          'slug',
+                               'fields': ('slug',
                                           'short_url',
-                                          'description',
-                                          'gen_description',
                                           'keywords',
                                           'publish_date',
                                           'expiry_date')}))

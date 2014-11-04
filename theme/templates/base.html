@@ -36,6 +36,7 @@
 
     {% compress js %}
         <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+        {% editable_loader %}
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
         <script src="{% static "responsiveslides/responsiveslides.js" %}"></script>
