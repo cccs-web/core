@@ -3,7 +3,7 @@ from django.utils.safestring import mark_safe
 
 import projects.models as pm
 import cvs.models as cm
-
+from django.db.models import signals
 
 class HasProjectsAdmin(admin.ModelAdmin):
 
@@ -19,13 +19,22 @@ class CountryAdmin(HasProjectsAdmin):
 
 admin.site.register(pm.Country, CountryAdmin)
 
+class CVProjectProxy(cm.CVProject):
+    class Meta:
+        proxy = True
+
+    def __unicode__(self):
+        return self.cv.full_name
+
+signals.post_save.connect(cm.cv_project_post_save, sender=CVProjectProxy)
+
 
 class CVProjectInline(admin.StackedInline):
     extra = 1
-    model = cm.CVProject
-    exclude = ('cv',)
-    readonly_fields = ('cv_link',)
-    fields = ('subproject',
+    model = CVProjectProxy
+    verbose_name = "CV"
+    verbose_name_plural = "Associated CV Data"
+    fields = (
               'from_date',
               'to_date',
               'position',
@@ -35,16 +44,12 @@ class CVProjectInline(admin.StackedInline):
               'client_contract',
               'client_end',
               'contract',
-              'cv_link')
+              'cv')
 
-    def cv_link(self, instance):
-        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.cv.admin_url, name=instance.cv.title))
+    def has_add_permission(self, request):
+        return False
 
 
-class SubProjectInline(admin.TabularInline):
-    extra = 1
-    model = pm.SubProject
-    fields = ('name',)
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -52,8 +57,10 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ('countries', 'to_date')
     search_fields = ('title', 'region')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
-    inlines = (CVProjectInline, SubProjectInline)
-    fieldsets = ((None, {'fields': ('title_en',
+    inlines = (CVProjectInline, )
+    fieldsets = ((None, {'fields': (
+                                    'parent',
+                                    'title_en',
                                     'title_fr',
                                     'title_ru',
                                     'status',
@@ -96,6 +103,11 @@ class ProjectAdmin(admin.ModelAdmin):
         return getattr(instance, 'name')
     name.admin_order_field = 'title'
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        print db_field.name
+        if db_field.name == 'parent':
+            kwargs["queryset"] = pm.Project.objects.filter(parent=None)
+        return super(ProjectAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(pm.Project, ProjectAdmin)
 
@@ -201,11 +213,4 @@ class IFCSectorAdmin(HasProjectsAdmin):
 
 admin.site.register(pm.IFCSector, IFCSectorAdmin)
 
-
-class SubProjectAdmin(admin.ModelAdmin):
-    list_display = ('project', 'name')
-    list_filter = ('project',)
-    search_fields = ('project__name', 'name')
-
-admin.site.register(pm.SubProject, SubProjectAdmin)
 

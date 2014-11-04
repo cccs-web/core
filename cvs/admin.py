@@ -1,19 +1,30 @@
 from django.contrib import admin
 
 import cvs.models as cm
-
+from django.db.models import signals
 
 class CCCSRoleAdmin(admin.ModelAdmin):
     fields = ('name_en', 'name_fr', 'name_ru')
 
 admin.site.register(cm.CCCSRole, CCCSRoleAdmin)
 
+class CVProjectProxy(cm.CVProject):
+    class Meta:
+        proxy = True
+
+    def __unicode__(self):
+        return self.project.path
+
+
+signals.post_save.connect(cm.cv_project_post_save, sender=CVProjectProxy)
 
 class CVProjectInline(admin.StackedInline):
-    model = cm.CVProject
+    model = CVProjectProxy
     extra = 1
+    verbose_name = "Project"
+    verbose_name_plural = "Associated Projects"
+
     fields = ('project',
-              'subproject',
               'from_date',
               'to_date',
               'position',

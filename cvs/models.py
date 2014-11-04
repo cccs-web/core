@@ -4,12 +4,11 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-
+from django.db.models import signals
 from projects.models import Country, UniqueNamed
 
 from mezzanine.core.models import Displayable, RichText, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from mezzanine.core.fields import RichTextField
-
 
 class Language(UniqueNamed):
     pass
@@ -53,7 +52,9 @@ class CV(RichText, Displayable):
     @property
     def last_name(self):
         return self.user.last_name
-
+    @property
+    def full_name(self):
+        return ''.join([self.user.first_name, ' ', self.user.last_name])
     @property
     def email(self):
         return self.user.email
@@ -119,9 +120,29 @@ class CVDateRangeSet(CVSet):
         return delta
 
 
+def cv_project_post_save(sender, instance, **kwargs):
+    print 'aaaa'
+    min_from_date = instance.project.from_date
+    print min_from_date
+    if min_from_date and instance.from_date and min_from_date > instance.from_date:
+        min_from_date = instance.from_date
+    if not min_from_date and instance.from_date:
+        min_from_date = instance.from_date
+
+    max_to_date = instance.project.to_date
+    print max_to_date
+    if max_to_date and instance.to_date and max_to_date < instance.to_date:
+        max_to_date = instance.to_date
+    if not max_to_date and instance.to_date:
+        max_to_date = instance.to_date
+
+    instance.project.from_date = min_from_date
+    instance.project.to_date = max_to_date
+    instance.project.save()
+
+
 class CVProject(CVSet):
     project = models.ForeignKey('projects.Project')
-    subproject = models.ForeignKey('projects.SubProject', verbose_name='Sub-Project / Tranche', null=True, blank=True)
     position = models.CharField(max_length=256, null=True, blank=True)
     person_months = models.CharField(max_length=64, null=True, blank=True)
     activities = RichTextField(null=True, blank=True)
@@ -146,6 +167,8 @@ class CVProject(CVSet):
 
     def __unicode__(self):
         return u'{0}: {1}'.format(self.project.name, self.position)
+
+signals.post_save.connect(cv_project_post_save, sender=CVProject)
 
 
 class CVLearning(CVDateRangeSet):
@@ -232,3 +255,4 @@ class CVPublication(CVSet):
         verbose_name = "Publication"
         verbose_name_plural = "Publications"
         ordering = ['-publication_date', 'title']
+

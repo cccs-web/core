@@ -1,10 +1,9 @@
 from django.db import models
 from django.core.urlresolvers import reverse
-
+from django.db.models import signals
 from mezzanine.core.models import RichText, Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
-
+from django.core.exceptions import ValidationError
 from taggit.managers import TaggableManager
-
 
 class CCCSModel(models.Model):
     class Meta:
@@ -165,7 +164,23 @@ class IFCSector(HasProjectsMixin, UniqueNamed):
         verbose_name_plural = 'IFC Sectors'
 
 
+def project_pre_save(sender, instance, **kwargs):
+    _path = instance.title
+    if instance.parent:
+        _path = instance.parent.title + ' / ' +  _path
+
+    instance.path = _path
+
+def project_post_save(sender, instance, **kwargs):
+    if instance.parent:
+        min_from_date, max_to_date = instance.parent.get_date_range()
+
+        #pevent sending a signal
+        Project.objects.filter(id=instance.parent.id).update(from_date=min_from_date, to_date=max_to_date)
+
 class Project(RichText, Displayable):
+    parent = models.ForeignKey("self", verbose_name='Parent Project', help_text="Parent Project", null=True, blank=True)
+    path = models.CharField(max_length=512, null=True, blank=True)
     date_range = models.CharField(help_text="Deprecate and copy values into from_date/to_date",
                                   max_length=128, null=True, blank=True)
     from_date = models.DateField(help_text="Date project started",
@@ -189,8 +204,65 @@ class Project(RichText, Displayable):
     owner = models.CharField('Project Owner/Operator', max_length=128, null=True, blank=True)
     sponsor = models.CharField('Project Financer/Sponsor', max_length=128, null=True, blank=True)
 
+    def clean(self):
+        _errors = {}
+
+        min_from_date, max_to_date = self.get_cv_date_range()
+        if self.from_date and min_from_date and self.from_date > min_from_date:
+            _errors['from_date'] = ["Project start date couldn't be set after assigned cv projects' start date.",]
+        if self.to_date and max_to_date and self.to_date < max_to_date:
+            _errors['to_date'] = ["Project end date couldn't be set before assigned projects' end date.",]
+
+        if not self.parent:
+            min_from_date, max_to_date = self.get_date_range()
+            if self.from_date and min_from_date and self.from_date > min_from_date:
+                _errors['from_date'] = ["Super project start date couldn't be set after sub projects' start date.",]
+            if self.to_date and max_to_date and self.to_date < max_to_date:
+                _errors['to_date'] = ["Super project end date couldn't be set before sub projects' end date.",]
+
+        if _errors:
+            raise ValidationError(_errors)
+
+    def get_date_range(self):
+        if self.parent:
+            return self.from_date, self.to_date
+
+        sub_projects = Project.objects.all().filter(parent=self)
+        min_from_date = self.from_date
+        max_to_date = self.to_date
+        for sub_project in sub_projects:
+            if not min_from_date and sub_project.from_date:
+                min_from_date = sub_project.from_date
+            if not max_to_date and sub_project.to_date:
+                max_to_date = sub_project.to_date
+            if sub_project.from_date and min_from_date > sub_project.from_date:
+                min_from_date = sub_project.from_date
+            if sub_project.to_date and max_to_date < sub_project.to_date:
+                max_to_date = sub_project.to_date
+
+        return min_from_date, max_to_date
+
+    def get_cv_date_range(self):
+        min_from_date = self.from_date
+        max_to_date = self.to_date
+        from cvs.models import CVProject
+        cv_projects = CVProject.objects.filter(project=self).all()
+        for sub_project in cv_projects:
+            if not min_from_date and sub_project.from_date:
+                min_from_date = sub_project.from_date
+            if not max_to_date and sub_project.to_date:
+                max_to_date = sub_project.to_date
+            if sub_project.from_date and min_from_date > sub_project.from_date:
+                min_from_date = sub_project.from_date
+            if sub_project.to_date and max_to_date < sub_project.to_date:
+                max_to_date = sub_project.to_date
+
+        return min_from_date, max_to_date
+
+
+
     class Meta:
-        ordering = ('title',)
+        ordering = ('path',)
 
     @property
     def admin_url(self):
@@ -202,7 +274,10 @@ class Project(RichText, Displayable):
 
     @property
     def name(self):
-        return self.title
+        pre = ''
+        if self.parent:
+            pre = '---'
+        return pre + self.title
 
     def get_absolute_url(self):
         return reverse("project-detail", args=(self.slug,))
@@ -211,14 +286,5 @@ class Project(RichText, Displayable):
 Project._meta.get_field('short_url').verbose_name = 'Short URL'
 
 
-class SubProject(models.Model):
-    project = models.ForeignKey(Project)
-    name = models.CharField(max_length=128)
-
-    class Meta:
-        unique_together = ('project', 'name')
-        verbose_name = 'Sub-project'
-        verbose_name_plural = 'Sub-projects'
-
-    def __unicode__(self):
-        return u'{0}'.format(self.name)
+signals.pre_save.connect(project_pre_save, sender=Project)
+signals.post_save.connect(project_post_save, sender=Project)
