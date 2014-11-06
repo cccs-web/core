@@ -209,6 +209,7 @@ class Project(RichText, Displayable):
 
 # Override inherited verbose names
 Project._meta.get_field('short_url').verbose_name = 'Short URL'
+Project._meta.get_field('_meta_title').verbose_name = 'Meta Title'
 
 
 class SubProject(models.Model):
