@@ -173,7 +173,6 @@ class Project(RichText, Displayable):
     to_date = models.DateField(help_text="Date project ended",
                                null=True, blank=True)
     loan_or_grant = models.CharField('Loan or Grant No.', max_length=32, null=True, blank=True)
-    features = models.TextField(max_length=2048, null=True, blank=True)
     countries = models.ManyToManyField(Country, related_name='projects', verbose_name="Country / Countries")
     region = models.CharField(max_length=128, null=True, blank=True)
     locality = models.CharField(max_length=128, null=True, blank=True)
