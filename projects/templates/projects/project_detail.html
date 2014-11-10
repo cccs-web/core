@@ -2,16 +2,33 @@
 {% load mkdown_filters projects_tags %}
 {% block main %}
     <h1>{{ project.name }}</h1>
+
+    {% if sub_projects.count %}
+        <h2>Sub Project{{ sub_projects.count|pluralize }}</h2>
+        <ul>
+            {% for project in sub_projects %}
+                <li><a href="{% url 'project-detail' slug=project.slug %}">{{ project.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if super_project %}
+        <h2>Super Project</h2>
+        <ul>
+            <li><a href="{% url 'project-detail' slug=super_project.slug %}">{{ super_project.name }}</a></li>
+        </ul>
+    {% endif %}
+
     {% if can_update %}
-        <p>
-            <a href="{% url "cv-update" slug=cv.slug %}" class="btn btn-sm btn-default">
-                <span class="glyphicon glyphicon-edit"></span>Edit
-            </a>
-        </p>
+    <p>
+        <a href="{% url "cv-update" slug=cv.slug %}" class="btn btn-sm btn-default">
+        <span class="glyphicon glyphicon-edit"></span>Edit
+        </a>
+    </p>
     {% endif %}
 
     <h2>Summary Profile</h2>
-    {{ project.features|mkdown }}
+    {{ project.content|mkdown }}
 
     <h2>Project Details</h2>
     <table class="table table-striped table-bordered table-hover table-condensed">
@@ -44,18 +61,6 @@
             <th width="30%">Locality</th>
             <td>{{ project.locality }}</td>
         </tr>
-        {% if project.subproject_set.count %}
-        <tr>
-            <th width="30%">Sub-projects / tranches</th>
-            <td>
-                <ul>
-                    {% for sub_project in project.subproject_set.all %}
-                        <li>{{ sub_project.name }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        {% endif %}
         </tbody>
     </table>
     <h2>CCCS Associate Role</h2>
@@ -64,7 +69,7 @@
         <tr>
             <th width="18%">Consultant</th>
             {% if project.subproject_set.count %}
-                <th>Sub-project</th>
+            <th>Sub-project</th>
             {% endif %}
             <th width="22%" >Position</th>
             <th>Activities</th>
@@ -72,18 +77,18 @@
         </thead>
         <tbody>
         {% for cvproject in cvproject_list %}
-            <tr>
-                <td>
-                    <a href="{% url 'cv-detail' slug=cvproject.cv.slug %}">
-                        {{ cvproject.cv.user.last_name }}, {{ cvproject.cv.user.first_name }}
-                    </a>
-                </td>
-                {% if project.subproject_set.count %}
-                    <td>{{ cvproject.subproject.name }}</td>
-                {% endif %}
-                <td>{{ cvproject.position }}</td>
-                <td>{{ cvproject.activities|mkdown }}</td>
-            </tr>
+        <tr>
+            <td>
+                <a href="{% url 'cv-detail' slug=cvproject.cv.slug %}">
+                    {{ cvproject.cv.user.last_name }}, {{ cvproject.cv.user.first_name }}
+                </a>
+            </td>
+            {% if project.subproject_set.count %}
+            <td>{{ cvproject.subproject.name }}</td>
+            {% endif %}
+            <td>{{ cvproject.position }}</td>
+            <td>{{ cvproject.activities|mkdown }}</td>
+        </tr>
         {% endfor %}
         </tbody>
     </table>

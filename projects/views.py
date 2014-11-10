@@ -21,6 +21,8 @@ class ProjectDetailView(CCCSDetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['cvproject_list'] = self.get_object().cvproject_set.all()
+        context['sub_projects'] = pm.Project.objects.filter(parent=self.get_object()).all()
+        context['super_project'] = self.get_object().parent
         return context
 
 
@@ -61,9 +63,9 @@ class ProjectCCCSSubSectorListView(ListView):
         context = super(ProjectCCCSSubSectorListView, self).get_context_data(**kwargs)
         sub = pm.CCCSSubSector.objects.get(pk=int(self.kwargs['pk']))
         context['sub'] = sub
-        projects = pm.Project.objects.filter(cccs_subsectors=sub)
+        projects = pm.Project.objects.filter(cccs_subsectors=sub, parent=None)
         if not self.request.user.is_staff:
-            projects = projects.filter(status=pm.CONTENT_STATUS_PUBLISHED)
+            projects = projects.filter(status=pm.CONTENT_STATUS_PUBLISHED, parent=None)
         context['projects'] = projects
         return context
 
@@ -119,7 +121,7 @@ class ProjectCCCSProjectListView(ListView):
     def get_queryset(self):
         qs = super(ProjectCCCSProjectListView, self).get_queryset()
         if not self.request.user.is_staff:
-            qs = qs.filter(status=pm.CONTENT_STATUS_PUBLISHED)
+            qs = qs.filter(status=pm.CONTENT_STATUS_PUBLISHED, parent=None)
         return qs.filter(tags__name__in=['CCCS'])
 
 
@@ -129,6 +131,8 @@ def categorize_projects(projects, categorization_fieldname, published_only):
     """
     categorization = dict()
     for project in projects:
+        if project.parent:
+            continue
         if published_only and project.status == pm.CONTENT_STATUS_DRAFT:
             continue
         categories = getattr(project, categorization_fieldname).all()
@@ -148,6 +152,8 @@ def categorize_projects2(projects, categorization_fieldname, categorization_pare
     """
     categorization = dict()
     for project in projects:
+        if project.parent:
+            continue
         if published_only and project.status == pm.CONTENT_STATUS_DRAFT:
             continue
         sub_categorizations = getattr(project, categorization_fieldname).all()

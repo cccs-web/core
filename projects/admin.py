@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
@@ -49,10 +50,38 @@ class CVProjectInline(admin.StackedInline):
     def has_add_permission(self, request):
         return False
 
+class ProjectProxy(pm.Project):
+    class Meta:
+        proxy = True
 
+    @property
+    def name(self):
+        pre = ''
+        if self.parent:
+            pre = '---'
+        return pre + self.title
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = pm.Project
+
+    def clean(self):
+        super(ProjectForm, self).clean()
+        cleaned_data = self.cleaned_data
+
+        if not cleaned_data.get('parent'):
+            self.instance.cccs_subthemes = cleaned_data['cccs_subthemes']
+            self.instance.cccs_subsectors = cleaned_data['cccs_subsectors']
+            self.instance.ifc_subthemes = cleaned_data['ifc_subthemes']
+            self.instance.ifc_sectors = cleaned_data['ifc_sectors']
+            self.instance.full_clean()
+
+        return cleaned_data
 
 
 class ProjectAdmin(admin.ModelAdmin):
+    form = ProjectForm
+    readonly_fields = ('Super_sub_project_relation', 'id')
     list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
     search_fields = ('title', 'region')
@@ -60,6 +89,7 @@ class ProjectAdmin(admin.ModelAdmin):
     inlines = (CVProjectInline, )
     fieldsets = ((None, {'fields': (
                                     'parent',
+                                    'Super_sub_project_relation',
                                     'title_en',
                                     'title_fr',
                                     'title_ru',
@@ -72,9 +102,10 @@ class ProjectAdmin(admin.ModelAdmin):
                                     'from_date',
                                     'to_date',
                                     'loan_or_grant',
-                                    'features_en',
-                                    'features_fr',
-                                    'features_ru')}),
+                                #    'features_en',
+                                #    'features_fr',
+                                #    'features_ru'
+                        )}),
                  ('Location', {'classes': ('collapse-closed',),
                                'fields': ('countries',
                                           'region_en',
@@ -96,17 +127,31 @@ class ProjectAdmin(admin.ModelAdmin):
                                           'publish_date',
                                           'expiry_date')}))
 
+
+    def Super_sub_project_relation(self, instance):
+        html = "Super Project:   <a href='%s'>%s</a>" % (instance.parent.admin_url, instance.parent.title) if instance.parent else ''
+        html += ('<br>' if html else '')
+        sub_projects = getattr(instance, 'sub_projects')
+        links = []
+        for c in sub_projects:
+            links.append("<a href='%s'>%s</a>" % (c.admin_url, c.title))
+
+        html += ("Sub Project"+("s" if len(links) > 1 else '')+":  " + ",".join(links) if len(links) > 0 else '')
+        return html
+
+    Super_sub_project_relation.allow_tags = True
+    Super_sub_project_relation.short_description = 'Super/Sub project relation'
     def name(self, instance):
         return getattr(instance, 'name')
     name.admin_order_field = 'title'
 
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        print db_field.name
         if db_field.name == 'parent':
             kwargs["queryset"] = pm.Project.objects.filter(parent=None)
         return super(ProjectAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-admin.site.register(pm.Project, ProjectAdmin)
+admin.site.register(ProjectProxy, ProjectAdmin)
 
 
 class ProjectInline(admin.TabularInline):

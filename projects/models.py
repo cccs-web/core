@@ -172,14 +172,35 @@ def project_pre_save(sender, instance, **kwargs):
     instance.path = _path
 
 def project_post_save(sender, instance, **kwargs):
+
     if instance.parent:
         min_from_date, max_to_date = instance.parent.get_date_range()
 
         #pevent sending a signal
         Project.objects.filter(id=instance.parent.id).update(from_date=min_from_date, to_date=max_to_date)
 
+def project_cccs_subthemes_changed(sender, instance, action, reverse, model, pk_set, **kwargs):
+    if action == 'post_add' and instance.parent:
+        for c in instance.cccs_subthemes.all():
+            instance.parent.cccs_subthemes.add(c)
+
+def project_cccs_subsectors_changed(sender, instance, action, reverse, model, pk_set, **kwargs):
+    if action == 'post_add' and instance.parent:
+        for c in instance.cccs_subsectors.all():
+            instance.parent.cccs_subsectors.add(c)
+
+def project_ifc_subthemes_changed(sender, instance, action, reverse, model, pk_set, **kwargs):
+    if action == 'post_add' and instance.parent:
+        for c in instance.ifc_subthemes.all():
+            instance.parent.ifc_subthemes.add(c)
+
+def project_ifc_sectors_changed(sender, instance, action, reverse, model, pk_set, **kwargs):
+    if action == 'post_add' and instance.parent:
+        for c in instance.ifc_sectors.all():
+            instance.parent.ifc_sectors.add(c)
+
 class Project(RichText, Displayable):
-    parent = models.ForeignKey("self", verbose_name='Parent Project', help_text="Parent Project", null=True, blank=True)
+    parent = models.ForeignKey("self", verbose_name='Parent Project', null=True, blank=True)
     path = models.CharField(max_length=512, null=True, blank=True)
     date_range = models.CharField(help_text="Deprecate and copy values into from_date/to_date",
                                   max_length=128, null=True, blank=True)
@@ -188,7 +209,7 @@ class Project(RichText, Displayable):
     to_date = models.DateField(help_text="Date project ended",
                                null=True, blank=True)
     loan_or_grant = models.CharField('Loan or Grant No.', max_length=32, null=True, blank=True)
-    features = models.TextField(max_length=2048, null=True, blank=True)
+    #features = models.TextField(max_length=2048, null=True, blank=True)
     countries = models.ManyToManyField(Country, related_name='projects', verbose_name="Country / Countries")
     region = models.CharField(max_length=128, null=True, blank=True)
     locality = models.CharField(max_length=128, null=True, blank=True)
@@ -219,6 +240,49 @@ class Project(RichText, Displayable):
                 _errors['from_date'] = ["Super project start date couldn't be set after sub projects' start date.",]
             if self.to_date and max_to_date and self.to_date < max_to_date:
                 _errors['to_date'] = ["Super project end date couldn't be set before sub projects' end date.",]
+
+            cccs_subthemes_pks_set = set(self.cccs_subthemes_pks)
+            sub_cccs_subthemes_pks_set = []
+            for sub in self.sub_projects:
+                sub_cccs_subthemes_pks_set.extend(sub.cccs_subthemes_pks)
+            sub_cccs_subthemes_pks_set = set(sub_cccs_subthemes_pks_set)
+            diff_set = sub_cccs_subthemes_pks_set - cccs_subthemes_pks_set
+            if len(diff_set) > 0:
+                _errors['cccs_subthemes'] = ["Super project should contain all sub projects' cccs subtheme.",]
+
+            cccs_subsectors_pks_set = set(self.cccs_subsectors_pks)
+            sub_cccs_subsectors_pks_set = []
+            for sub in self.sub_projects:
+                sub_cccs_subsectors_pks_set.extend(sub.cccs_subsectors_pks)
+            sub_cccs_subsectors_pks_set = set(sub_cccs_subsectors_pks_set)
+            diff_set = sub_cccs_subsectors_pks_set - cccs_subsectors_pks_set
+            if len(diff_set) > 0:
+                _errors['cccs_subsectors'] = ["Super project should contain all sub projects' cccs subsectors.",]
+
+            ifc_subthemes_pks_set = set(self.ifc_subthemes_pks)
+            sub_ifc_subthemes_pks_set = []
+            for sub in self.sub_projects:
+                sub_ifc_subthemes_pks_set.extend(sub.ifc_subthemes_pks)
+            sub_ifc_subthemes_pks_set = set(sub_ifc_subthemes_pks_set)
+            diff_set = sub_ifc_subthemes_pks_set - ifc_subthemes_pks_set
+            if len(diff_set) > 0:
+                _errors['ifc_subthemes'] = ["Super project should contain all sub projects' ifc subthemes.",]
+
+            ifc_sectors_pks_set = set(self.ifc_sectors_pks)
+            sub_ifc_sectors_pks_set = []
+            for sub in self.sub_projects:
+                sub_ifc_sectors_pks_set.extend(sub.ifc_sectors_pks)
+            sub_ifc_sectors_pks_set = set(sub_ifc_sectors_pks_set)
+            diff_set = sub_ifc_sectors_pks_set - ifc_sectors_pks_set
+            if len(diff_set) > 0:
+                _errors['ifc_sectors'] = ["Super project should contain all sub projects' ifc sectors.",]
+
+
+        if self.parent and len(self.sub_projects) > 0:
+            _errors['parent'] = ["This project can't be sub projects because it has already child projects.",]
+
+        if self.parent and self == self.parent:
+            _errors['parent'] = ["Self can't be set as super project.", ]
 
         if _errors:
             raise ValidationError(_errors)
@@ -274,12 +338,29 @@ class Project(RichText, Displayable):
 
     @property
     def name(self):
-        pre = ''
-        if self.parent:
-            pre = '---'
-        return pre + self.title
+        return self.title
 
-    def get_absolute_url(self):
+    @property
+    def sub_projects(self):
+        return Project.objects.all().filter(parent=self)
+
+    @property
+    def cccs_subthemes_pks(self):
+        return [c.pk for c in self.cccs_subthemes.all()]
+
+    @property
+    def cccs_subsectors_pks(self):
+        return [c.pk for c in self.cccs_subsectors.all()]
+
+    @property
+    def ifc_subthemes_pks(self):
+        return [c.pk for c in self.ifc_subthemes.all()]
+
+    @property
+    def ifc_sectors_pks(self):
+        return [c.pk for c in self.ifc_sectors.all()]
+
+    def get_absolute_url_pks(self):
         return reverse("project-detail", args=(self.slug,))
 
 # Override inherited verbose names
@@ -288,3 +369,8 @@ Project._meta.get_field('short_url').verbose_name = 'Short URL'
 
 signals.pre_save.connect(project_pre_save, sender=Project)
 signals.post_save.connect(project_post_save, sender=Project)
+
+signals.m2m_changed.connect(project_cccs_subthemes_changed, sender=Project.cccs_subthemes.through)
+signals.m2m_changed.connect(project_cccs_subsectors_changed, sender=Project.cccs_subsectors.through)
+signals.m2m_changed.connect(project_ifc_subthemes_changed, sender=Project.ifc_subthemes.through)
+signals.m2m_changed.connect(project_ifc_sectors_changed, sender=Project.ifc_sectors.through)
