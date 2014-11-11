@@ -363,6 +363,8 @@ class Project(RichText, Displayable):
     def get_absolute_url_pks(self):
         return reverse("project-detail", args=(self.slug,))
 
+    def get_absolute_url(self):
+        return reverse("project-detail", args=(self.slug,))
 # Override inherited verbose names
 Project._meta.get_field('short_url').verbose_name = 'Short URL'
 
