@@ -20,6 +20,24 @@ class CCCSRole(UniqueNamed):
         verbose_name_plural = 'CCCS Roles'
 
 
+def cv_post_save(sender, instance, **kwargs):
+    for cv_project in instance.cvproject_set.all():
+        project = cv_project.project
+        print project
+        print project.cvproject_set.filter(cv__status=CONTENT_STATUS_PUBLISHED).count()
+        print project.status
+        print CONTENT_STATUS_DRAFT
+        if project.cvproject_set.filter(cv__status=CONTENT_STATUS_PUBLISHED).count() > 0:
+            if project.status != CONTENT_STATUS_PUBLISHED:
+                print 'status changed..published'
+                project.status = CONTENT_STATUS_PUBLISHED
+                project.save()
+        else:
+            if project.status != CONTENT_STATUS_DRAFT:
+                print 'status changed..drafted'
+                project.status = CONTENT_STATUS_DRAFT
+                project.save()
+
 class CV(RichText, Displayable):
     user = models.OneToOneField(User, related_name="cv")
     middle_names = models.CharField(max_length=128, null=True, blank=True)
@@ -78,6 +96,8 @@ class CV(RichText, Displayable):
         return '-'.join([n for n in (self.user.first_name,
                                      self.user.last_name) if n])
 
+signals.post_save.connect(cv_post_save, sender=CV)
+
 # Override inherited verbose names (this is not good but it is what is wanted)
 CV._meta.get_field('content').verbose_name = 'Biographical Profile'
 CV._meta.get_field('description').verbose_name = 'HTML Page Description'
@@ -121,7 +141,6 @@ class CVDateRangeSet(CVSet):
 
 
 def cv_project_post_save(sender, instance, **kwargs):
-    print 'aaaa'
     min_from_date = instance.project.from_date
     print min_from_date
     if min_from_date and instance.from_date and min_from_date > instance.from_date:
@@ -138,6 +157,7 @@ def cv_project_post_save(sender, instance, **kwargs):
 
     instance.project.from_date = min_from_date
     instance.project.to_date = max_to_date
+
     instance.project.save()
 
 

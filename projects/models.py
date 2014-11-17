@@ -341,6 +341,17 @@ class Project(RichText, Displayable):
         return self.title
 
     @property
+    def name(self):
+        return self.title
+
+    @property
+    def project_name(self):
+        pre = ''
+        if self.parent:
+            pre = '---'
+        return pre + self.title
+
+    @property
     def sub_projects(self):
         return Project.objects.all().filter(parent=self)
 

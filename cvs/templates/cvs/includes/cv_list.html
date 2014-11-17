@@ -1,9 +1,11 @@
 <ul>
     {% for cv in cv_list %}
-        <li>
-            <a href="{% url 'cv-detail' slug=cv.slug %}">
-                {{ cv.user.last_name }}, {{ cv.user.first_name }} {{ cv.user.middle_names }}
-            </a>
-        </li>
+        {% if cv.status != 'draft' %}
+            <li>
+                <a href="{% url 'cv-detail' slug=cv.slug %}">
+                    {{ cv.user.last_name }}, {{ cv.user.first_name }} {{ cv.user.middle_names }}
+                </a>
+            </li>
+        {% endif %}
     {% endfor %}
 </ul>

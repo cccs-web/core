@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django.utils.safestring import mark_safe
 import cvs.models as cm
 from django.db.models import signals
 
@@ -23,8 +23,10 @@ class CVProjectInline(admin.StackedInline):
     extra = 1
     verbose_name = "Project"
     verbose_name_plural = "Associated Projects"
+    readonly_fields = ('project_link',)
 
-    fields = ('project',
+    fields = (
+              'project',
               'from_date',
               'to_date',
               'position',
@@ -33,8 +35,13 @@ class CVProjectInline(admin.StackedInline):
               'client_beneficiary',
               'client_contract',
               'client_end',
-              'contract')
+              'contract',
+              'project_link',
+              )
     ordering = ['from_date']
+
+    def project_link(self, instance):
+        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.project.admin_url, name=instance.project.title))
 
 
 class CVEducationInline(admin.TabularInline):

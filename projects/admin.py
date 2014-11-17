@@ -33,9 +33,11 @@ signals.post_save.connect(cm.cv_project_post_save, sender=CVProjectProxy)
 class CVProjectInline(admin.StackedInline):
     extra = 1
     model = CVProjectProxy
+    readonly_fields = ('cv_link',)
     verbose_name = "CV"
     verbose_name_plural = "Associated CV Data"
     fields = (
+              'cv',
               'from_date',
               'to_date',
               'position',
@@ -45,21 +47,14 @@ class CVProjectInline(admin.StackedInline):
               'client_contract',
               'client_end',
               'contract',
-              'cv')
+              'cv_link',
+              )
+
+    def cv_link(self, instance):
+        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.cv.admin_url, name=instance.cv.title))
 
     def has_add_permission(self, request):
         return False
-
-class ProjectProxy(pm.Project):
-    class Meta:
-        proxy = True
-
-    @property
-    def name(self):
-        pre = ''
-        if self.parent:
-            pre = '---'
-        return pre + self.title
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -82,7 +77,7 @@ class ProjectForm(forms.ModelForm):
 class ProjectAdmin(admin.ModelAdmin):
     form = ProjectForm
     readonly_fields = ('Super_sub_project_relation', 'id')
-    list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
+    list_display = ('project_name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
     search_fields = ('title', 'region')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
@@ -141,6 +136,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
     Super_sub_project_relation.allow_tags = True
     Super_sub_project_relation.short_description = 'Super/Sub project relation'
+
     def name(self, instance):
         return getattr(instance, 'name')
     name.admin_order_field = 'title'
@@ -151,7 +147,7 @@ class ProjectAdmin(admin.ModelAdmin):
             kwargs["queryset"] = pm.Project.objects.filter(parent=None)
         return super(ProjectAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-admin.site.register(ProjectProxy, ProjectAdmin)
+admin.site.register(pm.Project, ProjectAdmin)
 
 
 class ProjectInline(admin.TabularInline):

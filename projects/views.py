@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.core import serializers
-
+import cvs.models as cm
 import projects.models as pm
 
 
@@ -23,6 +23,13 @@ class ProjectDetailView(CCCSDetailView):
         context['cvproject_list'] = self.get_object().cvproject_set.all()
         context['sub_projects'] = pm.Project.objects.filter(parent=self.get_object()).all()
         context['super_project'] = self.get_object().parent
+
+        if not self.request.user.is_staff:
+            context['cvproject_list'] = self.get_object().cvproject_set.filter(cv__status=cm.CONTENT_STATUS_PUBLISHED)
+            context['sub_projects']  = context['sub_projects'].filter(status=cm.CONTENT_STATUS_PUBLISHED)
+            if context['super_project'] and context['super_project'].status==cm.CONTENT_STATUS_DRAFT:
+                context['super_project'] = None
+
         return context
 
 
@@ -108,6 +115,14 @@ class ProjectCountryListView(ListView):
                                                         not self.request.user.is_staff)
         return context
 
+    def get_queryset(self):
+        qs = super(ProjectCountryListView, self).get_queryset()
+        qs = qs.filter(parent=None)
+        if not self.request.user.is_staff:
+            qs = qs.filter(status=pm.CONTENT_STATUS_PUBLISHED)
+
+        return qs
+
 
 class ProjectIFCSectorListView(ProjectCountryListView):
     categorization_fieldname = 'ifc_sectors'
@@ -120,8 +135,9 @@ class ProjectCCCSProjectListView(ListView):
 
     def get_queryset(self):
         qs = super(ProjectCCCSProjectListView, self).get_queryset()
+        qs = qs.filter(parent=None)
         if not self.request.user.is_staff:
-            qs = qs.filter(status=pm.CONTENT_STATUS_PUBLISHED, parent=None)
+            qs = qs.filter(status=pm.CONTENT_STATUS_PUBLISHED)
         return qs.filter(tags__name__in=['CCCS'])
 
 

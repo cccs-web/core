@@ -234,7 +234,7 @@ FILEBROWSER_DIRECTORY = ''
 ADMIN_MENU_ORDER = (
     ("Content",
      ("cvs.CV",
-      ("Projects", "projects.ProjectProxy"),
+      "projects.Project",
       "pages.Page",
       "blog.BlogPost",
       "generic.ThreadedComment",
