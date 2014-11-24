@@ -1,19 +1,32 @@
 from django.contrib import admin
-
+from django.utils.safestring import mark_safe
 import cvs.models as cm
-
+from django.db.models import signals
 
 class CCCSRoleAdmin(admin.ModelAdmin):
     fields = ('name_en', 'name_fr', 'name_ru')
 
 admin.site.register(cm.CCCSRole, CCCSRoleAdmin)
 
+class CVProjectProxy(cm.CVProject):
+    class Meta:
+        proxy = True
+
+    def __unicode__(self):
+        return self.project.path
+
+
+signals.post_save.connect(cm.cv_project_post_save, sender=CVProjectProxy)
 
 class CVProjectInline(admin.StackedInline):
-    model = cm.CVProject
+    model = CVProjectProxy
     extra = 1
-    fields = ('project',
-              'subproject',
+    verbose_name = "Project"
+    verbose_name_plural = "Associated Projects"
+    readonly_fields = ('project_link',)
+
+    fields = (
+              'project',
               'from_date',
               'to_date',
               'position',
@@ -22,8 +35,13 @@ class CVProjectInline(admin.StackedInline):
               'client_beneficiary',
               'client_contract',
               'client_end',
-              'contract')
+              'contract',
+              'project_link',
+              )
     ordering = ['from_date']
+
+    def project_link(self, instance):
+        return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.project.admin_url, name=instance.project.title))
 
 
 class CVEducationInline(admin.TabularInline):

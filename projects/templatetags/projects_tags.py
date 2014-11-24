@@ -9,3 +9,11 @@ def joinby(value, delim=', '):
 
 register.filter('join', joinby)
 
+def cvproject_list(project):
+    return project.cvproject_set.all()
+
+register.filter('cvproject_list', cvproject_list)
+
+
+
+
