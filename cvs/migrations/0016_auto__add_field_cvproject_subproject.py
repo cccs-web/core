@@ -9,14 +9,16 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding field 'CVProject.subproject'
-        db.add_column(u'cvs_cvproject', 'subproject',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['projects.SubProject'], null=True, blank=True),
-                      keep_default=False)
+        # db.add_column(u'cvs_cvproject', 'subproject',
+        #               self.gf('django.db.models.fields.related.ForeignKey')(to=orm['projects.SubProject'], null=True, blank=True),
+        #               keep_default=False)
+        pass
 
 
     def backwards(self, orm):
         # Deleting field 'CVProject.subproject'
-        db.delete_column(u'cvs_cvproject', 'subproject_id')
+        #db.delete_column(u'cvs_cvproject', 'subproject_id')
+        pass
 
 
     models = {
