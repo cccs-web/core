@@ -269,6 +269,8 @@ DASHBOARD_TAGS = (
     ("gitadmin_tags.git_dashboard",),
     ("mezzanine_tags.recent_actions",))
 
+QGIS_PROJECTS_DIR = os.path.join(BASE_DIR, 'qgis/projects')
+
 ####################
 # DYNAMIC SETTINGS #
 ####################

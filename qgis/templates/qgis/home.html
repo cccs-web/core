@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load mkdown_filters projects_tags %}
+{% block main %}
+    <h1>QGIS Projects</h1>
+    {% if projects %}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Title</th>
+        <th>File Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for project in projects %}
+        <tr>
+            <td>{{ project.name }}</td>
+            <td>{{ project.title }}</td>
+            <td>{{ project.file_name }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    {% else %}
+    <p>No projects available.</p>
+    {% endif %}
+{% endblock main %}
