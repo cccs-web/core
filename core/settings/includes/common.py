@@ -158,7 +158,8 @@ INSTALLED_APPS = (
     "south",
     "django.contrib.admindocs",
     "taggit",
-    "gitadmin")
+    "gitadmin",
+    "qgis")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
