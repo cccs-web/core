@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load mkdown_filters projects_tags %}
 {% block main %}
     <h1>QGIS Projects</h1>
     {% if projects %}
@@ -14,7 +13,7 @@
     <tbody>
     {% for project in projects %}
         <tr>
-            <td>{{ project.name }}</td>
+            <td><a href="{% url 'qgis-project' file_name=project.file_name %}">{{ project.name }}</a></td>
             <td>{{ project.title }}</td>
             <td>{{ project.file_name }}</td>
         </tr>

@@ -39,4 +39,17 @@ class HomeView(TemplateView):
                 if os.path.splitext(fn)[1] == '.qgs']
 
 
+class QGISProjectView(TemplateView):
+    """
+    Specialization to inject project data for javascript
+    """
+    template_name = "qgis/project.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(QGISProjectView, self).get_context_data(**kwargs)
+        context['file_name'] = self.kwargs['file_name']
+        return context
+
+
+
 
