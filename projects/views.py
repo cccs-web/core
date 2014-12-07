@@ -113,6 +113,7 @@ class ProjectCountryListView(ListView):
         context['categorization'] = categorize_projects(context['object_list'],
                                                         self.categorization_fieldname,
                                                         not self.request.user.is_staff)
+
         return context
 
     def get_queryset(self):
@@ -158,6 +159,9 @@ def categorize_projects(projects, categorization_fieldname, published_only):
                 categorization[category_name] = dict(projects=list(), count=0)
             categorization[category_name]['count'] += 1
             categorization[category_name]['id'] = category.id
+            if categorization_fieldname == 'countries':
+                country = pm.Country.objects.filter(name=category_name).first()
+                categorization[category_name]['code'] = country.iso if country else ''
             categorization[category_name]['projects'].append(project)
     return OrderedDict(((k, categorization[k]) for k in sorted(categorization.keys())))
 
