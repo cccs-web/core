@@ -10,6 +10,8 @@ urlpatterns = patterns(
         views.ProjectCCCSProjectListView.as_view(), name='project-list-cccs-tag'),
     url(r'^bycccstheme/$',
         views.ProjectCCCSThemeListView.as_view(), name='project-list-cccs-theme'),
+    url(r'^byifctheme/$',
+        views.ProjectIFCThemeListView.as_view(), name='project-list-ifc-theme'),
     url(r'^bycccssector/$',
         views.ProjectCCCSSectorListView.as_view(), name='project-list-cccs-sector'),
     url(r'^bycccssubsector/(?P<pk>\d+)$',

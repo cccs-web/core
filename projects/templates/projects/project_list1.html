@@ -2,8 +2,10 @@
 {% with use_right_col=False %}
     {% block main %}
         <h2>Projects by {{ categorization_name }}</h2>
+        {% if country_map %}
         <div id="map">
         </div>
+        {% endif %}
         <div class="panel-group" id="theme_accordion">
             {% for cat_name, cat_info in categorization.items %}
                 <div class="panel panel-default">
@@ -28,6 +30,8 @@
         </div>
     {% endblock main %}
 {% endwith %}
+{% if country_map %}
+
 {% load staticfiles %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static "jvectormap/style.css" %}">
@@ -68,3 +72,4 @@
     });
     </script>
 {% endblock extra_js %}
+{% endif %}

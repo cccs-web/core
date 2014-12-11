@@ -39,28 +39,39 @@ class ProjectCCCSThemeListView(ListView):
     categorization_parent_fieldname = 'theme'
     categorization_label = 'CCCS Theme'
     template_name = "projects/project_list2.html"
-
+    show_piechart1 = True
     def get_context_data(self, **kwargs):
         context = super(ProjectCCCSThemeListView, self).get_context_data(**kwargs)
         context['categorization_name'] = self.categorization_label
         context['use_right_col'] = "No"  # a bit hacky but it will do for now
-        context['categorization'] = categorize_projects2(context['object_list'],
-                                                         self.categorization_fieldname,
-                                                         self.categorization_parent_fieldname,
-                                                         not self.request.user.is_staff)
+        context['show_piechart1'] = self.show_piechart1
+        if self.show_piechart1:
+            context['categorization'] = categorize_projects2(context['object_list'],
+                                                             self.categorization_fieldname,
+                                                             self.categorization_parent_fieldname,
+                                                             not self.request.user.is_staff)
+
+            context['country_categorization'] = categorize_projects2_by_country(context['object_list'],
+                                                             self.categorization_fieldname,
+                                                             self.categorization_parent_fieldname,
+                                                             not self.request.user.is_staff)
+
+            temp = [ {'code3': c.iso_3166.encode('ascii','ignore') if c.iso_3166 else '', 'value': c.project_count } for c in pm.Country.objects.all() if c.project_count > 0 ]
+            context['country_projects'] = temp
+
         return context
 
 
 class ProjectIFCThemeListView(ProjectCCCSThemeListView):
     categorization_fieldname = 'ifc_subthemes'
     categorization_label = 'IFC Performance Standard'
-
+    show_piechart1 = True
 
 class ProjectCCCSSectorListView(ProjectCCCSThemeListView):
     categorization_fieldname = 'cccs_subsectors'
     categorization_parent_fieldname = 'sector'
     categorization_label = 'CCCS Sector'
-
+    show_piechart1 = False
 
 class ProjectCCCSSubSectorListView(ListView):
     model = pm.Project
@@ -82,9 +93,9 @@ class ProjectCCCSSectorExperienceView(ProjectCCCSThemeListView):
     categorization_parent_fieldname = 'sector'
     categorization_label = 'CCCS Sector'
     template_name = "projects/cccs_sector_experience.html"
-
     def get_context_data(self, **kwargs):
         context = super(ProjectCCCSSectorExperienceView, self).get_context_data(**kwargs)
+        context['show_piechart1'] = False
         # Create a roughly equal pair of columns for the categorization
         categorization = context['categorization']
         categorization_cols = (OrderedDict(), OrderedDict())
@@ -105,10 +116,11 @@ class ProjectCountryListView(ListView):
     categorization_fieldname = 'countries'
     categorization_label = 'Country'
     template_name = "projects/project_list1.html"
-
+    country_map = True
     def get_context_data(self, **kwargs):
         context = super(ProjectCountryListView, self).get_context_data(**kwargs)
         context['categorization_name'] = self.categorization_label
+        context['country_map'] = self.country_map
         context['use_right_col'] = "No"  # a bit hacky but it will do for now
         context['categorization'] = categorize_projects(context['object_list'],
                                                         self.categorization_fieldname,
@@ -128,7 +140,7 @@ class ProjectCountryListView(ListView):
 class ProjectIFCSectorListView(ProjectCountryListView):
     categorization_fieldname = 'ifc_sectors'
     categorization_label = 'IFC Sector'
-
+    country_map = False
 
 class ProjectCCCSProjectListView(ListView):
     model = pm.Project
@@ -197,3 +209,33 @@ def categorize_projects2(projects, categorization_fieldname, categorization_pare
     for info in categorization.values():
         info['subs'] = OrderedDict(((k, info['subs'][k]) for k in sorted(info['subs'].keys())))
     return OrderedDict(((k, categorization[k]) for k in sorted(categorization.keys())))
+
+def categorize_projects2_by_country(projects, categorization_fieldname, categorization_parent_fieldname, published_only):
+    """
+    Organize he projects so that they are nested in the countries and then sub categorizations
+    """
+    country_categorization = dict()
+    for project in projects:
+        if project.parent:
+            continue
+        if published_only and project.status == pm.CONTENT_STATUS_DRAFT:
+            continue
+        categorization = dict()
+        countries = getattr(project, 'countries').all()
+        for country in countries:
+            country_code = country.iso_3166.encode('ascii','ignore')
+            if country_code not in country_categorization:
+                country_categorization[country_code] = dict()
+
+            sub_categorizations = getattr(project, categorization_fieldname).all()
+
+            for sub in sub_categorizations:
+                super_name = getattr(sub, categorization_parent_fieldname).name.encode('ascii','ignore')
+
+                if super_name not in country_categorization[country_code]:
+                    country_categorization[country_code][super_name] = 0
+
+                country_categorization[country_code][super_name] += 1
+    for country_code in country_categorization:
+        country_categorization[country_code] = sorted([[key, country_categorization[country_code][key]] for key in country_categorization[country_code]], key=lambda x: x[0])
+    return country_categorization
