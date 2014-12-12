@@ -16,6 +16,7 @@
             <td><a href="{% url 'qgis-project' file_name=project.file_name %}">{{ project.name }}</a></td>
             <td>{{ project.title }}</td>
             <td>{{ project.file_name }}</td>
+        <td><a class="btn btn-default" href="http://localhost/?MAP={{ project.file_name }}&REQUEST=GetCapabilities">View Capabilities</a></td>
         </tr>
     {% endfor %}
     </tbody>

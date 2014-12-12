@@ -270,6 +270,7 @@ DASHBOARD_TAGS = (
     ("mezzanine_tags.recent_actions",))
 
 QGIS_PROJECTS_DIR = os.path.join(BASE_DIR, 'qgis/projects')
+QGIS_SERVER_URL = 'http:/qgis.crossculturalconsult.com/'
 
 ####################
 # DYNAMIC SETTINGS #

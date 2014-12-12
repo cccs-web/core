@@ -17,3 +17,5 @@ VIRTUALENV = 'cccs'
 
 SITE_TITLE = 'Cross-Cultural Consulting Services'
 SITE_TAGLINE = None
+
+QGIS_SERVER_URL = 'http:/localhost/'

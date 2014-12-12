@@ -4,11 +4,6 @@ var lang = "en"; //for available codes see array availableLanguages in file Glob
 //Help file (must be a local file)
 var helpfile = "help_en.html";
 
-//Servername (optional) and path and name name of QGIS Server FCGI-file
-//either with or without server-name - without servername recommended for easier porting to other servers
-//do not add a ? or & after the .fcgi extension
-var serverAndCGI = "/";
-
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
 //Set this to false to use GetCapabilities for older QGIS Server versions (<= 1.8).
