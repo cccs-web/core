@@ -1,0 +1,36 @@
+	<!-- Service Metadata -->
+	<Service>
+		<Name>WMS</Name>
+		<!-- Human-readable title for pick lists -->
+		<Title>CCCS QGIX Map List</Title>
+		<!-- Narrative description providing additional information -->
+		<Abstract>A WMS service with QGIS mapserver</Abstract>
+		<KeywordList>
+			<Keyword>QGIS CCCS mapserver</Keyword>
+		</KeywordList>
+		<!-- Top-level web address of service or service provider.  See also OnlineResource
+		     elements under <DCPType>. -->
+			     <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple"
+					     xlink:href="http://www.sourcepole.ch/" />
+			     <!-- Contact information -->
+			     <ContactInformation>
+				     <ContactPersonPrimary>
+					     <ContactPerson>Paul Whipp</ContactPerson>
+					     <ContactOrganization>CCCS</ContactOrganization>
+				     </ContactPersonPrimary>
+				     <ContactAddress>
+					     <AddressType>postal</AddressType>
+					     <Address>PO Box 495</Address>
+					     <City>Samford</City>
+					     <StateOrProvince>Queensland</StateOrProvince>
+					     <PostCode>4520</PostCode>
+					     <Country>Australia</Country>
+				     </ContactAddress>
+				     <ContactVoiceTelephone></ContactVoiceTelephone>
+				     <ContactElectronicMailAddress>paul.whipp@gmail.com</ContactElectronicMailAddress>
+			     </ContactInformation>
+		<!-- Fees or access constraints imposed. -->
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+		<LayerLimit>99</LayerLimit>
+	</Service>
