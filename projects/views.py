@@ -56,7 +56,16 @@ class ProjectCCCSThemeListView(ListView):
                                                              self.categorization_parent_fieldname,
                                                              not self.request.user.is_staff)
 
-            temp = [ {'code3': c.iso_3166.encode('ascii','ignore') if c.iso_3166 else '', 'value': c.project_count } for c in pm.Country.objects.all() if c.project_count > 0 ]
+            temp = []
+            max = 0
+            color_max = 0xFFCC00
+            color_min = 0x990000
+            for c in pm.Country.objects.all():
+                if c.project_count > 0:
+                    temp.append({'id': c.iso.encode('ascii','ignore') if c.iso_3166 else '', 'value': c.project_count})
+                    if max < c.project_count:
+                        max = c.project_count
+            context['max'] = max
             context['country_projects'] = temp
 
         return context
@@ -223,7 +232,7 @@ def categorize_projects2_by_country(projects, categorization_fieldname, categori
         categorization = dict()
         countries = getattr(project, 'countries').all()
         for country in countries:
-            country_code = country.iso_3166.encode('ascii','ignore')
+            country_code = country.iso.encode('ascii','ignore')
             if country_code not in country_categorization:
                 country_categorization[country_code] = dict()
 
