@@ -8,24 +8,27 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'SubProject'
-        db.create_table(u'projects_subproject', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['projects.Project'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=128)),
-        ))
-        db.send_create_signal(u'projects', ['SubProject'])
+        # Adding field 'Project.parent'
+        db.add_column(u'projects_project', 'parent',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['projects.Project'], null=True, blank=True),
+                      keep_default=False)
 
-        # Adding unique constraint on 'SubProject', fields ['project', 'name']
-        db.create_unique(u'projects_subproject', ['project_id', 'name'])
+        # Adding field 'Project.path'
+        db.add_column(u'projects_project', 'path',
+                      self.gf('django.db.models.fields.CharField')(max_length=512, null=True, blank=True),
+                      keep_default=False)
 
+        projects = orm.Project.objects.all()
+        for p in projects:
+            p.path = p.title
+            p.save()
 
     def backwards(self, orm):
-        # Removing unique constraint on 'SubProject', fields ['project', 'name']
-        db.delete_unique(u'projects_subproject', ['project_id', 'name'])
+        # Deleting field 'Project.parent'
+        db.delete_column(u'projects_project', 'parent_id')
 
-        # Deleting model 'SubProject'
-        db.delete_table(u'projects_subproject')
+        # Deleting field 'Project.path'
+        db.delete_column(u'projects_project', 'path')
 
 
     models = {
@@ -111,7 +114,7 @@ class Migration(SchemaMigration):
             'plural_name_ru': ('django.db.models.fields.CharField', [], {'max_length': '512', 'null': 'True', 'blank': 'True'})
         },
         u'projects.project': {
-            'Meta': {'ordering': "('title',)", 'object_name': 'Project'},
+            'Meta': {'ordering': "('path',)", 'object_name': 'Project'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'cccs_subsectors': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'projects'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['projects.CCCSSubSector']"}),
             'cccs_subthemes': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'projects'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['projects.CCCSSubTheme']"}),
@@ -141,6 +144,8 @@ class Migration(SchemaMigration):
             'locality_fr': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
             'locality_ru': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
             'owner': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
+            'parent': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['projects.Project']", 'null': 'True', 'blank': 'True'}),
+            'path': ('django.db.models.fields.CharField', [], {'max_length': '512', 'null': 'True', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'region': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
             'region_en': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
@@ -157,12 +162,6 @@ class Migration(SchemaMigration):
             'title_ru': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'to_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'null': 'True'})
-        },
-        u'projects.subproject': {
-            'Meta': {'unique_together': "(('project', 'name'),)", 'object_name': 'SubProject'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['projects.Project']"})
         },
         u'sites.site': {
             'Meta': {'ordering': "(u'domain',)", 'object_name': 'Site', 'db_table': "u'django_site'"},

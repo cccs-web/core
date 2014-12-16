@@ -17,3 +17,7 @@ VIRTUALENV = 'cccs'
 
 SITE_TITLE = 'Cross-Cultural Consulting Services'
 SITE_TAGLINE = None
+
+QGIS_SERVER_URL = 'http://localhost/'
+
+AWS_STORAGE_BUCKET_NAME = "cccs-docs"

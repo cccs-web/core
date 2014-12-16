@@ -1,9 +1,10 @@
+from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 import projects.models as pm
 import cvs.models as cm
-
+from django.db.models import signals
 
 class HasProjectsAdmin(admin.ModelAdmin):
 
@@ -19,13 +20,24 @@ class CountryAdmin(HasProjectsAdmin):
 
 admin.site.register(pm.Country, CountryAdmin)
 
+class CVProjectProxy(cm.CVProject):
+    class Meta:
+        proxy = True
+
+    def __unicode__(self):
+        return self.cv.full_name
+
+signals.post_save.connect(cm.cv_project_post_save, sender=CVProjectProxy)
+
 
 class CVProjectInline(admin.StackedInline):
     extra = 1
-    model = cm.CVProject
-    exclude = ('cv',)
+    model = CVProjectProxy
     readonly_fields = ('cv_link',)
-    fields = ('subproject',
+    verbose_name = "CV"
+    verbose_name_plural = "Associated CV Data"
+    fields = (
+              'cv',
               'from_date',
               'to_date',
               'position',
@@ -35,25 +47,45 @@ class CVProjectInline(admin.StackedInline):
               'client_contract',
               'client_end',
               'contract',
-              'cv_link')
+              'cv_link',
+              )
 
     def cv_link(self, instance):
         return mark_safe(u'<a href="{u}">{name}</a>'.format(u=instance.cv.admin_url, name=instance.cv.title))
 
+    def has_add_permission(self, request):
+        return False
 
-class SubProjectInline(admin.TabularInline):
-    extra = 1
-    model = pm.SubProject
-    fields = ('name',)
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = pm.Project
+
+    def clean(self):
+        super(ProjectForm, self).clean()
+        cleaned_data = self.cleaned_data
+
+        if not cleaned_data.get('parent'):
+            self.instance.cccs_subthemes = cleaned_data['cccs_subthemes']
+            self.instance.cccs_subsectors = cleaned_data['cccs_subsectors']
+            self.instance.ifc_subthemes = cleaned_data['ifc_subthemes']
+            self.instance.ifc_sectors = cleaned_data['ifc_sectors']
+            self.instance.full_clean()
+
+        return cleaned_data
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'from_date', 'to_date', 'locality', 'region')
+    form = ProjectForm
+    readonly_fields = ('Super_sub_project_relation', 'id')
+    list_display = ('project_name', 'from_date', 'to_date', 'locality', 'region')
     list_filter = ('countries', 'to_date')
     search_fields = ('title', 'region')
     filter_horizontal = ('countries', 'cccs_subthemes', 'cccs_subsectors', 'ifc_subthemes', 'ifc_sectors')
-    inlines = (CVProjectInline, SubProjectInline)
-    fieldsets = ((None, {'fields': ('title_en',
+    inlines = (CVProjectInline, )
+    fieldsets = ((None, {'fields': (
+                                    'parent',
+                                    'Super_sub_project_relation',
+                                    'title_en',
                                     'title_fr',
                                     'title_ru',
                                     'status',
@@ -64,7 +96,11 @@ class ProjectAdmin(admin.ModelAdmin):
                                     'sponsor',
                                     'from_date',
                                     'to_date',
-                                    'loan_or_grant')}),
+                                    'loan_or_grant',
+                                #    'features_en',
+                                #    'features_fr',
+                                #    'features_ru'
+                        )}),
                  ('Location', {'classes': ('collapse-closed',),
                                'fields': ('countries',
                                           'region_en',
@@ -80,17 +116,36 @@ class ProjectAdmin(admin.ModelAdmin):
                                      'ifc_sectors',
                                      'tags')}),
                  ('Metadata', {'classes': ('collapse-closed',),
-                               'fields': ('_meta_title',
-                                          'slug',
+                               'fields': ('slug',
                                           'short_url',
                                           'keywords',
                                           'publish_date',
                                           'expiry_date')}))
 
+
+    def Super_sub_project_relation(self, instance):
+        html = "Super Project:   <a href='%s'>%s</a>" % (instance.parent.admin_url, instance.parent.title) if instance.parent else ''
+        html += ('<br>' if html else '')
+        sub_projects = getattr(instance, 'sub_projects')
+        links = []
+        for c in sub_projects:
+            links.append("<a href='%s'>%s</a>" % (c.admin_url, c.title))
+
+        html += ("Sub Project"+("s" if len(links) > 1 else '')+":  " + ",".join(links) if len(links) > 0 else '')
+        return html
+
+    Super_sub_project_relation.allow_tags = True
+    Super_sub_project_relation.short_description = 'Super/Sub project relation'
+
     def name(self, instance):
         return getattr(instance, 'name')
     name.admin_order_field = 'title'
 
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'parent':
+            kwargs["queryset"] = pm.Project.objects.filter(parent=None)
+        return super(ProjectAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(pm.Project, ProjectAdmin)
 
@@ -196,11 +251,4 @@ class IFCSectorAdmin(HasProjectsAdmin):
 
 admin.site.register(pm.IFCSector, IFCSectorAdmin)
 
-
-class SubProjectAdmin(admin.ModelAdmin):
-    list_display = ('project', 'name')
-    list_filter = ('project',)
-    search_fields = ('project__name', 'name')
-
-admin.site.register(pm.SubProject, SubProjectAdmin)
 

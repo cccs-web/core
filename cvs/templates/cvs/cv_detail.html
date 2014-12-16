@@ -14,7 +14,7 @@
     {% if themes or sectors or countries %}
         {% include 'cvs/includes/cv_detail/specialization.html' %}
     {% endif %}
-    {% if cv.cveducation_set.first or cv.cvtrainig_set.first %}
+    {% if cv.cveducation_set.first or cv.cvtraining_set.first %}
         <h2>Educational Background</h2>
         {% if cv.cveducation_set.first %}
             {% include 'cvs/includes/cv_detail/education.html' %}
@@ -35,14 +35,18 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <a class="panel-toggle" data-toggle="collapse" data-parent="#project_accordion" href="#prj{{ cvproject.id }}">
-                                <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;{{ cvproject.project.name }}
-                            </a>
-                            &nbsp;(<a href="{% url 'project-detail' slug=cvproject.project.slug %}">visit project</a>)
+                                <a class="panel-toggle" data-toggle="collapse" data-parent="#project_accordion" href="#prj{{ cvproject.id }}">
+                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;{{ cvproject.project.path }}
+                                </a>
+                                &nbsp;(<a href="{% url 'project-detail' slug=cvproject.project.slug %}">visit project</a>)
+
                         </h3>
                     </div>
                     <div id="prj{{ cvproject.id }}" class="panel-body collapse">
                         <div class="panel-inner">
+                            {% if cvproject.project.parent %}
+                                <h4>Super project: <a href="{% url 'project-detail' slug=cvproject.project.parent.slug %}">{{ cvproject.project.parent.name }}</a></h4>
+                            {% endif %}
                             <table class="table table-striped table-bordered table-hover table-condensed">
                                 <tbody>
                                 {% if cvproject.subproject %}

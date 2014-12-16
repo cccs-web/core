@@ -5,6 +5,17 @@ Thematic Experience
 {% with use_right_col=False %}
     {% block main %}
         <h2>Projects by {{ categorization_name }}</h2>
+        {% if show_piechart1 %}
+        <div id="graph_wrapper">
+            <div id="map_container"></div>
+            <div id="info">
+                <span class="f32"><span id="flag"></span></span>
+                <h2>Overall</h2>
+                <div class="subheader">Click countries to view it's specific data</div>
+                <div id="country-chart"></div>
+            </div>
+        </div>
+        {% endif %}
         <div class="panel-group" id="theme_accordion">
             {% for super_name, super_info in categorization.items %}
                 <div class="panel panel-default">
@@ -53,3 +64,128 @@ Thematic Experience
 
 {% endblock main %}
 {% endwith %}
+
+{% if show_piechart1 %}
+    {% load staticfiles %}
+    {% block extra_css %}
+    {% if show_piechart1 %}
+        <link rel="stylesheet" href="{% static "highcharts/style.css" %}">
+        <link rel="stylesheet" type="text/css" href="http://cloud.github.com/downloads/lafeber/world-flags-sprite/flags32.css" />
+    {% endif %}
+    {% endblock extra_css %}
+    {% block extra_js %}
+        <script src="{% static "highcharts/highcharts.js" %}" type="text/javascript"></script>
+        <script src="{% static "amchart/ammap.js" %}" type="text/javascript"></script>
+        <script src="{% static "amchart/worldHigh.js" %}" type="text/javascript"></script>
+        <script>
+            AmCharts.ready(function() {
+
+			    var map = new AmCharts.AmMap();
+			    map.pathToImages = "{% static "amchart/images/" %}";
+			    map.colorSteps = 100;
+			    map.minValue = -10;
+			    var dataProvider = {
+			        mapVar: AmCharts.maps.worldHigh,
+			        getAreasFromMap:true,
+			         areas: {{ country_projects | safe }}
+			    };
+			    // pass data provider to the map object
+			    map.dataProvider = dataProvider;
+
+			    /* create areas settings
+			     * autoZoom set to true means that the map will zoom-in when clicked on the area
+			     * selectedColor indicates color of the clicked area.
+			     */
+			    map.areasSettings = {
+			        autoZoom: true,
+			        selectable: true
+			    };
+
+                map.balloonLabelFunction = function(mapObject, ammap) {
+                    if (mapObject.value) {
+                        return "<span style='font-size: 15px'>"+mapObject.title + "-"+mapObject.value+" projects</span>";
+                    } else {
+                        return mapObject.title;
+                    }
+
+                };
+			    var valueLegend = new AmCharts.ValueLegend();
+			    valueLegend.right = 10;
+			    valueLegend.minValue = "little";
+			    valueLegend.maxValue = "a lot";
+			    map.valueLegend = valueLegend;
+
+			    // let's say we want a small map to be displayed, so let's create and add it to the map
+			    //map.smallMap = new AmCharts.SmallMap();
+
+			    // write the map to container div
+			    map.write("map_container");
+
+			    map.addListener("clickMapObject", function (event) {
+                    $('#info #flag').attr('class', 'flag ' + event.mapObject.id.toLowerCase());
+                    $('#info h2').html(event.mapObject.title);
+                    countryChart.series[0].update({data: country_data[event.mapObject.id]});
+                    countryChart.redraw();
+                });
+
+                map.addListener("homeButtonClicked", function(event) {
+                    $('#info #flag').attr('class', '');
+                    $('#info h2').html('Overall');
+                    countryChart.series[0].update({data: overall_data});
+                    countryChart.redraw();
+                });
+            });
+
+            var data = {{ country_projects | safe }},countryChart;
+            var overall_data = [];
+            var country_data = {{ country_categorization | safe }};
+
+            $(function() {
+                {% for super_name, super_info in categorization.items %}
+                    overall_data.push(['{{super_name|safe}}', {{super_info.count|safe}}]);
+                {% endfor %}
+
+                countryChart = $('#country-chart').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: null
+                    },
+                    tooltip: {
+                        pointFormat: 'count: <b>{point.y}</b>, share: <b>{point.percentage:.1f}%</b>'
+                    },
+                    legend: {
+
+                        width: '100%',
+                        itemWidth: '100%'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false,
+                                format: '<b>{point.name}</b>: {point.y}',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.them.contrastTextColor) || 'black'
+                                }
+                            },
+                            showInLegend: true
+                        }
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: '',
+                        data: overall_data
+                    }]
+                }).highcharts();
+            });
+        </script>
+    {% endblock extra_js %}
+{% endif %}

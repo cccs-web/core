@@ -1,0 +1,11 @@
+<li style="display: none;">
+    <span><i class="fa fa-folder-open-o"></i></span>
+    <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+    {%if category.children.count %}
+        <ul>
+            {%for subcategory in category.children.all %}
+                {%include 'documents/includes/category_subtree.html' with category=subcategory%}
+            {%endfor%}
+        </ul>
+    {%endif%}
+</li>

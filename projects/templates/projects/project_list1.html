@@ -2,6 +2,10 @@
 {% with use_right_col=False %}
     {% block main %}
         <h2>Projects by {{ categorization_name }}</h2>
+        {% if country_map %}
+        <div id="map">
+        </div>
+        {% endif %}
         <div class="panel-group" id="theme_accordion">
             {% for cat_name, cat_info in categorization.items %}
                 <div class="panel panel-default">
@@ -24,8 +28,48 @@
                 </div>
             {% endfor %}
         </div>
-
-
-
     {% endblock main %}
 {% endwith %}
+{% if country_map %}
+
+{% load staticfiles %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "jvectormap/style.css" %}">
+    <link rel="stylesheet" href="{% static "jvectormap/jquery-jvectormap-2.0.1.css" %}">
+{% endblock extra_css %}
+{% block extra_js %}
+    <script src="{% static "jvectormap/jquery-jvectormap-2.0.1.min.js" %}" type="text/javascript"></script>
+    <script src="{% static "jvectormap/worldmap.js" %}" type="text/javascript"></script>
+    <script src="{% static "jvectormap/gdp-data.js" %}" type="text/javascript"></script>
+    <script>
+    var projectData = {}
+    {% for cat_name, cat_info in categorization.items %}
+        projectData['{{cat_info.code}}'] = {{cat_info.count}};
+    {% endfor %}
+    $(function(){
+      function getTitle(code) {
+        if (projectData[code]>0) {
+            var title = projectData[code] + ' project';
+            if(projectData[code]>1) title += 's';
+            return title;
+        } else {
+            return 'N.A';
+        }
+      }
+      $('#map').vectorMap({
+        map: 'world_mill_en',
+        series: {
+          regions: [{
+            values: projectData,
+            scale: ['#FEE5D9', '#A50F15'],
+            normalizeFunction: 'polynomial'
+          }]
+        },
+        onRegionTipShow: function(e, el, code){
+          el.html(el.html()+' ('+getTitle(code)+')');
+        }
+      });
+    });
+    </script>
+{% endblock extra_js %}
+{% endif %}

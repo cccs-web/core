@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load mkdown_filters %}
+{% block main %}
+    <table class="table table-striped table-responsive">
+        <tbody>
+        <tr><th>Title</th><td>{{ document.title }}</td></tr>
+        <tr><th>Author</th><td>{{ document.author }}</td></tr>
+        <tr><th>Year</th><td>{{ document.year }}</td></tr>
+        <tr>
+            <th>Tags</th>
+            <td>
+            <ul>
+                {% for tag in document.tags.all %}
+                    <li>{{ tag.name }}</li>
+                {% endfor %}
+            </ul>
+            </td>
+        </tr>
+        <tr><th>Description</th><td>{{ document.content|mkdown }}</td></tr>
+        <tr><td  colspan="2" class="text-right"><a class="btn btn-primary" href="{% url 'document-download' slug=document.slug %}">Download</a></td></tr>
+        </tbody>
+    </table>
+{% endblock main %}

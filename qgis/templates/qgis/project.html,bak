@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% block main %}
+    <h1>QGIS Project {{ file_name }} to display here</h1>
+{% endblock main %}

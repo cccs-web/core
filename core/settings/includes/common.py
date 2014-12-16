@@ -152,13 +152,17 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     "mezzanine_pagedown",
-    "mezzanine_slides",
+    # "mezzanine_slides",
     "mkdown",
     "modeltranslation",
     "south",
     "django.contrib.admindocs",
     "taggit",
-    "gitadmin")
+    "documents",
+    "gitadmin",
+    "storages",
+    "categories.editor",
+    "qgis")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -222,7 +226,8 @@ SEARCH_MODEL_CHOICES = (
     'pages.Page',
     'blog.BlogPost',
     'cvs.CV',
-    'projects.Project')
+    'projects.Project',
+    'documents.Document')
 
 # mezzanine-pagedown
 #RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PlainWidget'
@@ -238,12 +243,15 @@ ADMIN_MENU_ORDER = (
      ("cvs.CV",
       "projects.Project",
       "projects.SubProject",
+      "documents.Document",
       "pages.Page",
       "blog.BlogPost",
       "generic.ThreadedComment",
       ("Media Library", "fb_browse"),)),
     ("Lookup Tables",
-     (('CCCS Role', "cvs.CCCSRole"),
+     ('documents.BibTexEntryType',
+      'documents.CCCSEntryType',
+      ('CCCS Role', "cvs.CCCSRole"),
       "projects.Country",
       "taggit.Tag")),
     ("Project Categorization",
@@ -267,6 +275,9 @@ DASHBOARD_TAGS = (
     ("mezzanine_tags.app_list",),
     ("gitadmin_tags.git_dashboard",),
     ("mezzanine_tags.recent_actions",))
+
+QGIS_PROJECTS_DIR = os.path.join(BASE_DIR, 'qgis/projects')
+QGIS_SERVER_URL_ROOT = '/wms/'
 
 ####################
 # DYNAMIC SETTINGS #

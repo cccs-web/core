@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block main %}
+    <h1>QGIS Projects</h1>
+    {% if projects %}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>QGIS Name</th>
+        <th>Title</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for project in projects %}
+        <tr>
+            <td><a href="{% url 'qgis-project' project_name=project.project_name %}">{{ project.project_name }}</a></td>
+            <td>{{ project.qgis_project_name }}</td>
+            <td>{{ project.title }}</td>
+        <td><a class="btn btn-default" href="{{ qgis_server_url }}/{{ project.project_name }}?REQUEST=GetCapabilities&SERVICE=WMS">View Capabilities</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    {% else %}
+    <p>No projects available.</p>
+    {% endif %}
+{% endblock main %}
