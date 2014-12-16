@@ -6,7 +6,7 @@
         <layer-tree-layer expanded="1" checked="Qt::Checked" id="seaports20140530160751845" name="seaports">
             <customproperties/>
         </layer-tree-layer>
-        <layer-tree-layer expanded="1" checked="Qt::Checked" id="airport_dephub20140530160751460" name="airport_dephub">
+        <layer-tree-layer expanded="1" checked="Qt::Checked" id="airport_dephub20140530160751460" name="airports">
             <customproperties/>
         </layer-tree-layer>
         <layer-tree-layer expanded="1" checked="Qt::Checked" id="infra_roads_line_L1_IDN_MTB20141216095211440" name="roads_national">
@@ -35,10 +35,10 @@
     <mapcanvas>
         <units>meters</units>
         <extent>
-            <xmin>681189.21532310161273926</xmin>
-            <ymin>-957052.50648492074105889</ymin>
-            <xmax>920505.28113265440333635</xmax>
-            <ymax>-768305.54447942541446537</ymax>
+            <xmin>719670.52896346990019083</xmin>
+            <ymin>-900273.16186282108537853</ymin>
+            <xmax>839328.56186824641190469</xmax>
+            <ymax>-805899.68086007353849709</ymax>
         </extent>
         <projections>1</projections>
         <destinationsrs>
@@ -86,7 +86,7 @@
                 <legendlayerfile isInOverview="0" layerid="seaports20140530160751845" visible="1"/>
             </filegroup>
         </legendlayer>
-        <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="airport_dephub" showFeatureCount="0">
+        <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="airports" showFeatureCount="0">
             <filegroup open="true" hidden="false">
                 <legendlayerfile isInOverview="0" layerid="airport_dephub20140530160751460" visible="1"/>
             </filegroup>
@@ -154,7 +154,7 @@
                     <layer-tree-layer expanded="1" checked="Qt::Checked" id="ALKI20140410141116796" name="ALKI">
                         <customproperties/>
                     </layer-tree-layer>
-                    <layer-tree-layer expanded="1" checked="Qt::Checked" id="airport_dephub20140530160751460" name="airport_dephub">
+                    <layer-tree-layer expanded="1" checked="Qt::Checked" id="airport_dephub20140530160751460" name="airports">
                         <customproperties/>
                     </layer-tree-layer>
                     <layer-tree-layer expanded="1" checked="Qt::Checked" id="desa_BPS_200820140530160751548" name="desa">
@@ -176,7 +176,7 @@
                         <customproperties/>
                     </layer-tree-layer>
                 </layer-tree-group>
-                <ComposerItem pagey="43.2384" page="1" id="" lastValidViewScaleFactor="2.40527" positionMode="0" positionLock="false" x="342.998" y="43.2384" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="33.6187" outlineWidth="0.3" excludeFromExports="0" uuid="{692ac304-d73c-4b19-be31-574c9bd18018}" height="76.9" itemRotation="0" frame="true" pagex="342.998">
+                <ComposerItem pagey="43.2384" page="1" id="" lastValidViewScaleFactor="2.40527" positionMode="0" positionLock="false" x="342.998" y="43.2384" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="33.4062" outlineWidth="0.3" excludeFromExports="0" uuid="{692ac304-d73c-4b19-be31-574c9bd18018}" height="76.9" itemRotation="0" frame="true" pagex="342.998">
                     <FrameColor alpha="255" red="0" blue="0" green="0"/>
                     <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
                 </ComposerItem>
@@ -980,7 +980,7 @@
                 </edittype>
             </edittypes>
         </maplayer>
-        <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+        <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="1" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
             <id>airport_dephub20140530160751460</id>
             <datasource>./shapefiles/infra-airports_point-L3_IDN_MTB.shp</datasource>
             <title></title>
@@ -988,7 +988,7 @@
             <keywordList>
                 <value></value>
             </keywordList>
-            <layername>airport_dephub</layername>
+            <layername>airports</layername>
             <srs>
                 <spatialrefsys>
                     <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
@@ -1073,7 +1073,7 @@
                 <property key="labeling/distMapUnitMinScale" value="0"/>
                 <property key="labeling/enabled" value="false"/>
                 <property key="labeling/fieldName" value=""/>
-                <property key="labeling/fontBold" value="false"/>
+                <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
                 <property key="labeling/fontFamily" value="Ubuntu"/>
                 <property key="labeling/fontItalic" value="false"/>
@@ -1087,7 +1087,7 @@
                 <property key="labeling/fontSizeMapUnitMinScale" value="0"/>
                 <property key="labeling/fontStrikeout" value="false"/>
                 <property key="labeling/fontUnderline" value="false"/>
-                <property key="labeling/fontWeight" value="50"/>
+                <property key="labeling/fontWeight" value="63"/>
                 <property key="labeling/fontWordSpacing" value="0"/>
                 <property key="labeling/formatNumbers" value="false"/>
                 <property key="labeling/isExpression" value="true"/>
@@ -1307,7 +1307,7 @@
                             <prop k="customdash_unit" v="MM"/>
                             <prop k="draw_inside_polygon" v="0"/>
                             <prop k="joinstyle" v="bevel"/>
-                            <prop k="line_color" v="0,255,255,255"/>
+                            <prop k="line_color" v="150,179,204,255"/>
                             <prop k="line_style" v="dash"/>
                             <prop k="line_width" v="0.1"/>
                             <prop k="line_width_unit" v="MM"/>
