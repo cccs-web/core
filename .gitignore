@@ -3,7 +3,6 @@
 __pycache__/*
 *.py[cod]
 gunicorn_logs/
-*.db
 .DS_Store
 .coverage
 static_collected/
