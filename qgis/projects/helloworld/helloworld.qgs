@@ -187,7 +187,7 @@
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">spatialite</provider>
-            <previewExpression></previewExpression>
+            <previewExpression>COALESCE( "name", '&lt;NULL>' )</previewExpression>
             <vectorjoins/>
             <expressionfields/>
             <edittypes>
@@ -414,7 +414,7 @@
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">spatialite</provider>
-            <previewExpression></previewExpression>
+            <previewExpression>COALESCE( "pkuid", '&lt;NULL>' )</previewExpression>
             <vectorjoins/>
             <expressionfields/>
             <edittypes>
@@ -690,6 +690,29 @@
             <SelectionColorGreenPart type="int">246</SelectionColorGreenPart>
             <CanvasColorBluePart type="int">255</CanvasColorBluePart>
         </Gui>
+        <Digitizing>
+            <LayerSnappingList type="QStringList">
+                <value>country20131022151106556</value>
+                <value>hello20131022151106574</value>
+            </LayerSnappingList>
+            <LayerSnappingEnabledList type="QStringList">
+                <value>enabled</value>
+                <value>enabled</value>
+            </LayerSnappingEnabledList>
+            <AvoidIntersectionsList type="QStringList"/>
+            <LayerSnappingToleranceUnitList type="QStringList">
+                <value>0</value>
+                <value>0</value>
+            </LayerSnappingToleranceUnitList>
+            <LayerSnapToList type="QStringList">
+                <value>to_vertex</value>
+                <value>to_vertex</value>
+            </LayerSnapToList>
+            <LayerSnappingToleranceList type="QStringList">
+                <value>0.000000</value>
+                <value>0.000000</value>
+            </LayerSnappingToleranceList>
+        </Digitizing>
         <Identify>
             <disabledLayers type="QStringList"/>
         </Identify>
