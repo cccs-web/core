@@ -277,7 +277,7 @@ DASHBOARD_TAGS = (
     ("mezzanine_tags.recent_actions",))
 
 QGIS_PROJECTS_DIR = os.path.join(BASE_DIR, 'qgis/projects')
-QGIS_SERVER_URL_ROOT = '/wms/'
+QGIS_SERVER_URL_PATTERN = '/wms?map={file_path}&service=wms'
 
 ####################
 # DYNAMIC SETTINGS #

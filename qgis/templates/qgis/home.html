@@ -13,10 +13,10 @@
     <tbody>
     {% for project in projects %}
         <tr>
-            <td><a href="{% url 'qgis-project' project_name=project.project_name %}">{{ project.project_name }}</a></td>
+            <td><a href="{% url 'qgis-project' project_name=project.name %}">{{ project.name }}</a></td>
             <td>{{ project.qgis_project_name }}</td>
             <td>{{ project.title }}</td>
-        <td><a class="btn btn-default" href="{{ qgis_server_url }}/{{ project.project_name }}?REQUEST=GetCapabilities&SERVICE=WMS">View Capabilities</a></td>
+        <td><a class="btn btn-default" href="{{ project.url }}&request=GetCapabilities">View Capabilities</a></td>
         </tr>
     {% endfor %}
     </tbody>

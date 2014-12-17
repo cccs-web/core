@@ -39,7 +39,7 @@
         //Servername (optional) and path and name name of QGIS Server FCGI-file
         //either with or without server-name - without servername recommended for easier porting to other servers
         //do not add a ? or & after the .fcgi extension
-        var serverAndCGI = "{{ qgis_server_url }}";
+        var serverAndCGI = "{{ project.url }}";
     </script>
     <script type="text/javascript" src="{% static 'qgis/js/GlobalOptions.js' %}"></script>
     <!-- before using the ThemeSwitcher in QGIS Webclient you need to edit the GISProjectListing.js file and -->
