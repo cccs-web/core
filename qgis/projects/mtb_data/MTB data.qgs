@@ -2522,32 +2522,63 @@
         </maplayer>
     </projectlayers>
     <properties>
-        <WMSContactPerson type="QString"></WMSContactPerson>
+        <WMSContactPerson type="QString">Aaron Dennis</WMSContactPerson>
         <WMSOnlineResource type="QString"></WMSOnlineResource>
-        <WMSContactOrganization type="QString"></WMSContactOrganization>
+        <WMSUseLayerIDs type="bool">false</WMSUseLayerIDs>
         <DeprecatedLabels>
             <Enabled type="bool">true</Enabled>
         </DeprecatedLabels>
+        <WMSContactOrganization type="QString">Cross-Cultural Consulting Services, PLLS</WMSContactOrganization>
+        <WMSExtent type="QStringList">
+            <value>727523.17129933962132782</value>
+            <value>-862346.33400977798737586</value>
+            <value>796709.66066708706784993</value>
+            <value>-815159.59350840421393514</value>
+        </WMSExtent>
+        <WMSKeywordList type="QStringList">
+            <value></value>
+        </WMSKeywordList>
+        <WFSUrl type="QString"></WFSUrl>
         <Paths>
             <Absolute type="bool">false</Absolute>
         </Paths>
-        <WMSServiceTitle type="QString"></WMSServiceTitle>
-        <WFSLayers type="QStringList"/>
+        <WMSServiceTitle type="QString">MTB</WMSServiceTitle>
+        <WFSLayers type="QStringList">
+            <value>MTB_village_Population20140530160751731</value>
+            <value>admin_area_L3_IDN_MTB20141216095711655</value>
+            <value>airport_dephub20140530160751460</value>
+            <value>desa_BPS_200820140530160751548</value>
+            <value>infra_roads_line_L1_IDN_MTB20141216095211440</value>
+            <value>kecamatan_BPS_200820140530160751675</value>
+            <value>roads_PU_201220140530160751789</value>
+            <value>seaports20140530160751845</value>
+        </WFSLayers>
         <WMSContactMail type="QString"></WMSContactMail>
         <PositionPrecision>
             <DecimalPlaces type="int">2</DecimalPlaces>
             <Automatic type="bool">true</Automatic>
+            <DegreeFormat type="QString">D</DegreeFormat>
         </PositionPrecision>
+        <WCSUrl type="QString"></WCSUrl>
+        <WMSServiceCapabilities type="bool">true</WMSServiceCapabilities>
         <WMSContactPhone type="QString"></WMSContactPhone>
-        <WMSServiceCapabilities type="bool">false</WMSServiceCapabilities>
-        <WMSServiceAbstract type="QString"></WMSServiceAbstract>
         <NorthArrow>
             <Rotation type="int">0</Rotation>
             <Enabled type="bool">false</Enabled>
             <Placement type="int">0</Placement>
             <Automatic type="bool">true</Automatic>
         </NorthArrow>
+        <WMSServiceAbstract type="QString"></WMSServiceAbstract>
         <WMSAddWktGeometry type="bool">false</WMSAddWktGeometry>
+        <Measure>
+            <Ellipsoid type="QString">NONE</Ellipsoid>
+        </Measure>
+        <WMSPrecision type="QString">8</WMSPrecision>
+        <WFSTLayers>
+            <Insert type="QStringList"/>
+            <Update type="QStringList"/>
+            <Delete type="QStringList"/>
+        </WFSTLayers>
         <Gui>
             <SelectionColorBluePart type="int">0</SelectionColorBluePart>
             <CanvasColorGreenPart type="int">255</CanvasColorGreenPart>
@@ -2605,9 +2636,24 @@
                 <value>0.000000</value>
             </LayerSnappingToleranceList>
         </Digitizing>
+        <WFSLayersPrecision>
+            <desa_BPS_200820140530160751548 type="int">8</desa_BPS_200820140530160751548>
+            <airport_dephub20140530160751460 type="int">8</airport_dephub20140530160751460>
+            <kecamatan_BPS_200820140530160751675 type="int">8</kecamatan_BPS_200820140530160751675>
+            <roads_PU_201220140530160751789 type="int">8</roads_PU_201220140530160751789>
+            <MTB_village_Population20140530160751731 type="int">8</MTB_village_Population20140530160751731>
+            <infra_roads_line_L1_IDN_MTB20141216095211440 type="int">8</infra_roads_line_L1_IDN_MTB20141216095211440>
+            <admin_area_L3_IDN_MTB20141216095711655 type="int">8</admin_area_L3_IDN_MTB20141216095711655>
+            <seaports20140530160751845 type="int">8</seaports20140530160751845>
+        </WFSLayersPrecision>
         <Identify>
             <disabledLayers type="QStringList"/>
         </Identify>
+        <Macros>
+            <pythonCode type="QString"></pythonCode>
+        </Macros>
+        <WMSAccessConstraints type="QString"></WMSAccessConstraints>
+        <WCSLayers type="QStringList"/>
         <Legend>
             <filterByMap type="bool">false</filterByMap>
         </Legend>
@@ -2617,5 +2663,16 @@
             <ProjectCRSID type="int">3136</ProjectCRSID>
             <ProjectionsEnabled type="int">1</ProjectionsEnabled>
         </SpatialRefSys>
+        <DefaultStyles>
+            <Fill type="QString"></Fill>
+            <Line type="QString"></Line>
+            <Marker type="QString"></Marker>
+            <RandomColors type="bool">true</RandomColors>
+            <AlphaInt type="int">255</AlphaInt>
+            <ColorRamp type="QString"></ColorRamp>
+        </DefaultStyles>
+        <WMSFees type="QString"></WMSFees>
+        <WMSImageQuality type="int">90</WMSImageQuality>
+        <WMSUrl type="QString"></WMSUrl>
     </properties>
 </qgis>
