@@ -2569,11 +2569,14 @@
             <Automatic type="bool">true</Automatic>
         </NorthArrow>
         <WMSServiceAbstract type="QString"></WMSServiceAbstract>
-        <WMSAddWktGeometry type="bool">false</WMSAddWktGeometry>
+        <WMSAddWktGeometry type="bool">true</WMSAddWktGeometry>
         <Measure>
             <Ellipsoid type="QString">NONE</Ellipsoid>
         </Measure>
         <WMSPrecision type="QString">8</WMSPrecision>
+        <WMSCrsList type="QStringList">
+            <value>EPSG:4326</value>
+        </WMSCrsList>
         <WFSTLayers>
             <Insert type="QStringList"/>
             <Update type="QStringList"/>
@@ -2597,8 +2600,10 @@
                 <value>infra_roads_line_L1_IDN_MTB20141216095211440</value>
                 <value>kecamatan_BPS_200820140530160751675</value>
                 <value>roads_PU_201220140530160751789</value>
+                <value>seaports20140530160751845</value>
             </LayerSnappingList>
             <LayerSnappingEnabledList type="QStringList">
+                <value>enabled</value>
                 <value>enabled</value>
                 <value>enabled</value>
                 <value>enabled</value>
@@ -2616,6 +2621,7 @@
                 <value>0</value>
                 <value>0</value>
                 <value>0</value>
+                <value>0</value>
             </LayerSnappingToleranceUnitList>
             <LayerSnapToList type="QStringList">
                 <value>to_vertex</value>
@@ -2625,8 +2631,10 @@
                 <value>to_vertex</value>
                 <value>to_vertex</value>
                 <value>to_vertex</value>
+                <value>to_vertex</value>
             </LayerSnapToList>
             <LayerSnappingToleranceList type="QStringList">
+                <value>0.000000</value>
                 <value>0.000000</value>
                 <value>0.000000</value>
                 <value>0.000000</value>

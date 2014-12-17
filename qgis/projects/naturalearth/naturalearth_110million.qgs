@@ -2827,6 +2827,7 @@
     <properties>
         <WMSContactPerson type="QString">Andreas Neumann</WMSContactPerson>
         <WMSOnlineResource type="QString"></WMSOnlineResource>
+        <WMSUseLayerIDs type="bool">false</WMSUseLayerIDs>
         <WMSContactOrganization type="QString">QGIS Project</WMSContactOrganization>
         <WMSExtent type="QStringList">
             <value>-28711512.9774462953209877</value>
@@ -2844,11 +2845,17 @@
         </Paths>
         <WMSServiceTitle type="QString">Natural Earth View</WMSServiceTitle>
         <WFSLayers type="QStringList">
-            <value>ne_110m_geography_regions_elevation_points20121113085601074</value>
+            <value>admin_area_L5_IDN_MTB20141216213114985</value>
+            <value>admin_point_L5_IDN_MTB_population20141216213050418</value>
+            <value>infra_airports_point_L3_IDN_MTB20141216213037080</value>
+            <value>infra_roads_line_L1_IDN_MTB20141216212942665</value>
+            <value>infra_roads_line_L3_IDN_MTB20141216214213273</value>
+            <value>infra_seports_point_L3_IDN_MTB20141216213022936</value>
             <value>ne_110m_glaciated_areas20121113085601089</value>
-            <value>ne_110m_lakes20121113085601093</value>
+            <value>ne_110m_land20131111111951112</value>
             <value>ne_110m_land20131111112024526</value>
-            <value>ne_110m_rivers_lake_centerlines20121113085601105</value>
+            <value>roads_PU_201220141216214958662</value>
+            <value>time_zones20140414080319400</value>
         </WFSLayers>
         <WMSContactMail type="QString"></WMSContactMail>
         <PositionPrecision>
@@ -2856,14 +2863,16 @@
             <Automatic type="bool">true</Automatic>
             <DegreeFormat type="QString">D</DegreeFormat>
         </PositionPrecision>
-        <WMSContactPhone type="QString"></WMSContactPhone>
+        <WCSUrl type="QString"></WCSUrl>
         <WMSServiceCapabilities type="bool">true</WMSServiceCapabilities>
+        <WMSContactPhone type="QString"></WMSContactPhone>
         <WMSServiceAbstract type="QString">Data Source: Natural Earth Data: 
 http://www.naturalearthdata.com/</WMSServiceAbstract>
         <WMSAddWktGeometry type="bool">true</WMSAddWktGeometry>
         <Measure>
             <Ellipsoid type="QString">NONE</Ellipsoid>
         </Measure>
+        <WMSPrecision type="QString">8</WMSPrecision>
         <WMSCrsList type="QStringList">
             <value>EPSG:3857</value>
             <value>EPSG:900913</value>
@@ -2945,9 +2954,21 @@ http://www.naturalearthdata.com/</WMSServiceAbstract>
                 <value>0.000000</value>
             </LayerSnappingToleranceList>
         </Digitizing>
+        <WFSLayersPrecision>
+            <roads_PU_201220141216214958662 type="int">8</roads_PU_201220141216214958662>
+            <time_zones20140414080319400 type="int">8</time_zones20140414080319400>
+            <infra_roads_line_L1_IDN_MTB20141216212942665 type="int">8</infra_roads_line_L1_IDN_MTB20141216212942665>
+            <ne_110m_land20131111112024526 type="int">8</ne_110m_land20131111112024526>
+            <admin_point_L5_IDN_MTB_population20141216213050418 type="int">8</admin_point_L5_IDN_MTB_population20141216213050418>
+            <infra_roads_line_L3_IDN_MTB20141216214213273 type="int">8</infra_roads_line_L3_IDN_MTB20141216214213273>
+            <infra_seports_point_L3_IDN_MTB20141216213022936 type="int">8</infra_seports_point_L3_IDN_MTB20141216213022936>
+            <infra_airports_point_L3_IDN_MTB20141216213037080 type="int">8</infra_airports_point_L3_IDN_MTB20141216213037080>
+            <ne_110m_glaciated_areas20121113085601089 type="int">2</ne_110m_glaciated_areas20121113085601089>
+            <admin_area_L5_IDN_MTB20141216213114985 type="int">8</admin_area_L5_IDN_MTB20141216213114985>
+            <ne_110m_land20131111111951112 type="int">8</ne_110m_land20131111111951112>
+        </WFSLayersPrecision>
         <Identify>
             <disabledLayers type="QStringList">
-                <value>HYP_50M_SR_W20131111115935301</value>
                 <value>ne_110m_land20131111111951112</value>
                 <value>ne_110m_land20131111112024526</value>
             </disabledLayers>
@@ -2956,6 +2977,7 @@ http://www.naturalearthdata.com/</WMSServiceAbstract>
             <pythonCode type="QString"></pythonCode>
         </Macros>
         <WMSAccessConstraints type="QString">none</WMSAccessConstraints>
+        <WCSLayers type="QStringList"/>
         <Legend>
             <filterByMap type="bool">false</filterByMap>
         </Legend>
@@ -2974,6 +2996,7 @@ http://www.naturalearthdata.com/</WMSServiceAbstract>
             <ColorRamp type="QString"></ColorRamp>
         </DefaultStyles>
         <WMSFees type="QString">none</WMSFees>
+        <WMSImageQuality type="int">90</WMSImageQuality>
         <WMSUrl type="QString"></WMSUrl>
     </properties>
 </qgis>
