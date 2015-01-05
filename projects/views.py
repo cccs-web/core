@@ -40,25 +40,35 @@ class ProjectCCCSThemeListView(ListView):
     categorization_label = 'CCCS Theme'
     template_name = "projects/project_list2.html"
     show_piechart1 = True
+    show_piechart2 = False
     def get_context_data(self, **kwargs):
         context = super(ProjectCCCSThemeListView, self).get_context_data(**kwargs)
         context['categorization_name'] = self.categorization_label
         context['use_right_col'] = "No"  # a bit hacky but it will do for now
+
         context['show_piechart1'] = self.show_piechart1
-        if self.show_piechart1:
-            context['categorization'] = categorize_projects2(context['object_list'],
+        context['show_piechart2'] = self.show_piechart2
+
+        context['categorization'] = categorize_projects2(context['object_list'],
                                                              self.categorization_fieldname,
                                                              self.categorization_parent_fieldname,
                                                              not self.request.user.is_staff)
+        if self.show_piechart1 or self.show_piechart2:
+            temp = [ {'code3': c.iso_3166.encode('ascii','ignore') if c.iso_3166 else '', 'value': c.project_count } for c in pm.Country.objects.all() if c.project_count > 0 ]
+            context['country_projects'] = temp
 
+        if self.show_piechart1:
             context['country_categorization'] = categorize_projects2_by_country(context['object_list'],
                                                              self.categorization_fieldname,
                                                              self.categorization_parent_fieldname,
                                                              not self.request.user.is_staff)
 
-            temp = [ {'code3': c.iso_3166.encode('ascii','ignore') if c.iso_3166 else '', 'value': c.project_count } for c in pm.Country.objects.all() if c.project_count > 0 ]
-            context['country_projects'] = temp
 
+        if self.show_piechart2:
+            context['country_categorization'] = categorize_projects3_by_country(context['object_list'],
+                                                             self.categorization_fieldname,
+                                                             self.categorization_parent_fieldname,
+                                                             not self.request.user.is_staff)
         return context
 
 
@@ -72,6 +82,7 @@ class ProjectCCCSSectorListView(ProjectCCCSThemeListView):
     categorization_parent_fieldname = 'sector'
     categorization_label = 'CCCS Sector'
     show_piechart1 = False
+    show_piechart2 = True
 
 class ProjectCCCSSubSectorListView(ListView):
     model = pm.Project
@@ -141,6 +152,7 @@ class ProjectIFCSectorListView(ProjectCountryListView):
     categorization_fieldname = 'ifc_sectors'
     categorization_label = 'IFC Sector'
     country_map = False
+    show_piechart2 = True
 
 class ProjectCCCSProjectListView(ListView):
     model = pm.Project
@@ -230,7 +242,7 @@ def categorize_projects2_by_country(projects, categorization_fieldname, categori
             sub_categorizations = getattr(project, categorization_fieldname).all()
 
             for sub in sub_categorizations:
-                super_name = getattr(sub, categorization_parent_fieldname).name.encode('ascii','ignore')
+                super_name = getattr(sub, categorization_parent_fieldname).name.encode('utf-8','ignore')
 
                 if super_name not in country_categorization[country_code]:
                     country_categorization[country_code][super_name] = 0
@@ -238,4 +250,39 @@ def categorize_projects2_by_country(projects, categorization_fieldname, categori
                 country_categorization[country_code][super_name] += 1
     for country_code in country_categorization:
         country_categorization[country_code] = sorted([[key, country_categorization[country_code][key]] for key in country_categorization[country_code]], key=lambda x: x[0])
+    return country_categorization
+
+
+def categorize_projects3_by_country(projects, categorization_fieldname, categorization_parent_fieldname, published_only):
+    """
+    Organize he projects so that they are nested in the countries and then sub categorizations
+    """
+    country_categorization = dict()
+    for project in projects:
+        if project.parent:
+            continue
+        if published_only and project.status == pm.CONTENT_STATUS_DRAFT:
+            continue
+        categorization = dict()
+        countries = getattr(project, 'countries').all()
+        for country in countries:
+            country_code = country.iso_3166.encode('ascii','ignore')
+            if country_code not in country_categorization:
+                country_categorization[country_code] = dict()
+
+            sub_categorizations = getattr(project, categorization_fieldname).all()
+
+            for sub in sub_categorizations:
+                super_name = getattr(sub, categorization_parent_fieldname).name.encode('utf-8','ignore')
+
+                if super_name not in country_categorization[country_code]:
+                    country_categorization[country_code][super_name] = dict(drilldown=dict(), count=0)
+
+                sub_name = sub.name.encode('utf-8','ignore')
+                if sub_name not in country_categorization[country_code][super_name]['drilldown']:
+                    country_categorization[country_code][super_name]['drilldown'][sub_name] = 0
+
+                country_categorization[country_code][super_name]['count'] += 1
+                country_categorization[country_code][super_name]['drilldown'][sub_name] += 1
+
     return country_categorization
