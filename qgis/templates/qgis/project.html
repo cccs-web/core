@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>QGIS-Browser</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'qgis/libs/ext/resources/css/ext-all-notheme.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'qgis/libs/ext/resources/css/xtheme-gray.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'qgis/libs/ext/ux/css/ux-all.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'qgis/css/TriStateTreeAndCheckbox.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'qgis/css/ThemeSwitcherDataView.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'qgis/css/popup.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'qgis/css/layerOrderTab.css' %}" />
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+<!--
+    <script type="text/javascript" src="{% static 'qgis/libs/ext/adapter/ext/ext-base.js' %}"></script>
+-->
+    <script type="text/javascript" src="{% static 'qgis/libs/ext/adapter/ext/ext-base-debug.js' %}"></script>
+<!--
+    <script type="text/javascript" src="{% static 'qgis/libs/ext/ext-all.js' %}"></script>
+-->
+    <script type="text/javascript" src="{% static 'qgis/libs/ext/ext-all-debug-w-comments.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/libs/ext/ux/ux-all.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/libs/proj4js/proj4js-compressed.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/libs/openlayers/OpenLayers.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/libs/geoext/script/GeoExt.js' %}"></script>
+    <!-- Uncomment this line and delete the following if you have created a custom translations file -->
+<!--
+    <script type="text/javascript" src="{% static 'qgis/js/Translations_custom.js' %}"></script>
+-->
+    <script type="text/javascript" src="{% static 'qgis/js/Translations.js' %}"></script>
+    
+    <!-- before using QGIS Webclient you need to edit the GlobalOptions.js file-->
+    <!-- you can start from one of the templates -->
+
+    <script type="text/javascript">
+        // Pulled from GlobalOptions.js
+        //Servername (optional) and path and name name of QGIS Server FCGI-file
+        //either with or without server-name - without servername recommended for easier porting to other servers
+        //do not add a ? or & after the .fcgi extension
+        var serverAndCGI = "{{ qgis_server_url }}";
+    </script>
+    <script type="text/javascript" src="{% static 'qgis/js/GlobalOptions.js' %}"></script>
+    <!-- before using the ThemeSwitcher in QGIS Webclient you need to edit the GISProjectListing.js file and -->
+    <!-- you also need to place 300x200 pixel thumbnails with projectname.png in site/thumbnails -->
+    <script type="text/javascript" src="{% static 'qgis/js/Customizations.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/GISProjectListing.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/GetUrlParams.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/TriStateTree.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/GUI.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/ThemeSwitcher.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/QGISExtensions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/GeoNamesSearchCombo.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/FeatureInfoDisplay.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/LegendAndMetadataDisplay.js' %}"></script>
+    <script type="text/javascript" src="{% static 'qgis/js/WebgisInit.js' %}"></script>
+<style type="text/css">
+#dpiDetection {
+  height: 1in;
+  left: -100%;
+  position: absolute;
+  top: -100%;
+  width: 1in;
+}
+
+#panel_header_title {
+  float: left;
+  font-size: 24px;
+}
+#panel_header_link {
+  float: left;
+}
+#panel_header_terms_of_use {
+  float: right;
+  font-weight: normal;
+}
+</style>
+</head>
+<body>
+<!-- this empty div is used for dpi-detection - do not remove it -->
+<div id="dpiDetection"></div>
+</body>
+</html>

@@ -9,6 +9,7 @@ from mezzanine.conf import settings
 import cccsmap.urls
 import projects.urls
 import cvs.urls
+import qgis.urls
 import documents.urls
 
 
@@ -33,6 +34,7 @@ urlpatterns += patterns(
     ("^projects/", include(projects.urls)),
     ("^cvs/", include(cvs.urls)),
     ("^documents/", include(documents.urls)),
+    ("^qgis/", include(qgis.urls)),
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
     ("^", include("mezzanine.urls")))
 

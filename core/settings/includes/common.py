@@ -152,7 +152,7 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     "mezzanine_pagedown",
-    #"mezzanine_slides",
+    # "mezzanine_slides",
     "mkdown",
     "modeltranslation",
     "south",
@@ -161,7 +161,8 @@ INSTALLED_APPS = (
     "documents",
     "gitadmin",
     "storages",
-    "categories.editor")
+    "categories.editor",
+    "qgis")
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its
@@ -274,6 +275,9 @@ DASHBOARD_TAGS = (
     ("mezzanine_tags.app_list",),
     ("gitadmin_tags.git_dashboard",),
     ("mezzanine_tags.recent_actions",))
+
+QGIS_PROJECTS_DIR = os.path.join(BASE_DIR, 'qgis/projects')
+QGIS_SERVER_URL_ROOT = '/wms/'
 
 ####################
 # DYNAMIC SETTINGS #
