@@ -1,0 +1,9 @@
+#map {
+    width: 100%;
+    height: 600px;
+    margin-bottom: 40px;
+}
+
+.jvectormap-label {
+    font-size: 14px;
+}
